@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">picow-rgbw</string>
+    <string name="title_activity_main">picow-rgbw</string>
+    <string name="package_name">com.knackwurstking.picowrgbw</string>
+    <string name="custom_url_scheme">com.knackwurstking.picowrgbw</string>
+</resources>

@@ -1,0 +1,8 @@
+{
+  "appId": "com.knackwurstking.picowrgbw",
+  "appName": "picow-rgbw",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "http"
+  }
+}
