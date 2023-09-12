@@ -143,6 +143,7 @@
         eventHandler.colorChanged(({ detail }) => {
             console.debug(`event: "${eventHandler.events.colorChanged}":`, detail);
 
+            // TODO: set device to `offline = false`
             const device = devices.find((device) => device.host === detail.host && device.port === detail.port);
             if (device) device.data = detail.data;
             devices = devices;
