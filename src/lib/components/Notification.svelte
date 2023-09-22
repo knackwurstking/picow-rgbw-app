@@ -18,14 +18,20 @@
 <style>
     .notification {
         position: relative;
+        width: fit-content;
+        max-width: 100%;
+
         pointer-events: all;
         touch-action: auto;
+
         float: right;
+
         padding: var(--spacing);
         margin: var(--spacing);
+
         border-radius: var(--border-radius);
         border: 1px solid currentColor;
-        width: fit-content;
+
         box-shadow: var(--card-box-shadow);
     }
 
