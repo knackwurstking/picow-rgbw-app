@@ -13,9 +13,9 @@
     let notifications = [];
     $: {
         if (notifications.length) {
-            setTimeout(() => {
-                notifications = [...notifications.slice(1)];
-            }, 2500);
+            //setTimeout(() => {
+            //    notifications = [...notifications.slice(1)];
+            //}, 2500);
         }
     }
 
@@ -87,18 +87,23 @@
         position: absolute;
         top: 0;
         right: 0;
+        left: 0;
+        max-height: 100%;
 
         overflow: hidden;
-        overflow-y: auto;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
 
         width: fit-content;
         height: fit-content;
 
-        touch-action: none;
-        pointer-events: none;
-
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+    }
+
+    .notify::-webkit-scrollbar {
+        display: none;
     }
 </style>

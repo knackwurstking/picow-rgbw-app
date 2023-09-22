@@ -27,7 +27,7 @@
         float: right;
 
         padding: var(--spacing);
-        margin: var(--spacing);
+        margin: calc(var(--spacing)/2);
 
         border-radius: var(--border-radius);
         border: 1px solid currentColor;
