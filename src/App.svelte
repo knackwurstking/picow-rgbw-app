@@ -242,11 +242,11 @@
 
 <svelte:head>
     {#if currentTheme === "custom"}
-        <link rel="stylesheet" href="/themes/custom.min.css" />
+        <link rel="stylesheet" href="/css/themes/custom.min.css" />
     {/if}
 
     {#if currentTheme === "picocss"}
-        <link rel="stylesheet" href="/themes/picocss.min.css" />
+        <link rel="stylesheet" href="/css/themes/picocss.min.css" />
     {/if}
 </svelte:head>
 
@@ -342,9 +342,9 @@
                         <div class="settings">
                             <button
                                 class="secondary outline"
+                                on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
                                 on:click={(ev) => {
                                     ev.stopPropagation();
-                                    ripple.add(ev, ev.currentTarget);
                                     deviceSettingsName = device.name;
                                     deviceSettingsOnSubmit = ({ detail }) => {
                                         device.name =
@@ -370,8 +370,8 @@
         <div class="actions">
             <button
                 class="add-item primary"
+                on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
                 on:click={async (ev) => {
-                    ripple.add(ev, ev.currentTarget);
                     colorStorage.add(currentColor);
                 }}
             >
@@ -381,8 +381,8 @@
             <button
                 class="outline secondary remove-item"
                 disabled={!selectedColorFromStorage}
+                on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
                 on:click={async (ev) => {
-                    ripple.add(ev, ev.currentTarget);
                     colorStorage.remove(selectedColorFromStorage);
                 }}
             >
@@ -418,8 +418,8 @@
     <div>
         <button
             class="contrast"
+            on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
             on:click={(ev) => {
-                ripple.add(ev, ev.currentTarget);
                 settingsOpen = !settingsOpen;
             }}
         >
@@ -436,9 +436,8 @@
                 border-radius: 0;
                 box-shadow: none;
             `}
+            on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
             on:click={async (ev) => {
-                ripple.add(ev, ev.currentTarget);
-
                 try {
                     api.setColor(devicesChecked, { r: 0, g: 0, b: 0, w: 0 });
                 } catch (err) {
@@ -456,8 +455,8 @@
                 border-top-left-radius: 0;
                 box-shadow: none;
             `}
+            on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
             on:click={(ev) => {
-                ripple.add(ev, ev.currentTarget);
                 console.debug(
                     `set color: ${currentColor.r}, ${currentColor.g}, ${currentColor.b}, ${currentColor.w}`
                 );
