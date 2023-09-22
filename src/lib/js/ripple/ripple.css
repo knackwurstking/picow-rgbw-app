@@ -1,7 +1,7 @@
 @keyframes ripple {
     from {
         transform: scale(0);
-        opacity: 1;
+        opacity: 0.7;
     }
     to {
         transform: scale(4);
@@ -12,7 +12,7 @@
 @keyframes ripple-reverse {
     from {
         transform: scale(4);
-        opacity: 1;
+        opacity: 0.7;
     }
     to {
         transform: scale(0);
@@ -21,15 +21,14 @@
 }
 
 :root {
-    --default-ripple: rgba(255, 255, 255, 0.7);
-    --ripple-duration: 500ms;
+    --ripple-duration: 350ms;
 }
 
 .ripple,
 .ripple__reverse {
     position: absolute;
     border-radius: 50%;
-    background-color: var(--ripple-color, var(--default-ripple));
+    background-color: var(--ripple-color);
 
     pointer-events: none;
 }
@@ -38,14 +37,6 @@
     transform: scale(0);
     opacity: 0;
     animation: ripple var(--ripple-duration) linear, opacity var(--ripple-duration) linear;
-}
-
-.ripple.primary {
-    background-color: var(--ripple-primary, var(--default-ripple));
-}
-
-.ripple.secondary {
-    background-color: var(--ripple-secondary, var(--default-ripple));
 }
 
 .ripple__reverse {

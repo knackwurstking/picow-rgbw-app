@@ -12,10 +12,9 @@
     import Notify from "./lib/components/Notify.svelte";
     import DeviceSettings from "./lib/components/DeviceSettings.svelte";
 
+    import * as ripple from "./lib/js/ripple";
     import Api from "./lib/js/api";
     import EventHandler from "./lib/js/event-handler";
-
-    import * as ripple from "./lib/ripple";
 
     /**
      * @typedef Device
@@ -298,11 +297,10 @@
                 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <fieldset
-                    class="devices-list-item"
+                    class="devices-list-item primary"
                     class:checked={devicesChecked.includes(`${device.host}:${device.port}`)}
                     on:click={(ev) => {
                         ripple.add(ev, ev.currentTarget, {
-                            mode: "primary",
                             reverse: ev.currentTarget.classList.contains("checked"),
                         });
 
@@ -346,7 +344,7 @@
                                 class="secondary outline"
                                 on:click={(ev) => {
                                     ev.stopPropagation();
-                                    ripple.add(ev, ev.currentTarget, { mode: "secondary" });
+                                    ripple.add(ev, ev.currentTarget);
                                     deviceSettingsName = device.name;
                                     deviceSettingsOnSubmit = ({ detail }) => {
                                         device.name =
@@ -371,9 +369,9 @@
 
         <div class="actions">
             <button
-                class="add-item"
+                class="add-item primary"
                 on:click={async (ev) => {
-                    ripple.add(ev, ev.currentTarget, { mode: "primary" });
+                    ripple.add(ev, ev.currentTarget);
                     colorStorage.add(currentColor);
                 }}
             >
@@ -384,7 +382,7 @@
                 class="outline secondary remove-item"
                 disabled={!selectedColorFromStorage}
                 on:click={async (ev) => {
-                    ripple.add(ev, ev.currentTarget, { mode: "secondary" });
+                    ripple.add(ev, ev.currentTarget);
                     colorStorage.remove(selectedColorFromStorage);
                 }}
             >
@@ -439,7 +437,7 @@
                 box-shadow: none;
             `}
             on:click={async (ev) => {
-                ripple.add(ev, ev.currentTarget, { mode: "secondary" });
+                ripple.add(ev, ev.currentTarget);
 
                 try {
                     api.setColor(devicesChecked, { r: 0, g: 0, b: 0, w: 0 });
@@ -450,6 +448,7 @@
         >
 
         <button
+            class="primary"
             style={`
                 width: 50%;
                 margin: 0;
@@ -458,7 +457,7 @@
                 box-shadow: none;
             `}
             on:click={(ev) => {
-                ripple.add(ev, ev.currentTarget, { mode: "primary" });
+                ripple.add(ev, ev.currentTarget);
                 console.debug(
                     `set color: ${currentColor.r}, ${currentColor.g}, ${currentColor.b}, ${currentColor.w}`
                 );

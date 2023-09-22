@@ -1,9 +1,8 @@
-import "./style.css";
+import "./ripple.css";
 
 /**
- * @typedef RippleOptions
+ * @typedef RippleAddOptions
  * @type {{
- *  mode?: "primary" | "secondary",
  *  reverse?: boolean,
  *  startFromCenter?: boolean,
  * }}
@@ -13,7 +12,7 @@ import "./style.css";
  *
  * @param {MouseEvent} ev
  * @param {HTMLElement} el
- * @param {RippleOptions | null} options
+ * @param {RippleAddOptions | null} options
  */
 export function add(ev, el, options = null) {
     const rect = el.getBoundingClientRect();
@@ -34,12 +33,27 @@ export function add(ev, el, options = null) {
     circle.style.left = `${cX - radius}px`;
     circle.style.top = `${cY - radius}px`;
 
-    if (options?.mode) circle.classList.add(options.mode);
+    if (el.classList.contains("primary")) {
+        circle.classList.add("primary");
+    } else if (el.classList.contains("secondary")) {
+        circle.classList.add("secondary");
+    } else if (el.classList.contains("contrast")) {
+        circle.classList.add("contrast");
+    }
+
     if (options?.reverse) circle.classList.add("ripple__reverse");
     circle.classList.add("ripple");
 
-    const ripple = el.getElementsByClassName("ripple")[0];
-    if (ripple) ripple.remove();
-
+    remove(el);
     el.append(circle);
+}
+
+/**
+ * 
+ * @param {HTMLElement} el 
+ */
+export function remove(el) {
+    for (const r of el.getElementsByClassName("ripple")) {
+        r.remove();
+    }
 }
