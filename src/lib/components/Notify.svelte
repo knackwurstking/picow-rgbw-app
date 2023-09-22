@@ -13,9 +13,9 @@
     let notifications = [];
     $: {
         if (notifications.length) {
-            //setTimeout(() => {
-            //    notifications = [...notifications.slice(1)];
-            //}, 2500);
+            setTimeout(() => {
+                notifications = [...notifications.slice(1)];
+            }, 2500);
         }
     }
 
