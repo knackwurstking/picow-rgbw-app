@@ -432,12 +432,6 @@
 
         <button
             class="secondary"
-            style={`
-                width: 50%;
-                margin: 0;
-                border-radius: 0;
-                box-shadow: none;
-            `}
             on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
             on:click={async (ev) => {
                 try {
@@ -450,13 +444,6 @@
 
         <button
             class="primary"
-            style={`
-                width: 50%;
-                margin: 0;
-                border-bottom-left-radius: 0;
-                border-top-left-radius: 0;
-                box-shadow: none;
-            `}
             on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
             on:click={(ev) => {
                 console.debug(
@@ -650,11 +637,37 @@
         height: 100%;
         margin: 0;
         padding: calc(var(--spacing) / 3);
-        border-bottom-right-radius: 0;
-        border-top-right-radius: 0;
         box-shadow: none;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    footer > div button:nth-child(1) {
+        /* Settings Button */
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    footer > div button:nth-child(2) {
+        /* OFF Button */
+        width: 50%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+
+        border-radius: 0;
+    }
+
+    footer > div button:nth-child(3) {
+        /* ON/SET Button */
+        width: 50%;
+        margin: 0;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        box-shadow: none;
+
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
     }
 </style>
