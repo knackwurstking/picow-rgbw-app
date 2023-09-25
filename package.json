@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
+    "build:windows": "npm run build && rm -r wails/picow-rgbw/frontend/src/* && cp -r dist/* wails/picow-rgbw/frontend/src/ && cd wails/picow-rgbw && wails build && wails build -nsis",
+    "build:linux": "npm run build && rm -r wails/picow-rgbw/frontend/src/* && cp -r dist/* wails/picow-rgbw/frontend/src/ && cd wails/picow-rgbw && wails build",
+    "build:android": "npm run build && npx cap sync android && npx cap open android",
     "preview": "vite preview"
   },
   "devDependencies": {

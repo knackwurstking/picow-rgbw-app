@@ -12,9 +12,14 @@
     import Notify from "./lib/components/Notify.svelte";
     import DeviceSettings from "./lib/components/DeviceSettings.svelte";
 
-    import * as ripple from "./lib/js/ripple";
     import Api from "./lib/js/api";
     import EventHandler from "./lib/js/event-handler";
+
+    import { ripple } from "./lib/js/ripple";
+    const _ripple = ripple({ usePointer: true });
+    const _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
+    const _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
+    const _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
     /**
      * @typedef Device
@@ -299,13 +304,9 @@
                 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <fieldset
-                    class="devices-list-item primary"
+                    class="devices-list-item"
                     class:checked={devicesChecked.includes(`${device.host}:${device.port}`)}
-                    on:click={(ev) => {
-                        ripple.add(ev, ev.currentTarget, {
-                            reverse: ev.currentTarget.classList.contains("checked"),
-                        });
-
+                    on:click={() => {
                         const addr = `${device.host}:${device.port}`;
                         if (devicesChecked.includes(addr)) {
                             const i = devicesChecked.indexOf(addr);
@@ -344,7 +345,7 @@
                         <div class="settings">
                             <button
                                 class="secondary outline"
-                                on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
+                                use:_ripple
                                 on:click={(ev) => {
                                     ev.stopPropagation();
                                     deviceSettingsName = device.name;
@@ -371,9 +372,9 @@
 
         <div class="actions">
             <button
-                class="add-item primary"
-                on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
-                on:click={async (ev) => {
+                class="add-item"
+                use:_primaryRipple
+                on:click={async () => {
                     colorStorage.add(currentColor);
                 }}
             >
@@ -383,8 +384,8 @@
             <button
                 class="outline secondary remove-item"
                 disabled={!selectedColorFromStorage}
-                on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
-                on:click={async (ev) => {
+                use:_ripple
+                on:click={async () => {
                     colorStorage.remove(selectedColorFromStorage);
                 }}
             >
@@ -420,8 +421,8 @@
     <div>
         <button
             class="contrast"
-            on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
-            on:click={(ev) => {
+            use:_contrastRipple
+            on:click={() => {
                 settingsOpen = !settingsOpen;
             }}
         >
@@ -432,8 +433,8 @@
 
         <button
             class="secondary"
-            on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
-            on:click={async (ev) => {
+            use:_secondaryRipple
+            on:click={async () => {
                 try {
                     api.setColor(devicesChecked, { r: 0, g: 0, b: 0, w: 0 });
                 } catch (err) {
@@ -444,8 +445,8 @@
 
         <button
             class="primary"
-            on:pointerdown={(ev) => ripple.add(ev, ev.currentTarget)}
-            on:click={(ev) => {
+            use:_primaryRipple
+            on:click={() => {
                 console.debug(
                     `set color: ${currentColor.r}, ${currentColor.g}, ${currentColor.b}, ${currentColor.w}`
                 );
@@ -466,11 +467,6 @@
         height: 100%;
 
         color: var(--color);
-    }
-
-    button {
-        position: relative;
-        overflow: hidden;
     }
 
     main {
