@@ -65,13 +65,16 @@
     let _notify;
 </script>
 
-<div class="notify" bind:this={_notify}>
+<div class="notify container" bind:this={_notify}>
     {#each notifications as notification, index}
         <Notification
             level={notification.level}
             message={notification.message}
             on:click={() => {
-                notifications = [...notifications.slice(0, index), ...notifications.slice(index + 1)];
+                notifications = [
+                    ...notifications.slice(0, index),
+                    ...notifications.slice(index + 1),
+                ];
             }}
         />
     {/each}
@@ -80,15 +83,27 @@
 <style>
     .notify {
         z-index: 999;
+
         position: absolute;
         top: 0;
         right: 0;
+        left: 0;
+        max-height: 100%;
+
+        overflow: hidden;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
         width: fit-content;
         height: fit-content;
-        touch-action: none;
-        pointer-events: none;
+
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+    }
+
+    .notify::-webkit-scrollbar {
+        display: none;
     }
 </style>

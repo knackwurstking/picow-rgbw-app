@@ -15,7 +15,11 @@
     import Api from "./lib/js/api";
     import EventHandler from "./lib/js/event-handler";
 
-    import * as ripple from "./lib/ripple";
+    import { ripple } from "./lib/js/ripple";
+    const _ripple = ripple({ usePointer: true });
+    const _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
+    const _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
+    const _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
 
     /**
      * @typedef Device
@@ -43,15 +47,11 @@
         }
     }
 
-    let wsConnected = false;
-
-    /**
-     * @type {Device[]}
-     */
+    /** @type {Device[]} */
     let devices = [];
     let devicesOnline = [];
     let devicesChecked = [];
-
+    let wsConnected = false;
     $: {
         if (devices) {
             if (wsConnected) {
@@ -61,7 +61,10 @@
                         devicesOnline.push(addr);
                     } else if (device.offline && devicesOnline.includes(addr)) {
                         const i = devicesOnline.indexOf(addr);
-                        devicesOnline = [...devicesOnline.slice(0, i), ...devicesOnline.slice(i + 1)];
+                        devicesOnline = [
+                            ...devicesOnline.slice(0, i),
+                            ...devicesOnline.slice(i + 1),
+                        ];
                     }
                 });
             } else {
@@ -75,11 +78,14 @@
     /** @type {Api} */
     let api;
 
+    /** @type {ColorPicker} */
+    let colorPicker;
     /** @type {ColorStorage} */
     let colorStorage;
 
     /** @type {Color | null} */
     let selectedColorFromStorage = null;
+    $: selectedColorFromStorage && setColor(selectedColorFromStorage);
 
     /** @type {Color} */
     let currentColor = { r: 100, g: 100, b: 100, w: 100 };
@@ -88,102 +94,17 @@
     let serverHost;
     let serverPort;
     /** @type {Themes} */
-    let currentTheme = "default";
+    let currentTheme = "custom";
 
-    $: serverHost && serverPort && init(serverHost, serverPort);
+    $: serverHost && serverPort && initServer(serverHost, serverPort);
 
     let deviceSettingsOpen = false;
     let deviceSettingsName = "";
     let deviceSettingsOnSubmit = null;
 
-    /**
-     *
-     * @param {string} host
-     * @param {number} port
-     */
-    async function init(host, port) {
-        console.debug(`init: host=${host}, port=${port}`);
-
-        if (eventHandler) {
-            eventHandler.setServer(host, port);
-        } else eventHandler = new EventHandler(serverHost, serverPort);
-
-        if (api) {
-            api.setServer(host, port);
-            return;
-        } else api = new Api(serverHost, serverPort);
-
-        // Initializing event handlers
-        eventHandler.devicesUpdated(async ({ detail }) => {
-            console.debug(`event: "${eventHandler.events.devicesUpdated}": detail=${detail}`);
-        });
-
-        eventHandler.deviceError(({ detail }) => {
-            notify.error(`event: "${eventHandler.events.deviceError}": ${detail}`);
-        });
-
-        eventHandler.deviceOnline(({ detail }) => {
-            console.debug(`event: "${eventHandler.events.deviceOnline}": detail=${detail}`);
-
-            // Update `devicesOnline`
-            const device = devices.find((device) => device.host === detail.host && device.port === detail.port);
-            if (device) device.offline = false;
-            devices = devices;
-        });
-
-        eventHandler.deviceOffline(({ detail }) => {
-            console.debug(`event: "${eventHandler.events.deviceOffline}": detail=${detail}`);
-
-            // Update `devicesOnline`
-            const device = devices.find((device) => device.host === detail.host && device.port === detail.port);
-            if (device) device.offline = true;
-            devices = devices;
-        });
-
-        eventHandler.colorChanged(({ detail }) => {
-            console.debug(`event: "${eventHandler.events.colorChanged}":`, detail);
-
-            const device = devices.find((device) => device.host === detail.host && device.port === detail.port);
-            if (device) device.data = detail.data;
-            devices = devices;
-        });
-
-        let wsOpenCloseNotified = false;
-        let wsErrorNotified = false;
-
-        // Handle websocket open event
-        eventHandler.eventTarget.addEventListener(eventHandler.events.wsOpen, async () => {
-            wsOpenCloseNotified = false;
-            wsErrorNotified = false;
-            if (!wsConnected) wsConnected = true;
-            notify.info(`Connected to "${eventHandler.server}"`);
-
-            try {
-                await getDevices();
-            } catch (err) {
-                console.debug("Fetch devices failed:", err);
-            }
-        });
-
-        // Handle websocket close event
-        let listener = async () => {
-            if (wsConnected) wsConnected = false;
-
-            if (!wsOpenCloseNotified) {
-                notify.warning(`Connection to "${eventHandler.server} closed."`);
-                wsOpenCloseNotified = true;
-            }
-        };
-        eventHandler.eventTarget.addEventListener(eventHandler.events.wsClose, listener);
-
-        // Handle websocket error event
-        listener = async () => {
-            if (!wsErrorNotified) {
-                notify.error(`Connection to "${eventHandler.server}" failed!`);
-                wsErrorNotified = true;
-            }
-        };
-        eventHandler.eventTarget.addEventListener(eventHandler.events.wsError, listener);
+    /** @param {Color} color */
+    function setColor(color) {
+        if (colorPicker) colorPicker.set(color.r, color.g, color.b);
     }
 
     async function getDevices() {
@@ -225,15 +146,114 @@
     function getDeviceName(host, port) {
         return localStorage.getItem(`${host}:${port}`) || `${host}:${port}`;
     }
+
+    /**
+     *
+     * @param {string} host
+     * @param {number} port
+     */
+    async function initServer(host, port) {
+        console.debug(`init: host=${host}, port=${port}`);
+
+        if (eventHandler) {
+            eventHandler.setServer(host, port);
+        } else eventHandler = new EventHandler(serverHost, serverPort);
+
+        if (api) {
+            api.setServer(host, port);
+            return;
+        } else api = new Api(serverHost, serverPort);
+
+        // Initializing event handlers
+        eventHandler.devicesUpdated(async ({ detail }) => {
+            console.debug(`event: "${eventHandler.events.devicesUpdated}": detail=${detail}`);
+        });
+
+        eventHandler.deviceError(({ detail }) => {
+            notify.error(`event: "${eventHandler.events.deviceError}": ${detail}`);
+        });
+
+        eventHandler.deviceOnline(({ detail }) => {
+            console.debug(`event: "${eventHandler.events.deviceOnline}": detail=${detail}`);
+
+            // Update `devicesOnline`
+            const device = devices.find(
+                (device) => device.host === detail.host && device.port === detail.port
+            );
+            if (device) device.offline = false;
+            devices = devices;
+        });
+
+        eventHandler.deviceOffline(({ detail }) => {
+            console.debug(`event: "${eventHandler.events.deviceOffline}": detail=${detail}`);
+
+            // Update `devicesOnline`
+            const device = devices.find(
+                (device) => device.host === detail.host && device.port === detail.port
+            );
+            if (device) device.offline = true;
+            devices = devices;
+        });
+
+        eventHandler.colorChanged(({ detail }) => {
+            console.debug(`event: "${eventHandler.events.colorChanged}":`, detail);
+
+            const device = devices.find(
+                (device) => device.host === detail.host && device.port === detail.port
+            );
+            if (device) {
+                device.data = detail.data;
+                device.offline = detail.offline;
+            }
+            devices = devices;
+        });
+
+        let wsOpenCloseNotified = false;
+        let wsErrorNotified = false;
+
+        // Handle websocket open event
+        eventHandler.eventTarget.addEventListener(eventHandler.events.wsOpen, async () => {
+            wsOpenCloseNotified = false;
+            wsErrorNotified = false;
+            if (!wsConnected) wsConnected = true;
+            notify.info(`Connected to "${eventHandler.server}"`);
+
+            try {
+                await getDevices();
+            } catch (err) {
+                console.debug("Fetch devices failed:", err);
+            }
+        });
+
+        // Handle websocket close event
+        let listener = async () => {
+            if (wsConnected) wsConnected = false;
+
+            if (!wsOpenCloseNotified) {
+                notify.warning(`Connection to "${eventHandler.server} closed."`);
+                wsOpenCloseNotified = true;
+            }
+        };
+        eventHandler.eventTarget.addEventListener(eventHandler.events.wsClose, listener);
+
+        // Handle websocket error event
+        listener = async () => {
+            if (!wsErrorNotified) {
+                notify.error(`Connection to "${eventHandler.server}" failed!`);
+                wsErrorNotified = true;
+            }
+        };
+        eventHandler.eventTarget.addEventListener(eventHandler.events.wsError, listener);
+    }
 </script>
 
 <svelte:head>
-    {#if currentTheme === "default"}
-        <link rel="stylesheet" href="/themes/default.css" />
-    {:else if currentTheme === "custom"}
-        <link rel="stylesheet" href="/themes/custom.css" />
-    {:else if currentTheme === "green"}
-        <link rel="stylesheet" href="/themes/green.css" />
+    {#if currentTheme === "custom"}
+        <link rel="stylesheet" href="/css/themes/custom.min.css" />
+    {/if}
+
+    {#if currentTheme === "picocss"}
+        <link rel="stylesheet" href="/css/themes/picocss.min.css" />
     {/if}
 </svelte:head>
 
@@ -286,16 +306,14 @@
                 <fieldset
                     class="devices-list-item"
                     class:checked={devicesChecked.includes(`${device.host}:${device.port}`)}
-                    on:click={(ev) => {
-                        ripple.add(ev, ev.currentTarget, {
-                            mode: "primary",
-                            reverse: ev.currentTarget.classList.contains("checked"),
-                        });
-
+                    on:click={() => {
                         const addr = `${device.host}:${device.port}`;
                         if (devicesChecked.includes(addr)) {
                             const i = devicesChecked.indexOf(addr);
-                            devicesChecked = [...devicesChecked.slice(0, i), ...devicesChecked.slice(i + 1)];
+                            devicesChecked = [
+                                ...devicesChecked.slice(0, i),
+                                ...devicesChecked.slice(i + 1),
+                            ];
                         } else {
                             devicesChecked.push(addr);
                             devicesChecked = devicesChecked;
@@ -327,12 +345,13 @@
                         <div class="settings">
                             <button
                                 class="secondary outline"
+                                use:_ripple
                                 on:click={(ev) => {
                                     ev.stopPropagation();
-                                    ripple.add(ev, ev.currentTarget, { mode: "secondary" });
                                     deviceSettingsName = device.name;
                                     deviceSettingsOnSubmit = ({ detail }) => {
-                                        device.name = detail.name || `${device.host}:${device.port}`;
+                                        device.name =
+                                            detail.name || `${device.host}:${device.port}`;
                                         // Update local storage
                                         setDeviceName(device.host, device.port, detail.name);
                                     };
@@ -354,8 +373,8 @@
         <div class="actions">
             <button
                 class="add-item"
-                on:click={async (ev) => {
-                    ripple.add(ev, ev.currentTarget, { mode: "primary" });
+                use:_primaryRipple
+                on:click={async () => {
                     colorStorage.add(currentColor);
                 }}
             >
@@ -365,8 +384,8 @@
             <button
                 class="outline secondary remove-item"
                 disabled={!selectedColorFromStorage}
-                on:click={async (ev) => {
-                    ripple.add(ev, ev.currentTarget, { mode: "secondary" });
+                use:_ripple
+                on:click={async () => {
                     colorStorage.remove(selectedColorFromStorage);
                 }}
             >
@@ -377,9 +396,7 @@
         <ColorStorage bind:this={colorStorage} bind:selected={selectedColorFromStorage} />
 
         <ColorPicker
-            r={selectedColorFromStorage ? selectedColorFromStorage.r : 100}
-            g={selectedColorFromStorage ? selectedColorFromStorage.g : 100}
-            b={selectedColorFromStorage ? selectedColorFromStorage.b : 100}
+            bind:this={colorPicker}
             on:change={({ detail }) => {
                 currentColor = {
                     ...detail,
@@ -401,55 +418,72 @@
 </main>
 
 <footer class="container">
-    <nav>
-        <span>
-            <button
-                class="contrast"
-                on:click={(ev) => {
-                    ripple.add(ev, ev.currentTarget);
-                    settingsOpen = !settingsOpen;
-                }}><div class="icon"><IoMdSettings /></div></button
-            >
+    <div>
+        <button
+            class="contrast"
+            use:_contrastRipple
+            on:click={() => {
+                settingsOpen = !settingsOpen;
+            }}
+        >
+            <div class="icon">
+                <IoMdSettings />
+            </div>
+        </button>
 
-            <button
-                class="secondary"
-                on:click={async (ev) => {
-                    ripple.add(ev, ev.currentTarget, { mode: "secondary" });
+        <button
+            class="secondary"
+            use:_secondaryRipple
+            on:click={async () => {
+                try {
+                    api.setColor(devicesChecked, { r: 0, g: 0, b: 0, w: 0 });
+                } catch (err) {
+                    notify.error(err);
+                }
+            }}>OFF</button
+        >
 
-                    try {
-                        api.setColor(devicesChecked, { r: 0, g: 0, b: 0, w: 0 });
-                    } catch (err) {
-                        notify.error(err);
-                    }
-                }}>OFF</button
-            >
+        <button
+            class="primary"
+            use:_primaryRipple
+            on:click={() => {
+                console.debug(
+                    `set color: ${currentColor.r}, ${currentColor.g}, ${currentColor.b}, ${currentColor.w}`
+                );
 
-            <button
-                on:click={(ev) => {
-                    ripple.add(ev, ev.currentTarget, { mode: "primary" });
-                    console.debug(
-                        `set color: ${currentColor.r}, ${currentColor.g}, ${currentColor.b}, ${currentColor.w}`
-                    );
-
-                    try {
-                        api.setColor(devicesChecked, currentColor);
-                    } catch (err) {
-                        notify.error(err);
-                    }
-                }}>ON / SET</button
-            >
-        </span>
-    </nav>
+                try {
+                    api.setColor(devicesChecked, currentColor);
+                } catch (err) {
+                    notify.error(err);
+                }
+            }}>ON / SET</button
+        >
+    </div>
 </footer>
 
 <style>
     .icon {
+        width: 100%;
+        height: 100%;
+
         color: var(--color);
     }
 
-    button {
-        position: relative;
+    main {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 60px;
+        left: 0;
+
         overflow: hidden;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    main::-webkit-scrollbar {
+        display: none;
     }
 
     main section.devices .devices-list-item {
@@ -574,38 +608,62 @@
     }
 
     footer {
-        position: fixed;
+        z-index: 2;
+
+        position: absolute;
+        height: 60px;
+        right: 0;
         bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
+        left: 0;
+
+        padding: calc(var(--spacing) / 2);
+
+        border-top: 1px solid var(--muted-border-color);
         background-color: var(--background-color);
-        padding: var(--spacing);
     }
 
-    footer nav span {
+    footer > div {
         display: inline-flex;
         width: 100%;
+        height: 100%;
     }
 
-    footer nav span button {
+    footer > div button {
+        width: 5rem;
+        height: 100%;
+        margin: 0;
+        padding: calc(var(--spacing) / 3);
         box-shadow: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    footer nav span button:first-child {
+    footer > div button:nth-child(1) {
+        /* Settings Button */
         border-bottom-right-radius: 0;
         border-top-right-radius: 0;
-        width: 5rem;
     }
 
-    footer nav span button:nth-child(2) {
-        border-radius: 0;
+    footer > div button:nth-child(2) {
+        /* OFF Button */
         width: 50%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+
+        border-radius: 0;
     }
 
-    footer nav span button:last-child {
+    footer > div button:nth-child(3) {
+        /* ON/SET Button */
+        width: 50%;
+        margin: 0;
         border-bottom-left-radius: 0;
         border-top-left-radius: 0;
-        width: 50%;
+        box-shadow: none;
+
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
     }
 </style>

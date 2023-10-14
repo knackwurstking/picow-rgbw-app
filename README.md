@@ -8,3 +8,4 @@
 >   - [ ] Linux build (~~electron~~ or Wails)
 >   - [x] Android build
 >   - [ ] Add icons for android and wails app
+>   - [ ] FIX: devices online/offline handling
