@@ -1,4 +1,5 @@
 <script>
+    import "app.css";
     import { CSSBase } from "svelte-css";
 
     // TODO: using svelte-css lib for theming and update everything else
@@ -289,15 +290,7 @@
     }
 </script>
 
-<svelte:head>
-    {#if currentTheme === "custom"}
-        <link rel="stylesheet" href="/css/themes/custom.min.css" />
-    {/if}
-
-    {#if currentTheme === "picocss"}
-        <link rel="stylesheet" href="/css/themes/picocss.min.css" />
-    {/if}
-</svelte:head>
+<CSSBase auto />
 
 <Notify bind:this={notify} />
 
