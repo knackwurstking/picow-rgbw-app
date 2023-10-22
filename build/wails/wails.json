@@ -1,13 +1,13 @@
 {
-  "$schema": "https://wails.io/schemas/config.v2.json",
-  "name": "picow-rgbw",
-  "outputfilename": "picow-rgbw",
-  "wailsjsdir": "./frontend",
-  "author": {
-    "name": "Udo Bauer",
-    "email": "knackwurstking.tux@gmail.com"
-  },
-  "info": {
-    "productVersion": "1.1.2"
-  }
+    "$schema": "https://wails.io/schemas/config.v2.json",
+    "name": "picow-rgbw",
+    "outputfilename": "picow-rgbw",
+    "wailsjsdir": "./frontend",
+    "author": {
+        "name": "Udo Bauer",
+        "email": "knackwurstking.tux@gmail.com"
+    },
+    "info": {
+        "productVersion": "2.0.0"
+    }
 }
