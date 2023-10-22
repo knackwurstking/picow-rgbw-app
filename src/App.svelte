@@ -1,4 +1,9 @@
 <script>
+    import "app.css";
+    import { CSSBase } from "svelte-css";
+
+    // TODO: using svelte-css lib for theming and update everything else
+
     // @ts-ignore
     import IoMdSettings from "svelte-icons/io/IoMdSettings.svelte";
     // @ts-ignore
@@ -17,9 +22,18 @@
 
     import { ripple } from "./lib/js/ripple";
     const _ripple = ripple({ usePointer: true });
-    const _contrastRipple = ripple({ color: "var(--ripple-contrast-color)", usePointer: true });
-    const _primaryRipple = ripple({ color: "var(--ripple-primary-color)", usePointer: true });
-    const _secondaryRipple = ripple({ color: "var(--ripple-secondary-color)", usePointer: true });
+    const _contrastRipple = ripple({
+        color: "var(--ripple-contrast-color)",
+        usePointer: true,
+    });
+    const _primaryRipple = ripple({
+        color: "var(--ripple-primary-color)",
+        usePointer: true,
+    });
+    const _secondaryRipple = ripple({
+        color: "var(--ripple-secondary-color)",
+        usePointer: true,
+    });
 
     /**
      * @typedef Device
@@ -41,7 +55,9 @@
                     serverPort = data.serverPort;
                     if (data.currentTheme) currentTheme = data.currentTheme;
                 } catch (err) {
-                    notify.warning(`Loading config from localStorage failed: ${err}`);
+                    notify.warning(
+                        `Loading config from localStorage failed: ${err}`
+                    );
                 }
             }
         }
@@ -119,7 +135,9 @@
                     };
                 });
             } else {
-                notify.error(`Got unexpected data from the server "${api.server}" (data: ${data})`);
+                notify.error(
+                    `Got unexpected data from the server "${api.server}" (data: ${data})`
+                );
                 devices = [];
             }
         } catch (err) {
@@ -166,40 +184,54 @@
 
         // Initializing event handlers
         eventHandler.devicesUpdated(async ({ detail }) => {
-            console.debug(`event: "${eventHandler.events.devicesUpdated}": detail=${detail}`);
+            console.debug(
+                `event: "${eventHandler.events.devicesUpdated}": detail=${detail}`
+            );
         });
 
         eventHandler.deviceError(({ detail }) => {
-            notify.error(`event: "${eventHandler.events.deviceError}": ${detail}`);
+            notify.error(
+                `event: "${eventHandler.events.deviceError}": ${detail}`
+            );
         });
 
         eventHandler.deviceOnline(({ detail }) => {
-            console.debug(`event: "${eventHandler.events.deviceOnline}": detail=${detail}`);
+            console.debug(
+                `event: "${eventHandler.events.deviceOnline}": detail=${detail}`
+            );
 
             // Update `devicesOnline`
             const device = devices.find(
-                (device) => device.host === detail.host && device.port === detail.port
+                (device) =>
+                    device.host === detail.host && device.port === detail.port
             );
             if (device) device.offline = false;
             devices = devices;
         });
 
         eventHandler.deviceOffline(({ detail }) => {
-            console.debug(`event: "${eventHandler.events.deviceOffline}": detail=${detail}`);
+            console.debug(
+                `event: "${eventHandler.events.deviceOffline}": detail=${detail}`
+            );
 
             // Update `devicesOnline`
             const device = devices.find(
-                (device) => device.host === detail.host && device.port === detail.port
+                (device) =>
+                    device.host === detail.host && device.port === detail.port
             );
             if (device) device.offline = true;
             devices = devices;
         });
 
         eventHandler.colorChanged(({ detail }) => {
-            console.debug(`event: "${eventHandler.events.colorChanged}":`, detail);
+            console.debug(
+                `event: "${eventHandler.events.colorChanged}":`,
+                detail
+            );
 
             const device = devices.find(
-                (device) => device.host === detail.host && device.port === detail.port
+                (device) =>
+                    device.host === detail.host && device.port === detail.port
             );
             if (device) {
                 device.data = detail.data;
@@ -212,29 +244,37 @@
         let wsErrorNotified = false;
 
         // Handle websocket open event
-        eventHandler.eventTarget.addEventListener(eventHandler.events.wsOpen, async () => {
-            wsOpenCloseNotified = false;
-            wsErrorNotified = false;
-            if (!wsConnected) wsConnected = true;
-            notify.info(`Connected to "${eventHandler.server}"`);
+        eventHandler.eventTarget.addEventListener(
+            eventHandler.events.wsOpen,
+            async () => {
+                wsOpenCloseNotified = false;
+                wsErrorNotified = false;
+                if (!wsConnected) wsConnected = true;
+                notify.info(`Connected to "${eventHandler.server}"`);
 
-            try {
-                await getDevices();
-            } catch (err) {
-                console.debug("Fetch devices failed:", err);
+                try {
+                    await getDevices();
+                } catch (err) {
+                    console.debug("Fetch devices failed:", err);
+                }
             }
-        });
+        );
 
         // Handle websocket close event
         let listener = async () => {
             if (wsConnected) wsConnected = false;
 
             if (!wsOpenCloseNotified) {
-                notify.warning(`Connection to "${eventHandler.server} closed."`);
+                notify.warning(
+                    `Connection to "${eventHandler.server} closed."`
+                );
                 wsOpenCloseNotified = true;
             }
         };
-        eventHandler.eventTarget.addEventListener(eventHandler.events.wsClose, listener);
+        eventHandler.eventTarget.addEventListener(
+            eventHandler.events.wsClose,
+            listener
+        );
 
         // Handle websocket error event
         listener = async () => {
@@ -243,19 +283,14 @@
                 wsErrorNotified = true;
             }
         };
-        eventHandler.eventTarget.addEventListener(eventHandler.events.wsError, listener);
+        eventHandler.eventTarget.addEventListener(
+            eventHandler.events.wsError,
+            listener
+        );
     }
 </script>
 
-<svelte:head>
-    {#if currentTheme === "custom"}
-        <link rel="stylesheet" href="/css/themes/custom.min.css" />
-    {/if}
-
-    {#if currentTheme === "picocss"}
-        <link rel="stylesheet" href="/css/themes/picocss.min.css" />
-    {/if}
-</svelte:head>
+<CSSBase auto />
 
 <Notify bind:this={notify} />
 
@@ -305,7 +340,9 @@
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <fieldset
                     class="devices-list-item"
-                    class:checked={devicesChecked.includes(`${device.host}:${device.port}`)}
+                    class:checked={devicesChecked.includes(
+                        `${device.host}:${device.port}`
+                    )}
                     on:click={() => {
                         const addr = `${device.host}:${device.port}`;
                         if (devicesChecked.includes(addr)) {
@@ -325,18 +362,24 @@
                     <!-- Online Indicator -->
                     <div
                         class="online-indicator"
-                        class:online={devicesOnline.includes(`${device.host}:${device.port}`)}
+                        class:online={devicesOnline.includes(
+                            `${device.host}:${device.port}`
+                        )}
                     >
                         <div class="online-indicator__inner" />
                     </div>
 
                     <div class="content">
                         <!-- Title (Host:Port) -->
-                        <div class="devices-list-item__address"><b>{device.name}</b></div>
+                        <div class="devices-list-item__address">
+                            <b>{device.name}</b>
+                        </div>
 
                         <!-- Color Preview (RGBW) -->
                         <code class="devices-list-item__color-preview">
-                            {device.data.map((pin) => pin.duty.toString()).join(", ")}
+                            {device.data
+                                .map((pin) => pin.duty.toString())
+                                .join(", ")}
                         </code>
                     </div>
 
@@ -351,9 +394,14 @@
                                     deviceSettingsName = device.name;
                                     deviceSettingsOnSubmit = ({ detail }) => {
                                         device.name =
-                                            detail.name || `${device.host}:${device.port}`;
+                                            detail.name ||
+                                            `${device.host}:${device.port}`;
                                         // Update local storage
-                                        setDeviceName(device.host, device.port, detail.name);
+                                        setDeviceName(
+                                            device.host,
+                                            device.port,
+                                            detail.name
+                                        );
                                     };
                                     deviceSettingsOpen = true;
                                 }}
@@ -393,14 +441,20 @@
             </button>
         </div>
 
-        <ColorStorage bind:this={colorStorage} bind:selected={selectedColorFromStorage} />
+        <ColorStorage
+            bind:this={colorStorage}
+            bind:selected={selectedColorFromStorage}
+        />
 
         <ColorPicker
             bind:this={colorPicker}
             on:change={({ detail }) => {
                 currentColor = {
                     ...detail,
-                    w: detail.r === detail.g && detail.r === detail.b ? detail.r : 0,
+                    w:
+                        detail.r === detail.g && detail.r === detail.b
+                            ? detail.r
+                            : 0,
                 };
 
                 if (selectedColorFromStorage) {
@@ -522,14 +576,22 @@
         background-color: var(--card-background-color);
     }
 
-    main section.devices .devices-list-item .online-indicator .online-indicator__inner {
+    main
+        section.devices
+        .devices-list-item
+        .online-indicator
+        .online-indicator__inner {
         background-color: red;
         width: 10px;
         height: 10px;
         border-radius: 50%;
     }
 
-    main section.devices .devices-list-item .online-indicator.online .online-indicator__inner {
+    main
+        section.devices
+        .devices-list-item
+        .online-indicator.online
+        .online-indicator__inner {
         background-color: #00ff00;
     }
 
@@ -542,20 +604,36 @@
         position: relative;
     }
 
-    main section.devices .devices-list-item .content .devices-list-item__address {
+    main
+        section.devices
+        .devices-list-item
+        .content
+        .devices-list-item__address {
         padding: 8px;
         user-select: none;
     }
 
-    main section.devices .devices-list-item.checked .content .devices-list-item__address {
+    main
+        section.devices
+        .devices-list-item.checked
+        .content
+        .devices-list-item__address {
         transition: color 0.25s linear;
     }
 
-    main section.devices .devices-list-item.checked .content .devices-list-item__address {
+    main
+        section.devices
+        .devices-list-item.checked
+        .content
+        .devices-list-item__address {
         color: var(--primary-inverse);
     }
 
-    main section.devices .devices-list-item .content .devices-list-item__color-preview {
+    main
+        section.devices
+        .devices-list-item
+        .content
+        .devices-list-item__color-preview {
         width: fit-content;
         margin: 0 8px;
         padding: 6px;
