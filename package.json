@@ -6,8 +6,8 @@
     "scripts": {
         "dev": "vite --host",
         "build": "vite build",
-        "build:windows": "npm run build && rm -r wails/picow-rgbw/frontend/src/* && cp -r dist/* wails/picow-rgbw/frontend/src/ && cd wails/picow-rgbw && wails build && wails build -nsis",
-        "build:linux": "npm run build && rm -r wails/picow-rgbw/frontend/src/* && cp -r dist/* wails/picow-rgbw/frontend/src/ && cd wails/picow-rgbw && wails build",
+        "build:windows": "npm run build && rm -r build/wails/frontend/src/* && cp -r dist/* build/wails/frontend/src/ && cd build/wails && wails build && wails build -nsis",
+        "build:linux": "npm run build && rm -r build/wails/frontend/src/* && cp -r dist/* build/wails/frontend/src/ && cd build/wails && wails build",
         "build:android": "npm run build && npx cap sync android && npx cap open android",
         "preview": "vite preview"
     },
@@ -21,8 +21,6 @@
     "dependencies": {
         "@capacitor/android": "^5.2.2",
         "@capacitor/cli": "^5.2.2",
-        "@capacitor/core": "^5.2.2",
-        "iconify-icon": "^1.0.8",
-        "svelte-icons": "^2.1.0"
+        "@capacitor/core": "^5.2.2"
     }
 }
