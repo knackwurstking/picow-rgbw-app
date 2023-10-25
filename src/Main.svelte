@@ -6,8 +6,18 @@
     import { Components } from "./lib";
 </script>
 
-<main class="container">
+<main class="container is-debug">
     <!-- TODO: 1. devices list, 2. color storage, 3. color picker -->
+
+    <article class="devices">
+        <section class="header">
+            <h2>Devices</h2>
+        </section>
+
+        <section class="body">
+            <!-- TODO: render the devices list here ... -->
+        </section>
+    </article>
 </main>
 
 <Components.DeviceSettingsDialog />
