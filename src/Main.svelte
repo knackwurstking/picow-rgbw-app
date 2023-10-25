@@ -1,14 +1,14 @@
 <script>
-    import SettingsIcon from "svelt-material-icons/CogOutline.svelte";
-    import AddIcon from "svelt-material-icons/PlusCircleOutline.svelte";
-    import TrashIcon from "svelt-material-icons/TrashCanOutline.svelte";
+    import SettingsIcon from "svelte-material-icons/CogOutline.svelte";
+    import AddIcon from "svelte-material-icons/PlusCircleOutline.svelte";
+    import TrashIcon from "svelte-material-icons/TrashCanOutline.svelte";
 
-    import {
-        DeviceSettingsDialog
-    } from "./lib";
+    import { Components } from "./lib";
 </script>
 
 <main />
+
+<Components.DeviceSettingsDialog />
 
 <style>
 </style>
