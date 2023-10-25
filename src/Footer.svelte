@@ -26,18 +26,36 @@
 </script>
 
 <footer class="container">
-    <Group>
+    <Group
+        style={
+            "width: 100%;" +
+            "height: 100%;"
+        }
+    >
         <Button
+            class="col"
+            style={
+                "max-width: 20%;" +
+                "padding: calc(var(--spacing) / 2);"
+            }
             color="secondary"
-            variant="outline"
+            variant="full"
             on:click={() => clickSettings()}
-        ><SettingsIcon /></Button>
+        ><SettingsIcon width="100%" height="100%" /></Button>
         <Button
+            class="col"
+            style={
+                "max-width: 40%;"
+            }
             color="destructive"
             variant="full"
             on:click={() => clickOff()}
         >OFF</Button>
         <Button
+            class="col"
+            style={
+                "max-width: 40%;"
+            }
             color="primary"
             variant="full"
             on:click={() => clickSet()}
@@ -49,6 +67,6 @@
 
 <style>
     footer {
-        height: 4em;
+        height: 3.5em;
     }
 </style>

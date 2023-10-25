@@ -14,6 +14,6 @@
 
 <style>
     main {
-        height: calc(100% - 4em);
+        height: calc(100% - 3.5em);
     }
 </style>

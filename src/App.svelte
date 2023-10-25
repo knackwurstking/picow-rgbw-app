@@ -1,5 +1,5 @@
 <script>
-    import "app.css";
+    import "./app.css";
 
     import { CSSBase } from "svelte-css";
 
