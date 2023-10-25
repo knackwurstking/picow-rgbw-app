@@ -14,7 +14,7 @@
             <h2>Devices</h2>
         </section>
 
-        <section class="body">
+        <section>
             <!-- TODO: render the devices list here ... -->
         </section>
     </article>
