@@ -5,6 +5,8 @@
 
     import { Components, States } from "./lib";
 
+    import { Label, SecondaryText } from "svelte-css";
+
     /**
      * Store: devices
      */
@@ -23,12 +25,17 @@
         <section>
             <!-- TODO: render the devices list here ... -->
             <ul class="devices-list">
-                {#await devices.get() then items}
-                    {#each items as item}
-                        <li class="device">
-                        </li>
-                    {/each}
-                {/await}
+                {#each $devices as device}
+                    <li class="device">
+                        <Label
+                            primaryText={device.name}
+                            secondaryText={`${device.host}:${device.port}`}
+                            useLabel
+                        >
+                            <input type="checkbox" style="display: none;"/>
+                        </Label>
+                    </li>
+                {/each}
             </ul>
         </section>
     </article>
