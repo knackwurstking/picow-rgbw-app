@@ -3,7 +3,13 @@
     import AddIcon from "svelte-material-icons/PlusCircleOutline.svelte";
     import TrashIcon from "svelte-material-icons/TrashCanOutline.svelte";
 
-    import { Components } from "./lib";
+    import { Components, States } from "./lib";
+
+    /**
+     * Store: devices
+     */
+
+    let devices = States.devices.create();
 </script>
 
 <main class="container is-debug">
@@ -16,6 +22,14 @@
 
         <section>
             <!-- TODO: render the devices list here ... -->
+            <ul class="devices-list">
+                {#await devices.get() then items}
+                    {#each items as item}
+                        <li class="device">
+                        </li>
+                    {/each}
+                {/await}
+            </ul>
         </section>
     </article>
 </main>
