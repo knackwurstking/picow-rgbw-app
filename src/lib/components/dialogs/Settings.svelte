@@ -1,5 +1,6 @@
 <script>
     import { Button, Dialog, DialogFooter, DialogHeader } from "svelte-css";
+    import { States } from "../../../lib";
 
     /***********
      * Bindings
@@ -7,6 +8,23 @@
 
     /** @type {Dialog} */
     let dialog;
+
+    /**********************
+     * Vaiable Definitions
+     **********************/
+
+    let host = "";
+    let port = 0;
+
+    /****************
+     * Store: server
+     ****************/
+
+    const server = States.server.create();
+    $: server && server.subscribe((server) => {
+        host = server.host;
+        port = server.port;
+    })
 
     /******************************
      * Function Export Definitions
@@ -25,7 +43,7 @@
      ***********************/
 
     async function clickSubmit() {
-        // TODO: write settings to store and close the dialog
+        server.set(host, port);
         close();
     }
 </script>
