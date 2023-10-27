@@ -5,7 +5,7 @@
 
     import { Components, States, Api } from "./lib";
 
-    import { Label } from "svelte-css";
+    import { Label, IconButton } from "svelte-css";
 
     /**
      * @typedef Device
@@ -56,47 +56,60 @@
 
             <ul class="devices-list">
                 {#each $devices as device}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                     <li
-                        class="device"
+                        class="device has-padding"
                         class:checked={
                             !!selected.find(
                                 d => (d.host === device.host && d.port === device.port)
                             )
                         }
+                        on:click={() => {
+                            const i = selected.findIndex(
+                                (d) => (d.host === device.host && d.port === device.port)
+                            );
+
+                            if (i > -1) {
+                                selected = [
+                                    ...selected.slice(0, i),
+                                    ...selected.slice(i+1),
+                                ];
+                            } else {
+                                selected = [
+                                    ...selected,
+                                    device,
+                                ];
+                            }
+                        }}
                     >
                         <div class="background" />
+
                         <Label
                             class="has-padding"
                             primaryText={device.name}
                             secondaryText={`${device.host}:${device.port}`}
-                            useLabel
+                        />
+
+                        <div style="width: fit-content; user-select: none;">
+                            <pre>[255, 255, 255, 255]</pre>
+                        </div>
+
+                        <IconButton
+                            style={
+                                "position: absolute;" +
+                                "top: 0; right: 0;" +
+                                "height: 100%;" +
+                                "border-radius: 0;" +
+                                "border-left: .1em solid hsl(var(--border));"
+                            }
+                            on:click={(ev) => {
+                                ev.stopPropagation();
+                                // TODO: open device settings dialog
+                            }}
                         >
-                            <input
-                                type="checkbox"
-                                style="display: none;"
-                                on:change={(ev) => {
-                                    const i = selected.findIndex(
-                                        (d) => (d.host === device.host && d.port === device.port)
-                                    );
-
-                                    if (i > -1) {
-                                        if (ev.currentTarget.checked) return;
-
-                                        selected = [
-                                            ...selected.slice(0, i),
-                                            ...selected.slice(i+1),
-                                        ];
-                                    } else {
-                                        if (ev.currentTarget.checked) {
-                                            selected = [
-                                                ...selected,
-                                                device,
-                                            ];
-                                        }
-                                    }
-                                }}
-                            />
-                        </Label>
+                            <DeviceSettingsIcon />
+                        </IconButton>
                     </li>
                 {/each}
             </ul>
@@ -126,13 +139,5 @@
 
     .devices .devices-list .device.checked .background {
         opacity: 0.1;
-    }
-
-    .devices .devices-list .device {
-        border-bottom: .1em solid hsl(var(--border));
-    }
-
-    .devices .devices-list .device:first-child {
-        border-top: .1em solid hsl(var(--border));
     }
 </style>
