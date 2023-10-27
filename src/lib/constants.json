@@ -3,5 +3,8 @@
         "host": "",
         "port": 50833
     },
-    "devices": []
+    "devices": [],
+    "route": {
+        "devices": "/api/v1/devices"
+    }
 }

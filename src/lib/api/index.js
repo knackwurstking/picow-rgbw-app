@@ -1,3 +1,5 @@
+import c from "../constants.json";
+
 import { States } from "../../lib";
 
 /**
@@ -15,13 +17,13 @@ server.subscribe((server) => {
     // TODO: update websocket handler
     console.debug("[api] @TODO: server address changed... try to reconnect...");
     console.dir(server);
-})
+});
 
 /**
  * @returns {Promise<Device[]>}
  */
 export async function getDevices() {
-    const url = `${server.getOrigin()}/devices`; // TODO: wrong server path
+    const url = `${server.getOrigin()}${c.route.devices}`; // TODO: wrong server path
 
     const r = await fetch(url);
     if (r.ok) {
