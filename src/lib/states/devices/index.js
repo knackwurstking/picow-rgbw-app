@@ -10,11 +10,18 @@ import { writable } from "svelte/store";
 /** @type {import("svelte/store").Writable<Device[]>} */
 const devices = writable(c.devices);
 
+devices.subscribe((devices) => {
+    console.debug("[store: devices] data changed...");
+    console.table(devices);
+});
+
 /**
  * @param {(devices: import("svelte/store").Writable<Device[]>) => Promise<void>|void} fn
  */
 export function create(fn) {
     if (fn) fn(devices);
+
+    // TODO: get/set name for device from localeStorage
 
     /**
      * @param {string} name

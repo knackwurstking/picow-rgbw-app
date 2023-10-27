@@ -32,6 +32,8 @@ const server = writable((() => {
 })());
 
 server.subscribe((s) => {
+    console.debug("[store: server] data changed...");
+    console.table(s);
     localStorage.setItem(storageKey, JSON.stringify(s));
 });
 
@@ -43,8 +45,8 @@ export function create() {
      */
     function _set(host, port, protocol = "http:") {
         server.set({
-            host,
-            port,
+            host: host || "",
+            port: port || 0,
             protocol,
         });
     }

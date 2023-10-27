@@ -21,7 +21,7 @@ server.subscribe((server) => {
  * @returns {Promise<Device[]>}
  */
 export async function getDevices() {
-    const url = `${server.getOrigin()}/devices`;
+    const url = `${server.getOrigin()}/devices`; // TODO: wrong server path
 
     const r = await fetch(url);
     if (r.ok) {

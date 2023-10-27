@@ -75,7 +75,7 @@
             class="has-margin"
             secondaryText="Api Server Host"
         >
-            <input type="number" />
+            <input bind:value={host} />
         </Label>
 
         <Label

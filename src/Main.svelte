@@ -36,7 +36,7 @@
     });
 </script>
 
-<main class="container is-debug">
+<main class="container">
     <!-- TODO: 1. devices list, 2. color storage, 3. color picker -->
 
     <article class="devices">
@@ -44,7 +44,7 @@
             <h2>Devices</h2>
         </section>
 
-        <section>
+        <section class="is-debug">
             <!-- TODO: render the devices list here ... -->
             <ul class="devices-list">
                 {#each $devices as device}
