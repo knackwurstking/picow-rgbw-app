@@ -13,7 +13,7 @@ const server = States.server.create();
 
 server.subscribe((server) => {
     // TODO: update websocket handler
-    console.debug("@TODO: server address changed... try to reconnect...");
+    console.debug("[api] @TODO: server address changed... try to reconnect...");
     console.dir(server);
 })
 
