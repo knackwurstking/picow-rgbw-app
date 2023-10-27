@@ -68,7 +68,7 @@
     />
 
     <section>
-        <!-- TODO: theme picker, server:host, server:port -->
+        <!-- TODO: theme picker -->
         <Label
             class="has-margin"
             secondaryText="Api Server Host"
