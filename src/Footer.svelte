@@ -8,12 +8,19 @@
 
     import { Components } from "./lib";
 
+    /**********
+     * Binding
+     **********/
+
+    /** @type {Components.SettingsDialog} */
+    let settingsDialog;
+
     /***********************
      * Function Definitions
      ***********************/
 
     async function clickSettings() {
-        // TODO: ...
+        settingsDialog.open();
     }
 
     async function clickOff() {
@@ -63,7 +70,7 @@
     </Group>
 </footer>
 
-<Components.SettingsDialog />
+<Components.SettingsDialog bind:this={settingsDialog} />
 
 <style>
     footer {
