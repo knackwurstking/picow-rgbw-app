@@ -31,7 +31,7 @@
                 // TODO: Notification
                 // FIXME: not a valid url: missing host:port (Need error check and notify)
         
-                console.warn(err);
+                console.warn("[main]", err);
             });
     });
 </script>
