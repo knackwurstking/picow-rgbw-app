@@ -23,7 +23,7 @@ server.subscribe((server) => {
  * @returns {Promise<Device[]>}
  */
 export async function getDevices() {
-    const url = `${server.getOrigin()}${c.route.devices}`; // TODO: wrong server path
+    const url = `${server.getOrigin()}${c.route.devices}`;
 
     const r = await fetch(url);
     if (r.ok) {
