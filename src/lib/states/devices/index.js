@@ -15,12 +15,7 @@ devices.subscribe((devices) => {
     console.table(devices);
 });
 
-/**
- * @param {(devices: import("svelte/store").Writable<Device[]>) => Promise<void>|void} fn
- */
-export function create(fn) {
-    if (fn) fn(devices);
-
+export function create() {
     // TODO: get/set name for device from localeStorage
 
     /**
