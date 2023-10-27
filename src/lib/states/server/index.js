@@ -19,7 +19,7 @@ const server = writable((() => {
     try {
         d = JSON.parse(j);
     } catch (err) {
-        console.warn(err);
+        console.warn("[store: server]", err);
     }
 
     return {
