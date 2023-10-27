@@ -5,7 +5,7 @@
 
     import { Components, States, Api } from "./lib";
 
-    import { Label, IconButton } from "svelte-css";
+    import { Label, IconButton, PrimaryText } from "svelte-css";
 
     /**
      * @typedef Device
@@ -19,28 +19,39 @@
     /** @type {Device[]} */
     let selected = [];
 
+    /****************
+     * Store: server
+     ****************/
+
+    let server = States.server.create();
+    $: server && initServer();
+    function initServer() {
+        server.subscribe(() => {
+            Api.getDevices()
+                .then((result) => devices.set(
+                    result.map(
+                        /** @param {Device} r */
+                        (r) => ({
+                            ...r,
+                            name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",
+                        })
+                    ) || []
+                ))
+                .catch((err) => {
+                    // TODO: Notification
+                    // FIXME: not a valid url: missing host:port (Need error check and notify)
+                    devices.set([]);
+            
+                    console.warn("[main]", err);
+                });
+        });
+    }
+
     /*****************
      * Store: devices
      *****************/
 
-    let devices = States.devices.create((devices) => {
-        Api.getDevices()
-            .then((result) => devices.set(
-                result.map(
-                    /** @param {Device} r */
-                    (r) => ({
-                        ...r,
-                        name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",
-                    })
-                ) || []
-            ))
-            .catch((err) => {
-                // TODO: Notification
-                // FIXME: not a valid url: missing host:port (Need error check and notify)
-        
-                console.warn("[main]", err);
-            });
-    });
+    let devices = States.devices.create();
 </script>
 
 <main class="container">
@@ -52,67 +63,71 @@
         </section>
 
         <section class="has-padding">
-            <!-- TODO: render the devices list here ... -->
-
-            <ul class="devices-list">
-                {#each $devices as device}
-                    <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                    <li
-                        class="device has-padding"
-                        class:checked={
-                            !!selected.find(
-                                d => (d.host === device.host && d.port === device.port)
-                            )
-                        }
-                        on:click={() => {
-                            const i = selected.findIndex(
-                                (d) => (d.host === device.host && d.port === device.port)
-                            );
-
-                            if (i > -1) {
-                                selected = [
-                                    ...selected.slice(0, i),
-                                    ...selected.slice(i+1),
-                                ];
-                            } else {
-                                selected = [
-                                    ...selected,
-                                    device,
-                                ];
+            {#if $devices.length > 0}
+                <ul class="devices-list">
+                    {#each $devices as device}
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
+                        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                        <li
+                            class="device has-padding"
+                            class:checked={
+                                !!selected.find(
+                                    d => (d.host === device.host && d.port === device.port)
+                                )
                             }
-                        }}
-                    >
-                        <div class="background" />
+                            on:click={() => {
+                                const i = selected.findIndex(
+                                    (d) => (d.host === device.host && d.port === device.port)
+                                );
 
-                        <Label
-                            class="has-padding"
-                            primaryText={device.name}
-                            secondaryText={`${device.host}:${device.port}`}
-                        />
-
-                        <div style="width: fit-content; user-select: none;">
-                            <pre>[255, 255, 255, 255]</pre>
-                        </div>
-
-                        <IconButton
-                            style={
-                                "position: absolute;" +
-                                "top: 0; right: 0;" +
-                                "height: 100%;" +
-                                "border-radius: 0;" +
-                                "border-left: .1em solid hsl(var(--border));"
-                            }
-                            on:click={(ev) => {
-                                ev.stopPropagation();
-                                // TODO: open device settings dialog
+                                if (i > -1) {
+                                    selected = [
+                                        ...selected.slice(0, i),
+                                        ...selected.slice(i+1),
+                                    ];
+                                } else {
+                                    selected = [
+                                        ...selected,
+                                        device,
+                                    ];
+                                }
                             }}
                         >
-                            <DeviceSettingsIcon />
-                        </IconButton>
-                    </li>
-                {/each}
-            </ul>
+                            <div class="background" />
+
+                            <Label
+                                class="has-padding"
+                                primaryText={device.name}
+                                secondaryText={`${device.host}:${device.port}`}
+                            />
+
+                            <div style="width: fit-content; user-select: none;">
+                                <pre>[255, 255, 255, 255]</pre>
+                            </div>
+
+                            <IconButton
+                                style={
+                                    "position: absolute;" +
+                                    "top: 0; right: 0;" +
+                                    "height: 100%;" +
+                                    "border-radius: 0;" +
+                                    "border-left: .1em solid hsl(var(--border));"
+                                }
+                                on:click={(ev) => {
+                                    ev.stopPropagation();
+                                    // TODO: open device settings dialog
+                                }}
+                            >
+                                <DeviceSettingsIcon />
+                            </IconButton>
+                        </li>
+                    {/each}
+                </ul>
+            {:else}
+                <div class="has-padding is-italic is-text-center">
+                    <PrimaryText>No Devices</PrimaryText>
+                </div>
+            {/if}
         </section>
     </article>
 </main>
