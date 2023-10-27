@@ -22,7 +22,7 @@
     let host = "";
 
     let invalidPort;
-    let port = 0;
+    let port = 50833;
     $: typeof port === "number" && validatePort();
 
     /****************

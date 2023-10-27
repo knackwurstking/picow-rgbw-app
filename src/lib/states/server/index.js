@@ -24,7 +24,7 @@ const server = writable((() => {
 
     return {
         host: d?.host || "",
-        port: d?.port || 0,
+        port: d?.port || 50833,
         protocol: d?.protocol || "http:",
     };
 })());
