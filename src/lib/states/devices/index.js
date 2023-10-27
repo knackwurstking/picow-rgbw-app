@@ -4,24 +4,22 @@ import * as api from "../../api";
 
 /**
  * @typedef Device
- * @type {{
- *  name: string;
- *  host: string;
- *  port: number;
- * }}
- *
- * @typedef DeviceName
- * @type {{
- *  name: string;
- *  addr: string;
- * }}
+ * @type {import("../../api").Device}
  */
 
 /** @type {import("svelte/store").Writable<Device[]>} */
 const devices = writable([]);
 
-api.get("devices")
-    .then((result) => devices.set(result || []))
+api.getDevices()
+    .then((result) => devices.set(
+        result.map(
+            /** @param {Device} r */
+            (r) => ({
+                ...r,
+                name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",
+            })
+        ) || []
+    ))
     .catch((err) => {
         // TODO: Notification
 
@@ -34,7 +32,7 @@ export function create() {
      * @param {string} host
      * @param {number} port
      */
-    async function setName(name, host, port) {
+    function setName(name, host, port) {
         const key = `deviceName:${host}:${port}`;
 
         if (!name) localStorage.removeItem(key);
