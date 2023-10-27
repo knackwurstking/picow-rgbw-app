@@ -1,4 +1,6 @@
 <script>
+    import c from "../../constants.json";
+
     import {
         Button,
         Dialog,
@@ -19,10 +21,10 @@
      * Vaiable Definitions
      **********************/
 
-    let host = "";
+    let host = c.server.host;
 
     let invalidPort;
-    let port = 50833;
+    let port = c.server.port;
     $: typeof port === "number" && validatePort();
 
     /****************

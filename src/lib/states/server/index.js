@@ -1,3 +1,5 @@
+import c from "../../constants.json";
+
 import { writable, get } from "svelte/store";
 
 /**
@@ -23,8 +25,8 @@ const server = writable((() => {
     }
 
     return {
-        host: d?.host || "",
-        port: d?.port || 50833,
+        host: d?.host || c.server.host,
+        port: d?.port || c.server.port,
         protocol: d?.protocol || "http:",
     };
 })());

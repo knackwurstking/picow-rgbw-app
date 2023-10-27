@@ -1,3 +1,5 @@
+import c from "../../constants.json";
+
 import { writable } from "svelte/store";
 
 /**
@@ -6,7 +8,7 @@ import { writable } from "svelte/store";
  */
 
 /** @type {import("svelte/store").Writable<Device[]>} */
-const devices = writable([]);
+const devices = writable(c.devices);
 
 /**
  * @param {(devices: import("svelte/store").Writable<Device[]>) => Promise<void>|void} fn
