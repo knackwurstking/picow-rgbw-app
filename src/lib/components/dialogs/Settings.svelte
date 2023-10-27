@@ -1,5 +1,11 @@
 <script>
-    import { Button, Dialog, DialogFooter, DialogHeader } from "svelte-css";
+    import {
+        Button,
+        Dialog,
+        DialogFooter,
+        DialogHeader,
+        Label,
+    } from "svelte-css";
     import { States } from "../../../lib";
 
     /***********
@@ -56,6 +62,19 @@
 
     <section>
         <!-- TODO: theme picker, server:host, server:port -->
+        <Label
+            class="has-margin"
+            secondaryText="Api Server Host"
+        >
+            <input type="number" />
+        </Label>
+
+        <Label
+            class="has-margin"
+            secondaryText="Api Server Port"
+        >
+            <input type="number" />
+        </Label>
     </section>
 
     <DialogFooter>
