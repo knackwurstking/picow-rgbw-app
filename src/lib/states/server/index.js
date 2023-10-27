@@ -57,6 +57,7 @@ export function create() {
     }
 
     return {
+        ...server,
         set: _set,
         get: _get,
         getOrigin,

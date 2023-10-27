@@ -1,4 +1,4 @@
-import * as states from "../states";
+import { States } from "../../lib";
 
 /**
  * @typedef Device
@@ -9,7 +9,13 @@ import * as states from "../states";
  * }}
  */
 
-const server = states.server.create();
+const server = States.server.create();
+
+server.subscribe((server) => {
+    // TODO: update websocket handler
+    console.debug("@TODO: server address changed... try to reconnect...");
+    console.dir(server);
+})
 
 /**
  * @returns {Promise<Device[]>}

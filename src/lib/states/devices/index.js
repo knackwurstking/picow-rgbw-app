@@ -1,7 +1,5 @@
 import { writable } from "svelte/store";
 
-import * as api from "../../api";
-
 /**
  * @typedef Device
  * @type {import("../../api").Device}
@@ -10,23 +8,12 @@ import * as api from "../../api";
 /** @type {import("svelte/store").Writable<Device[]>} */
 const devices = writable([]);
 
-api.getDevices()
-    .then((result) => devices.set(
-        result.map(
-            /** @param {Device} r */
-            (r) => ({
-                ...r,
-                name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",
-            })
-        ) || []
-    ))
-    .catch((err) => {
-        // TODO: Notification
+/**
+ * @param {(devices: import("svelte/store").Writable<Device[]>) => Promise<void>|void} fn
+ */
+export function create(fn) {
+    if (fn) fn(devices);
 
-        console.error(err);
-    });
-
-export function create() {
     /**
      * @param {string} name
      * @param {string} host

@@ -3,15 +3,36 @@
     import AddIcon from "svelte-material-icons/PlusCircleOutline.svelte";
     import TrashIcon from "svelte-material-icons/TrashCanOutline.svelte";
 
-    import { Components, States } from "./lib";
+    import { Components, States, Api } from "./lib";
 
-    import { Label, SecondaryText } from "svelte-css";
+    import { Label } from "svelte-css";
+
+    /**
+     * @typedef Device
+     * @type {import("./lib/api").Device}
+     */
 
     /**
      * Store: devices
      */
 
-    let devices = States.devices.create();
+    let devices = States.devices.create((devices) => {
+        Api.getDevices()
+            .then((result) => devices.set(
+                result.map(
+                    /** @param {Device} r */
+                    (r) => ({
+                        ...r,
+                        name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",
+                    })
+                ) || []
+            ))
+            .catch((err) => {
+                // TODO: Notification
+        
+                console.warn(err);
+            });
+    });
 </script>
 
 <main class="container is-debug">
