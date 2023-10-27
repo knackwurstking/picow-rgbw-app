@@ -20,7 +20,10 @@
      **********************/
 
     let host = "";
+
+    let invalidPort;
     let port = 0;
+    $: typeof port === "number" && validatePort();
 
     /****************
      * Store: server
@@ -30,7 +33,7 @@
     $: server && server.subscribe((server) => {
         host = server.host;
         port = server.port;
-    })
+    });
 
     /******************************
      * Function Export Definitions
@@ -48,10 +51,14 @@
      * Function Definitions
      ***********************/
 
-    async function clickSubmit() {
+    async function validatePort() {
+        return (port >= 0 && port <= 65535);
+    }
+
+    const clickSubmit = () => {
         server.set(host, port);
         close();
-    }
+    };
 </script>
 
 <Dialog bind:this={dialog}>
@@ -73,7 +80,7 @@
             class="has-margin"
             secondaryText="Api Server Port"
         >
-            <input type="number" />
+            <input type="number" min={0} max={65535} bind:value={port} aria-invalid={invalidPort}/>
         </Label>
     </section>
 
