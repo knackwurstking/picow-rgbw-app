@@ -154,7 +154,7 @@
                 <IconButton
                     color="destructive"
                     on:click={async () => {
-                        // TODO: color storage update (add color)
+                        // TODO: color storage update (remove color)
                     }}
                 >
                     <TrashIcon width="100%" height="100%" />
@@ -164,9 +164,11 @@
 
         <!-- TODO: handle on:click for color -->
         <div
-            class="data is-debug"
+            class="data"
             style={
-                "height: 4em;"
+                "height: 4em;" +
+                "border: .1em solid hsl(var(--border));" +
+                "border-radius: var(--radius);"
             }
         >
             <figure style="height: 100%;">
@@ -177,7 +179,9 @@
                             `background-color: rgb(${color.r}, ${color.g}, ${color.b});` +
                             `opacity: ${color.w / 100};` +
                             "height: calc(100% - var(--spacing));" +
-                            "width: calc(5em - (var(--spacing) * 3));"
+                            "width: calc(5em - (var(--spacing) * 3));" +
+                            "border: .1em solid hsl(var(--border));" +
+                            "border-radius: var(--radius);"
                         }
                     />
                 {/each}
