@@ -108,12 +108,11 @@
                             <IconButton
                                 style={
                                     "position: absolute;" +
-                                    "top: 0; right: 0;" +
-                                    "height: 100%;" +
-                                    "border: none;" +
+                                    "top: 0; right: 0; height: 100%;" +
                                     "border-radius: 0;" +
                                     "border-left: .1em solid hsl(var(--border));"
                                 }
+                                ghost
                                 on:click={(ev) => {
                                     ev.stopPropagation();
                                     // TODO: open device settings dialog
