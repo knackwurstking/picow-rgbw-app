@@ -3,17 +3,20 @@ import c from "../../constants.json";
 import { writable, get } from "svelte/store";
 
 /**
- * @typedef Server 
+ * @typedef Server
  * @type {{
  *  host: string;
  *  port: number;
  *  protocol: "http:" | "https:";
  * }}
+ *
+ * @typedef StateServer
+ * @type {import("svelte/store").Writable<Server>}
  */
 
 const storageKey = "server";
 
-/** @type {import("svelte/store").Writable<Server>} */
+/** @type {StateServer} */
 const server = writable((() => {
     const j = localStorage.getItem(storageKey);
     let d;
