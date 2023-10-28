@@ -110,6 +110,7 @@
                                     "position: absolute;" +
                                     "top: 0; right: 0;" +
                                     "height: 100%;" +
+                                    "border: none;" +
                                     "border-radius: 0;" +
                                     "border-left: .1em solid hsl(var(--border));"
                                 }
