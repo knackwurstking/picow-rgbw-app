@@ -52,19 +52,20 @@
         activeStorageColor = { r, g, b };
     }
 
-    function handleBrightnessChange(brightness) {           // 90
-        const rgb = [r, g, b].filter(c => c > 0);           // [100, 100, 100]
-        const min = Math.min(...rgb);                       // 100
-        const max = Math.max(...rgb);                       // 100
-        const diff = min - brightness;                      // 100-90 = 10
-        if (!!rgb.find(c => c - diff > 100)) {              // [100-10, 100-10, 100-10] if one is bigger then 100
-            // TODO: ...
-        } else if (!!rgb.find(c => c - diff < 0)) {         // [100-10, 100-10, 100-10] if one is lower then 0
-            // TODO: ...
+    function handleBrightnessChange(brightness) {
+        const rgb = [r, g, b].filter(c => c > 0);
+        const min = Math.min(...rgb);
+        const diff = min - brightness;
+
+        if (
+            !!rgb.find(c => c - diff > 100) ||
+            !!rgb.find(c => c-diff < 5)
+        ) {
+            return
         } else {
-            r -= diff;                                      // 100-10
-            g -= diff;                                      // 100-10
-            b -= diff;                                      // 100-10
+            r = r-diff;
+            g = g-diff;
+            b = b-diff;
         }
     }
 
@@ -154,7 +155,7 @@
                                 secondaryText={`${device.host}:${device.port}`}
                             />
 
-                            <div style="width: fit-content; user-select: none;">
+                            <div style="width: fit-content; user-select: none; font-size: .9em;">
                                 <!-- TODO: get color from `device` -->
                                 <pre>[255, 255, 255, 255]</pre>
                             </div>
@@ -273,7 +274,6 @@
 
         <section>
             <Label
-                secondaryText={"Brightness " + brightness.toString()}
                 useLabel
             >
                 <input
@@ -285,9 +285,10 @@
             </Label>
 
             <Label
-                secondaryText={"R " + r.toString()}
+                secondaryText={"R"}
                 useLabel
             >
+                <code slot="secondaryText">{r.toString()}</code>
                 <input
                     type="range"
                     min={0}
@@ -297,9 +298,10 @@
             </Label>
 
             <Label
-                secondaryText={"G " + r.toString()}
+                secondaryText={"G"}
                 useLabel
             >
+                <code slot="secondaryText">{g.toString()}</code>
                 <input
                     type="range"
                     min={0}
@@ -309,9 +311,10 @@
             </Label>
 
             <Label
-                secondaryText={"B " + r.toString()}
+                secondaryText={"B"}
                 useLabel
             >
+                <code slot="secondaryText">{b.toString()}</code>
                 <input
                     type="range"
                     min={0}
@@ -329,6 +332,7 @@
     main {
         height: calc(100% - 3.5em);
         overflow-y: auto;
+        scroll-behavior: smooth;
     }
 
     .devices .devices-list .device {
@@ -364,5 +368,10 @@
 
     .color-picker input {
         width: 100%;
+    }
+
+    .color-picker code {
+        padding: var(--spacing);
+        transform: translateY(-.05em);
     }
 </style>
