@@ -147,81 +147,83 @@
             <h2>Color Storage</h2>
         </section>
 
-        <div class="actions has-margin" style="display: flex; justify-content: flex-end;">
-            <Group style="font-size: 1.5em;">
-                <IconButton
-                    on:click={async () => {
-                        // TODO: color storage update (add color)
-                    }}
-                >
-                    <AddIcon width="100%" height="100%" />
-                </IconButton>
+        <section>
+            <div class="actions has-margin" style="display: flex; justify-content: flex-end;">
+                <Group style="font-size: 1.5em;">
+                    <IconButton
+                        on:click={async () => {
+                            // TODO: color storage update (add color)
+                        }}
+                    >
+                        <AddIcon width="100%" height="100%" />
+                    </IconButton>
 
-                <IconButton
-                    color="destructive"
-                    on:click={async () => {
-                        // TODO: color storage update (remove color)
-                    }}
-                >
-                    <TrashIcon width="100%" height="100%" />
-                </IconButton>
-            </Group>
-        </div>
+                    <IconButton
+                        color="destructive"
+                        on:click={async () => {
+                            // TODO: color storage update (remove color)
+                        }}
+                    >
+                        <TrashIcon width="100%" height="100%" />
+                    </IconButton>
+                </Group>
+            </div>
 
-        <!-- TODO: handle on:click for color -->
-        <div
-            class="data"
-            style={
-                "height: 4em;" +
-                "border: var(--border-width) solid hsl(var(--border));" +
-                "border-radius: var(--radius);"
-            }
-        >
-            <figure style="height: 100%;">
-                {#each $colorStorage as color}
-                    <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <div
-                        class="color has-small-margin has-small-padding"
-                        class:checked={
-                            activeStorageColor.r === color.r &&
-                            activeStorageColor.g === color.g &&
-                            activeStorageColor.b === color.b &&
-                            activeStorageColor.w === color.w
-                        }
-                        style={
-                            "height: calc(100% - var(--spacing));" +
-                            "width: calc(5em - (var(--spacing) * 3));" +
-                            "border: var(--border-width) solid hsl(var(--border));" +
-                            "border-radius: var(--radius);" +
-                            "cursor: pointer;"
-                        }
-                        on:click={() => {
-                            if (
+            <!-- TODO: handle on:click for color -->
+            <div
+                class="data"
+                style={
+                    "height: 4em;" +
+                    "border: var(--border-width) solid hsl(var(--border));" +
+                    "border-radius: var(--radius);"
+                }
+            >
+                <figure style="height: 100%;">
+                    {#each $colorStorage as color}
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
+                        <!-- svelte-ignore a11y-no-static-element-interactions -->
+                        <div
+                            class="color has-small-margin has-small-padding"
+                            class:checked={
                                 activeStorageColor.r === color.r &&
                                 activeStorageColor.g === color.g &&
                                 activeStorageColor.b === color.b &&
                                 activeStorageColor.w === color.w
-                            ) {
-                                activeStorageColor = {};
-                            } else {
-                                activeStorageColor = color;
                             }
-                        }}
-                    >
-                        <div
-                            class="background"
                             style={
-                                `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
-                                "width: 100%; height: 100%;" +
+                                "height: calc(100% - var(--spacing));" +
+                                "width: calc(5em - (var(--spacing) * 3));" +
                                 "border: var(--border-width) solid hsl(var(--border));" +
-                                "border-radius: var(--radius);"
+                                "border-radius: var(--radius);" +
+                                "cursor: pointer;"
                             }
-                            />
-                    </div>
-                {/each}
-            </figure>
-        </div>
+                            on:click={() => {
+                                if (
+                                    activeStorageColor.r === color.r &&
+                                    activeStorageColor.g === color.g &&
+                                    activeStorageColor.b === color.b &&
+                                    activeStorageColor.w === color.w
+                                ) {
+                                    activeStorageColor = {};
+                                } else {
+                                    activeStorageColor = color;
+                                }
+                            }}
+                        >
+                            <div
+                                class="background"
+                                style={
+                                    `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
+                                    "width: 100%; height: 100%;" +
+                                    "border: var(--border-width) solid hsl(var(--border));" +
+                                    "border-radius: var(--radius);"
+                                }
+                                />
+                        </div>
+                    {/each}
+                </figure>
+            </div>
+        </section>
     </article>
 
     <article class="color-picker">
@@ -229,7 +231,56 @@
             <h2>Color Picker</h2>
         </section>
 
-        <!-- TODO: color picker for rgb and brightness -->
+        <!-- TODO: value bindings for rgb and brightness -->
+        <section>
+            <Label
+                primaryText="Brightness"
+                useLabel
+                row
+            >
+                <input
+                    type="range"
+                    min={0}
+                    max={100}
+                />
+            </Label>
+
+            <Label
+                primaryText="R"
+                useLabel
+                row
+            >
+                <input
+                    type="range"
+                    min={0}
+                    max={100}
+                />
+            </Label>
+
+            <Label
+                primaryText="G"
+                useLabel
+                row
+            >
+                <input
+                    type="range"
+                    min={0}
+                    max={100}
+                />
+            </Label>
+
+            <Label
+                primaryText="B"
+                useLabel
+                row
+            >
+                <input
+                    type="range"
+                    min={0}
+                    max={100}
+                />
+            </Label>
+        </section>
     </article>
 </main>
 
@@ -269,5 +320,9 @@
     .color-storage .data .color.checked,
     .color-storage .data .color.checked .background {
         border-color: hsl(var(--primar)) !important;
+    }
+
+    .color-picker input {
+        width: calc(100vw - 12em);
     }
 </style>
