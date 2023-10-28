@@ -10,6 +10,9 @@
     /**
      * @typedef Device
      * @type {import("./lib/api").Device}
+     *
+     * @typedef Color
+     * @type {import("./lib/states/color-storage").Color}
      */
 
     /***********************
@@ -18,6 +21,9 @@
 
     /** @type {Device[]} */
     let selected = [];
+
+    /** @type {Color} */
+    let activeStorageColor = {};
 
     /****************
      * Store: server
@@ -115,7 +121,7 @@
                                     "position: absolute;" +
                                     "top: 0; right: 0; height: 100%;" +
                                     "border-radius: 0;" +
-                                    "border-left: .1em solid hsl(var(--border));"
+                                    "border-left: var(--border-radius, .1em) solid hsl(var(--border));"
                                 }
                                 ghost
                                 on:click={(ev) => {
@@ -144,6 +150,7 @@
         <div class="actions has-margin" style="display: flex; justify-content: flex-end;">
             <Group style="font-size: 1.5em;">
                 <IconButton
+                    style="border-width: 1px;"
                     on:click={async () => {
                         // TODO: color storage update (add color)
                     }}
@@ -152,6 +159,7 @@
                 </IconButton>
 
                 <IconButton
+                    style="border-width: 1px;"
                     color="destructive"
                     on:click={async () => {
                         // TODO: color storage update (remove color)
@@ -167,22 +175,42 @@
             class="data"
             style={
                 "height: 4em;" +
-                "border: .1em solid hsl(var(--border));" +
+                "border: var(--border-radius, .1em) solid hsl(var(--border));" +
                 "border-radius: var(--radius);"
             }
         >
             <figure style="height: 100%;">
                 {#each $colorStorage as color}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <!-- svelte-ignore a11y-no-static-element-interactions -->
                     <div
                         class="color has-small-margin"
+                        class:checked={
+                            activeStorageColor.r === color.r &&
+                            activeStorageColor.g === color.g &&
+                            activeStorageColor.b === color.b &&
+                            activeStorageColor.w === color.w
+                        }
                         style={
-                            `background-color: rgb(${color.r}, ${color.g}, ${color.b});` +
-                            `opacity: ${color.w / 100};` +
+                            `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
                             "height: calc(100% - var(--spacing));" +
                             "width: calc(5em - (var(--spacing) * 3));" +
-                            "border: .1em solid hsl(var(--border));" +
-                            "border-radius: var(--radius);"
+                            "border: var(--border-radius, .1em) solid hsl(var(--border));" +
+                            "border-radius: var(--radius);" +
+                            "cursor: pointer;"
                         }
+                        on:click={() => {
+                            if (
+                                activeStorageColor.r === color.r &&
+                                activeStorageColor.g === color.g &&
+                                activeStorageColor.b === color.b &&
+                                activeStorageColor.w === color.w
+                            ) {
+                                activeStorageColor = {};
+                            } else {
+                                activeStorageColor = color;
+                            }
+                        }}
                     />
                 {/each}
             </figure>
@@ -203,6 +231,10 @@
 <style>
     main {
         height: calc(100% - 3.5em);
+    }
+
+    .devices .devices-list .device {
+        cursor: pointer;
     }
 
     .devices .devices-list .device .background {
