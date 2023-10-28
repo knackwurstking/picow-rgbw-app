@@ -24,20 +24,20 @@
 
     /** @type {Color} */
     let activeStorageColor = {};
-    $: activeStorageColor && setColorPickerValues(activeStorageColor);
+    $: activeStorageColor && handleActiveStorgeColorChange(activeStorageColor);
 
     let brightness = 100;
-    $: typeof brightness === "number" && brightnessChange(brightness);
+    $: typeof brightness === "number" && handleBrightnessChange(brightness);
     let r = 100;
     let g = 100;
     let b = 100;
-    $: r && g && b && setActiveStorageColor(r, g, b);
+    $: r && g && b && handleRGBChange(r, g, b);
 
 
     /**
      * @param {Color} c
      */
-    function setColorPickerValues(c) {
+    function handleActiveStorgeColorChange(c) {
         if (!c.r && !c.g && !c.b) return;
 
         r = c.r || 0;
@@ -47,26 +47,24 @@
         brightness = Math.min(...([r, g, b].filter(c => c > 0)));
     }
 
-    function setActiveStorageColor(r, g, b) {
-        console.debug("setActiveStorageColor:", r, g, b);
+    function handleRGBChange(r, g, b) {
         brightness = Math.min(...([r, g, b].filter(c => c > 0)));
         activeStorageColor = { r, g, b };
     }
 
-    function brightnessChange(brightness) {             // 90
-        console.debug("brightnessChange:", brightness);
-        const rgb = [r, g, b].filter(c => c > 0);       // [100, 100, 100]
-        const min = Math.min(...rgb);                   // 100
-        const max = Math.max(...rgb);                   // 100
-        const diff = min - brightness;                  // 100-90 = 10
-        if (!!rgb.find(c => c - diff > 100)) {          // [100-10, 100-10, 100-10] if one is bigger then 100
+    function handleBrightnessChange(brightness) {           // 90
+        const rgb = [r, g, b].filter(c => c > 0);           // [100, 100, 100]
+        const min = Math.min(...rgb);                       // 100
+        const max = Math.max(...rgb);                       // 100
+        const diff = min - brightness;                      // 100-90 = 10
+        if (!!rgb.find(c => c - diff > 100)) {              // [100-10, 100-10, 100-10] if one is bigger then 100
             // TODO: ...
-        } else if (!!rgb.find(c => c - diff < 0)) {     // [100-10, 100-10, 100-10] if one is lower then 0
+        } else if (!!rgb.find(c => c - diff < 0)) {         // [100-10, 100-10, 100-10] if one is lower then 0
             // TODO: ...
         } else {
-            r -= diff;                                  // 100-10
-            g -= diff;                                  // 100-10
-            b -= diff;                                  // 100-10
+            r -= diff;                                      // 100-10
+            g -= diff;                                      // 100-10
+            b -= diff;                                      // 100-10
         }
     }
 
