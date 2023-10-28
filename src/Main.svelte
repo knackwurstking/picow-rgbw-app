@@ -121,7 +121,7 @@
                                     "position: absolute;" +
                                     "top: 0; right: 0; height: 100%;" +
                                     "border-radius: 0;" +
-                                    "border-left: var(--border-radius, .1em) solid hsl(var(--border));"
+                                    "border-left: var(--border-width, .1em) solid hsl(var(--border));"
                                 }
                                 ghost
                                 on:click={(ev) => {
@@ -150,7 +150,6 @@
         <div class="actions has-margin" style="display: flex; justify-content: flex-end;">
             <Group style="font-size: 1.5em;">
                 <IconButton
-                    style="border-width: 1px;"
                     on:click={async () => {
                         // TODO: color storage update (add color)
                     }}
@@ -159,7 +158,6 @@
                 </IconButton>
 
                 <IconButton
-                    style="border-width: 1px;"
                     color="destructive"
                     on:click={async () => {
                         // TODO: color storage update (remove color)
@@ -175,7 +173,7 @@
             class="data"
             style={
                 "height: 4em;" +
-                "border: var(--border-radius, .1em) solid hsl(var(--border));" +
+                "border: var(--border-width, .1em) solid hsl(var(--border));" +
                 "border-radius: var(--radius);"
             }
         >
@@ -184,7 +182,7 @@
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <!-- svelte-ignore a11y-no-static-element-interactions -->
                     <div
-                        class="color has-small-margin"
+                        class="color has-small-margin has-small-padding"
                         class:checked={
                             activeStorageColor.r === color.r &&
                             activeStorageColor.g === color.g &&
@@ -192,10 +190,9 @@
                             activeStorageColor.w === color.w
                         }
                         style={
-                            `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
                             "height: calc(100% - var(--spacing));" +
                             "width: calc(5em - (var(--spacing) * 3));" +
-                            "border: var(--border-radius, .1em) solid hsl(var(--border));" +
+                            "border: var(--border-width, .1em) solid hsl(var(--border));" +
                             "border-radius: var(--radius);" +
                             "cursor: pointer;"
                         }
@@ -211,7 +208,17 @@
                                 activeStorageColor = color;
                             }
                         }}
-                    />
+                    >
+                        <div
+                            class="background"
+                            style={
+                                `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
+                                "width: 100%; height: 100%;" +
+                                "border: var(--border-width, .1em) solid hsl(var(--border));" +
+                                "border-radius: var(--radius);"
+                            }
+                            />
+                    </div>
                 {/each}
             </figure>
         </div>
@@ -252,5 +259,15 @@
 
     .devices .devices-list .device.checked .background {
         opacity: 0.1;
+    }
+
+    .color-storage .data .color,
+    .color-storage .data .color .background {
+        transition: border-color .25s linear;
+    }
+
+    .color-storage .data .color.checked,
+    .color-storage .data .color.checked .background {
+        border-color: hsl(var(--primar)) !important;
     }
 </style>
