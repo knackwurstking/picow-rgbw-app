@@ -32,7 +32,7 @@ const server = writable((() => {
 })());
 
 server.subscribe((s) => {
-    console.debug("[store: server] data changed...");
+    console.debug("[store: server] data changed");
     console.table(s);
     localStorage.setItem(storageKey, JSON.stringify(s));
 });

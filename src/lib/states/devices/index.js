@@ -11,7 +11,7 @@ import { writable } from "svelte/store";
 const devices = writable(c.devices);
 
 devices.subscribe((devices) => {
-    console.debug("[store: devices] data changed...");
+    console.debug("[store: devices] data changed");
     console.table(devices);
 });
 
