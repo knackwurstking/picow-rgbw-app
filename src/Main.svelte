@@ -27,6 +27,7 @@
     $: activeStorageColor && setColorPickerValues(activeStorageColor);
 
     let brightness = 100;
+    $: typeof brightness === "number" && brightnessChange(brightness);
     let r = 100;
     let g = 100;
     let b = 100;
@@ -47,7 +48,26 @@
     }
 
     function setActiveStorageColor(r, g, b) {
+        console.debug("setActiveStorageColor:", r, g, b);
+        brightness = Math.min(...([r, g, b].filter(c => c > 0)));
         activeStorageColor = { r, g, b };
+    }
+
+    function brightnessChange(brightness) {             // 90
+        console.debug("brightnessChange:", brightness);
+        const rgb = [r, g, b].filter(c => c > 0);       // [100, 100, 100]
+        const min = Math.min(...rgb);                   // 100
+        const max = Math.max(...rgb);                   // 100
+        const diff = min - brightness;                  // 100-90 = 10
+        if (!!rgb.find(c => c - diff > 100)) {          // [100-10, 100-10, 100-10] if one is bigger then 100
+            // TODO: ...
+        } else if (!!rgb.find(c => c - diff < 0)) {     // [100-10, 100-10, 100-10] if one is lower then 0
+            // TODO: ...
+        } else {
+            r -= diff;                                  // 100-10
+            g -= diff;                                  // 100-10
+            b -= diff;                                  // 100-10
+        }
     }
 
     /****************
@@ -255,9 +275,8 @@
 
         <section>
             <Label
-                primaryText="Brightness"
+                secondaryText={"Brightness " + brightness.toString()}
                 useLabel
-                row
             >
                 <input
                     type="range"
@@ -268,9 +287,8 @@
             </Label>
 
             <Label
-                primaryText="R"
+                secondaryText={"R " + r.toString()}
                 useLabel
-                row
             >
                 <input
                     type="range"
@@ -281,9 +299,8 @@
             </Label>
 
             <Label
-                primaryText="G"
+                secondaryText={"G " + r.toString()}
                 useLabel
-                row
             >
                 <input
                     type="range"
@@ -294,9 +311,8 @@
             </Label>
 
             <Label
-                primaryText="B"
+                secondaryText={"B " + r.toString()}
                 useLabel
-                row
             >
                 <input
                     type="range"
@@ -349,6 +365,6 @@
     }
 
     .color-picker input {
-        width: calc(100vw - 12em);
+        width: 100%;
     }
 </style>
