@@ -24,6 +24,31 @@
 
     /** @type {Color} */
     let activeStorageColor = {};
+    $: activeStorageColor && setColorPickerValues(activeStorageColor);
+
+    let brightness = 100;
+    let r = 100;
+    let g = 100;
+    let b = 100;
+    $: r && g && b && setActiveStorageColor(r, g, b);
+
+
+    /**
+     * @param {Color} c
+     */
+    function setColorPickerValues(c) {
+        if (!c.r && !c.g && !c.b) return;
+
+        r = c.r || 0;
+        g = c.g || 0;
+        b = c.b || 0;
+
+        brightness = Math.min(...([r, g, b].filter(c => c > 0)));
+    }
+
+    function setActiveStorageColor(r, g, b) {
+        activeStorageColor = { r, g, b };
+    }
 
     /****************
      * Store: server
@@ -187,8 +212,7 @@
                             class:checked={
                                 activeStorageColor.r === color.r &&
                                 activeStorageColor.g === color.g &&
-                                activeStorageColor.b === color.b &&
-                                activeStorageColor.w === color.w
+                                activeStorageColor.b === color.b
                             }
                             style={
                                 "height: calc(100% - var(--spacing));" +
@@ -201,8 +225,7 @@
                                 if (
                                     activeStorageColor.r === color.r &&
                                     activeStorageColor.g === color.g &&
-                                    activeStorageColor.b === color.b &&
-                                    activeStorageColor.w === color.w
+                                    activeStorageColor.b === color.b
                                 ) {
                                     activeStorageColor = {};
                                 } else {
@@ -242,6 +265,7 @@
                     type="range"
                     min={0}
                     max={100}
+                    bind:value={brightness}
                 />
             </Label>
 
@@ -254,6 +278,7 @@
                     type="range"
                     min={0}
                     max={100}
+                    bind:value={r}
                 />
             </Label>
 
@@ -266,6 +291,7 @@
                     type="range"
                     min={0}
                     max={100}
+                    bind:value={g}
                 />
             </Label>
 
@@ -278,6 +304,7 @@
                     type="range"
                     min={0}
                     max={100}
+                    bind:value={b}
                 />
             </Label>
         </section>
