@@ -6,7 +6,6 @@ import { writable } from "svelte/store";
  *  r?: number;
  *  g?: number;
  *  b?: number;
- *  w?: number;
  * }}
  *
  * @typedef StateColorStorage
@@ -31,11 +30,11 @@ export function create() {
     /**
      * @param {Color} color
      */
-    function add({ r = 0, g = 0, b = 0, w = 0} = {}) {
+    function add({ r = 0, g = 0, b = 0} = {}) {
         colorStorage.update((cs) => {
-            const i = cs.findIndex(c => c.r === r && c.g === g && c.b === b && c.w === w);
+            const i = cs.findIndex(c => c.r === r && c.g === g && c.b === b);
             if (i === -1) {
-                cs.push({ r, g, b, w });
+                cs.push({ r, g, b });
             }
 
             return cs;
@@ -45,9 +44,9 @@ export function create() {
     /**
      * @param {Color} color
      */
-    function remove({ r = 0, g = 0, b = 0, w = 0 } = {}) {
+    function remove({ r = 0, g = 0, b = 0 } = {}) {
         colorStorage.update((cs) => {
-            const i = cs.findIndex(c => c.r === r && c.g === g && c.b === b && c.w === w);
+            const i = cs.findIndex(c => c.r === r && c.g === g && c.b === b);
             if (i > -1) {
                 cs = [
                     ...cs.slice(0, i),
