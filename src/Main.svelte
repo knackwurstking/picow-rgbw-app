@@ -41,7 +41,7 @@
                     // TODO: Notification
                     // FIXME: not a valid url: missing host:port (Need error check and notify)
                     devices.set([]);
-            
+
                     console.warn("[main]", err);
                 });
         });
