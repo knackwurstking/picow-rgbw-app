@@ -121,7 +121,7 @@
                                     "position: absolute;" +
                                     "top: 0; right: 0; height: 100%;" +
                                     "border-radius: 0;" +
-                                    "border-left: var(--border-width, .1em) solid hsl(var(--border));"
+                                    "border-left: var(--border-width) solid hsl(var(--border));"
                                 }
                                 ghost
                                 on:click={(ev) => {
@@ -173,7 +173,7 @@
             class="data"
             style={
                 "height: 4em;" +
-                "border: var(--border-width, .1em) solid hsl(var(--border));" +
+                "border: var(--border-width) solid hsl(var(--border));" +
                 "border-radius: var(--radius);"
             }
         >
@@ -192,7 +192,7 @@
                         style={
                             "height: calc(100% - var(--spacing));" +
                             "width: calc(5em - (var(--spacing) * 3));" +
-                            "border: var(--border-width, .1em) solid hsl(var(--border));" +
+                            "border: var(--border-width) solid hsl(var(--border));" +
                             "border-radius: var(--radius);" +
                             "cursor: pointer;"
                         }
@@ -214,7 +214,7 @@
                             style={
                                 `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
                                 "width: 100%; height: 100%;" +
-                                "border: var(--border-width, .1em) solid hsl(var(--border));" +
+                                "border: var(--border-width) solid hsl(var(--border));" +
                                 "border-radius: var(--radius);"
                             }
                             />
