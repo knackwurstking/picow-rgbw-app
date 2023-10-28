@@ -129,7 +129,21 @@
         </section>
     </article>
 
-    <!-- TODO: 2. color storage, 3. color picker -->
+    <article class="color-storage">
+        <section class="header">
+            <h2>Color Storage</h2>
+        </section>
+
+        <!-- TODO: color storage for rgb and brightness -->
+    </article>
+
+    <article class="color-picker">
+        <section class="header">
+            <h2>Color Picker</h2>
+        </section>
+
+        <!-- TODO: color picker for rgb and brightness -->
+    </article>
 </main>
 
 <Components.DeviceSettingsDialog />
