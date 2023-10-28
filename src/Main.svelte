@@ -314,6 +314,7 @@
 <style>
     main {
         height: calc(100% - 3.5em);
+        overflow-y: auto;
     }
 
     .devices .devices-list .device {
