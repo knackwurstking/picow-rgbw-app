@@ -284,6 +284,8 @@
                 />
             </Label>
 
+            <hr />
+
             <Label
                 secondaryText={"R"}
                 useLabel
@@ -371,7 +373,7 @@
     }
 
     .color-picker code {
-        padding: var(--spacing);
         transform: translateY(-.05em);
+        margin-left: var(--spacing);
     }
 </style>
