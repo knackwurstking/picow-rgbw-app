@@ -5,19 +5,12 @@ import { States } from "../../lib";
 /**
  * @typedef Device
  * @type {{
- *  name: string;
  *  host: string;
  *  port: number;
  * }}
  */
 
 const server = States.server.create();
-
-server.subscribe((server) => {
-    // TODO: update websocket handler
-    console.debug("[api] @TODO: server address changed... try to reconnect...");
-    console.dir(server);
-});
 
 /**
  * @returns {Promise<Device[]>}
