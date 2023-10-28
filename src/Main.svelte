@@ -194,7 +194,6 @@
                 </Group>
             </div>
 
-            <!-- TODO: handle on:click for color -->
             <div
                 class="data"
                 style={
@@ -254,7 +253,6 @@
             <h2>Color Picker</h2>
         </section>
 
-        <!-- TODO: value bindings for rgb and brightness -->
         <section>
             <Label
                 primaryText="Brightness"
