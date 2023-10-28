@@ -259,7 +259,7 @@
                                     "border: var(--border-width) solid hsl(var(--border));" +
                                     "border-radius: var(--radius);"
                                 }
-                                />
+                            />
                         </div>
                     {/each}
                 </figure>
