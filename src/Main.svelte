@@ -129,12 +129,17 @@
         </section>
     </article>
 
-    <article class="color-storage">
+    <article class="color-storage is-debug">
         <section class="header">
             <h2>Color Storage</h2>
         </section>
 
         <!-- TODO: color storage for rgb and brightness -->
+        <div class="actions">
+        </div>
+
+        <div class="data">
+        </div>
     </article>
 
     <article class="color-picker">
