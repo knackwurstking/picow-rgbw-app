@@ -5,7 +5,7 @@
 
     import { Components, States, Api } from "./lib";
 
-    import { Label, IconButton, PrimaryText } from "svelte-css";
+    import { Label, IconButton, PrimaryText, Group } from "svelte-css";
 
     /**
      * @typedef Device
@@ -52,6 +52,12 @@
      *****************/
 
     let devices = States.devices.create();
+
+    /**********************
+     * Store: colorStorage
+     **********************/
+
+    let colorStorage = States.colorStorage.create();
 </script>
 
 <main class="container">
@@ -95,11 +101,12 @@
 
                             <Label
                                 class="has-padding"
-                                primaryText={device.name}
+                                primaryText={devices.getName(device)}
                                 secondaryText={`${device.host}:${device.port}`}
                             />
 
                             <div style="width: fit-content; user-select: none;">
+                                <!-- TODO: get color from `device` -->
                                 <pre>[255, 255, 255, 255]</pre>
                             </div>
 
@@ -129,16 +136,52 @@
         </section>
     </article>
 
-    <article class="color-storage is-debug">
+    <article class="color-storage">
         <section class="header">
             <h2>Color Storage</h2>
         </section>
 
-        <!-- TODO: color storage for rgb and brightness -->
-        <div class="actions">
+        <div class="actions has-margin" style="display: flex; justify-content: flex-end;">
+            <Group style="font-size: 1.5em;">
+                <IconButton
+                    on:click={async () => {
+                        // TODO: color storage update (add color)
+                    }}
+                >
+                    <AddIcon width="100%" height="100%" />
+                </IconButton>
+
+                <IconButton
+                    color="destructive"
+                    on:click={async () => {
+                        // TODO: color storage update (add color)
+                    }}
+                >
+                    <TrashIcon width="100%" height="100%" />
+                </IconButton>
+            </Group>
         </div>
 
-        <div class="data">
+        <!-- TODO: handle on:click for color -->
+        <div
+            class="data is-debug"
+            style={
+                "height: 4em;"
+            }
+        >
+            <figure style="height: 100%;">
+                {#each $colorStorage as color}
+                    <div
+                        class="color has-small-margin"
+                        style={
+                            `background-color: rgb(${color.r}, ${color.g}, ${color.b});` +
+                            `opacity: ${color.w / 100};` +
+                            "height: calc(100% - var(--spacing));" +
+                            "width: calc(5em - (var(--spacing) * 3));"
+                        }
+                    />
+                {/each}
+            </figure>
         </div>
     </article>
 
