@@ -72,14 +72,14 @@
         <!-- TODO: theme picker -->
         <Text.Label
             class="has-margin"
-            secondaryText="Api Server Host"
+            secondary="Api Server Host"
         >
             <input bind:value={host} />
         </Text.Label>
 
         <Text.Label
             class="has-margin"
-            secondaryText="Api Server Port"
+            secondary="Api Server Port"
         >
             <input type="number" min={0} max={65535} bind:value={port} aria-invalid={invalidPort}/>
         </Text.Label>

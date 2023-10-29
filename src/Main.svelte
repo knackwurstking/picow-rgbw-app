@@ -155,8 +155,8 @@
 
                             <Text.Label
                                 class="has-padding"
-                                primaryText={devices.getName(device)}
-                                secondaryText={`${device.host}:${device.port}`}
+                                primary={devices.getName(device)}
+                                secondary={`${device.host}:${device.port}`}
                             />
 
                             <div style="width: fit-content; user-select: none; font-size: .9em;">
@@ -291,10 +291,10 @@
             <hr />
 
             <Text.Label
-                secondaryText={"R"}
+                secondary={"R"}
                 useLabel
             >
-                <code slot="secondaryText">{r.toString()}</code>
+                <code slot="secondary">{r.toString()}</code>
                 <input
                     type="range"
                     min={0}
@@ -304,10 +304,10 @@
             </Text.Label>
 
             <Text.Label
-                secondaryText={"G"}
+                secondary={"G"}
                 useLabel
             >
-                <code slot="secondaryText">{g.toString()}</code>
+                <code slot="secondary">{g.toString()}</code>
                 <input
                     type="range"
                     min={0}
@@ -317,10 +317,10 @@
             </Text.Label>
 
             <Text.Label
-                secondaryText={"B"}
+                secondary={"B"}
                 useLabel
             >
-                <code slot="secondaryText">{b.toString()}</code>
+                <code slot="secondary">{b.toString()}</code>
                 <input
                     type="range"
                     min={0}
