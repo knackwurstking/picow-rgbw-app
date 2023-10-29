@@ -222,7 +222,7 @@
                     "border-radius: var(--radius);"
                 }
             >
-                <figure class="is-debug" style="height: 100%;">
+                <figure style="height: 100%;">
                     <Container.Flex direction="row" height="100%">
                         {#each $colorStorage as color}
                             <!-- svelte-ignore a11y-click-events-have-key-events -->
