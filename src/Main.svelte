@@ -27,7 +27,7 @@
     let selected = [];
 
     /** @type {Color} */
-    let activeStorageColor = {};
+    let activeStorageColor = { r: 0, g: 0, b: 0 };
     $: activeStorageColor && handleActiveStorgeColorChange(activeStorageColor);
 
     let brightness = 100;
@@ -93,7 +93,6 @@
                 ))
                 .catch((err) => {
                     // TODO: Notification
-                    // FIXME: not a valid url: missing host:port (Need error check and notify)
                     devices.set([]);
 
                     console.warn("[main]", err);
@@ -160,8 +159,10 @@
                             />
 
                             <div style="width: fit-content; user-select: none; font-size: .9em;">
-                                <!-- TODO: get color from `device` -->
-                                <pre>[255, 255, 255, 255]</pre>
+                                <!-- TODO: maybe need an #if device here? -->
+                                <pre
+                                    style:margin-left="var(--spacing)"
+                                >[{Api.getColorArray(device).join(", ")}]</pre>
                             </div>
 
                             <Button.Icon
@@ -199,18 +200,14 @@
             <div class="actions has-margin" style="display: flex; justify-content: flex-end;">
                 <Container.Group style="font-size: 1.5em;">
                     <Button.Icon
-                        on:click={async () => {
-                            // TODO: color storage update (add color)
-                        }}
+                        on:click={async () => colorStorage.add({ r, g, b })}
                     >
                         <AddIcon width="100%" height="100%" />
                     </Button.Icon>
 
                     <Button.Icon
                         color="destructive"
-                        on:click={async () => {
-                            // TODO: color storage update (remove color)
-                        }}
+                        on:click={async () => colorStorage.remove({ r, g, b })}
                     >
                         <TrashIcon width="100%" height="100%" />
                     </Button.Icon>
@@ -249,7 +246,7 @@
                                     activeStorageColor.g === color.g &&
                                     activeStorageColor.b === color.b
                                 ) {
-                                    activeStorageColor = {};
+                                    activeStorageColor = { r: 0, g: 0, b: 0 };
                                 } else {
                                     activeStorageColor = color;
                                 }
