@@ -77,7 +77,7 @@ export async function setColor(color, ...devices) {
     const url = `${server.getOrigin()}${c.route.color}`;
     const r = await fetch(url, {
         method: "POST",
-        body: JSON.stringify(datau),
+        body: JSON.stringify(data),
         headers: {
             "Content-Type": "application/json",
         },
