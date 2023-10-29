@@ -259,9 +259,7 @@
                                 class="background"
                                 style={
                                     `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
-                                    "width: 100%; height: 100%;" +
-                                    "border: var(--border-width) solid hsl(var(--border));" +
-                                    "border-radius: var(--radius);"
+                                    "width: 100%; height: 100%;"
                                 }
                             />
                         </div>
