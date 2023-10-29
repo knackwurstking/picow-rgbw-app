@@ -11,6 +11,13 @@
 
     import { Components, States, Api } from "./lib";
 
+    /***********
+     * Bindings
+     ***********/
+
+    /** @type {Components.DeviceSettingsDialog} */
+    let deviceSettingsDialog;
+
     /**
      * @typedef ApiDevice
      * @type {import("./lib/api").ApiDevice}
@@ -175,7 +182,7 @@
                                 ghost
                                 on:click={(ev) => {
                                     ev.stopPropagation();
-                                    // TODO: open device settings dialog
+                                    deviceSettingsDialog.open();
                                 }}
                             >
                                 <DeviceSettingsIcon />
@@ -330,7 +337,7 @@
     </article>
 </main>
 
-<Components.DeviceSettingsDialog />
+<Components.DeviceSettingsDialog bind:this={deviceSettingsDialog} />
 
 <style>
     main {
