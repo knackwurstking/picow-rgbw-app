@@ -30,7 +30,6 @@ const server = States.server.create();
  */
 export async function getDevices() {
     const url = `${server.getOrigin()}${c.route.devices}`;
-
     const r = await fetch(url);
     if (r.ok) {
         try {
@@ -40,11 +39,7 @@ export async function getDevices() {
         }
     }
 
-    // error handling
-    let m = await r.text();
-    if (m) throw `request error: "${url}" [${r.status}]: ${m}`;
-
-    throw `request error: "${url}" [${r.status}]`;
+    await handleError(r, url);
 }
 
 /**
@@ -52,12 +47,32 @@ export async function getDevices() {
  * @param {...ApiDevice} devices
  */
 export async function setColor(color, ...devices) {
-    // TODO: set color for devices
-    // build address array (host:port)
-
     /** @type {ApiColorRequest} */
     const data = {
         addr: devices.map(d => `${d.host}:${d.port}`),
         color: color,
     };
+
+    const url = `${server.getOrigin()}${c.route.color}`;
+    const r = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    if (!r.ok) {
+        return await handleError(r, url);
+    }
+}
+
+/**
+ * @param {Response} response
+ * @param {string} url 
+ */
+async function handleError(response, url) {
+    let m = await response.text();
+    if (m) throw `request error: "${url}" [${response.status}]: ${m}`;
+
+    throw `request error: "${url}" [${response.status}]`;
 }
