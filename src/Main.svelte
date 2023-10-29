@@ -222,45 +222,47 @@
                     "border-radius: var(--radius);"
                 }
             >
-                <figure style="height: 100%;">
-                    {#each $colorStorage as color}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <!-- svelte-ignore a11y-no-static-element-interactions -->
-                        <div
-                            class="color has-small-margin has-small-padding"
-                            class:checked={
-                                activeStorageColor.r === color.r &&
-                                activeStorageColor.g === color.g &&
-                                activeStorageColor.b === color.b
-                            }
-                            style={
-                                "height: calc(100% - var(--spacing));" +
-                                "width: calc(5em - (var(--spacing) * 3));" +
-                                "border: var(--border-width) solid hsl(var(--border));" +
-                                "border-radius: var(--radius);" +
-                                "cursor: pointer;"
-                            }
-                            on:click={() => {
-                                if (
+                <figure class="is-debug" style="height: 100%;">
+                    <Container.Flex direction="row" height="100%">
+                        {#each $colorStorage as color}
+                            <!-- svelte-ignore a11y-click-events-have-key-events -->
+                            <!-- svelte-ignore a11y-no-static-element-interactions -->
+                            <div
+                                class="color has-small-margin has-small-padding"
+                                class:checked={
                                     activeStorageColor.r === color.r &&
                                     activeStorageColor.g === color.g &&
                                     activeStorageColor.b === color.b
-                                ) {
-                                    activeStorageColor = { r: 0, g: 0, b: 0 };
-                                } else {
-                                    activeStorageColor = color;
                                 }
-                            }}
-                        >
-                            <div
-                                class="background"
                                 style={
-                                    `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
-                                    "width: 100%; height: 100%;"
+                                    "height: calc(100% - var(--spacing));" +
+                                    "width: calc(5em - (var(--spacing) * 3));" +
+                                    "border: var(--border-width) solid hsl(var(--border));" +
+                                    "border-radius: var(--radius);" +
+                                    "cursor: pointer;"
                                 }
-                            />
-                        </div>
-                    {/each}
+                                on:click={() => {
+                                    if (
+                                        activeStorageColor.r === color.r &&
+                                        activeStorageColor.g === color.g &&
+                                        activeStorageColor.b === color.b
+                                    ) {
+                                        activeStorageColor = { r: 0, g: 0, b: 0 };
+                                    } else {
+                                        activeStorageColor = color;
+                                    }
+                                }}
+                            >
+                                <div
+                                    class="background"
+                                    style={
+                                        `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
+                                        "width: 100%; height: 100%;"
+                                    }
+                                />
+                            </div>
+                        {/each}
+                    </Container.Flex>
                 </figure>
             </div>
         </section>
