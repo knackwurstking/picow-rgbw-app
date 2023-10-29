@@ -3,10 +3,23 @@ import c from "../constants.json";
 import { States } from "../../lib";
 
 /**
+ * @typedef ApiDevicePinNumber
+ * @type {number}
+ *
+ * @typedef ApiDevicePinDuty
+ * @type {number}
+ *
+ * @typedef ApiDevicePin
+ * @type {{
+ *  duty: ApiDevicePinDuty;
+ *  pin: ApiDevicePinNumber;
+ * }}
+ *
  * @typedef ApiDevice
  * @type {{
  *  host: string;
  *  port: number;
+ *  data: ApiDevicePin[];
  * }}
  *
  * @typedef ApiColor
@@ -24,6 +37,14 @@ import { States } from "../../lib";
  */
 
 const server = States.server.create();
+
+/**
+ * @param {ApiDevice} device
+ * @returns {ApiDevicePinDuty[]}
+ */
+export function getColorArray(device) {
+    return device.data.map(pin => pin.duty);
+}
 
 /**
  * @returns {Promise<ApiDevice[]>}
@@ -56,7 +77,7 @@ export async function setColor(color, ...devices) {
     const url = `${server.getOrigin()}${c.route.color}`;
     const r = await fetch(url, {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(datau),
         headers: {
             "Content-Type": "application/json",
         },
