@@ -8,9 +8,9 @@
 
     import { Components } from "./lib";
 
-    /**********
-     * Binding
-     **********/
+    /***********
+     * Bindings
+     ***********/
 
     /** @type {Components.SettingsDialog} */
     let settingsDialog;
