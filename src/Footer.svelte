@@ -24,15 +24,15 @@
     }
 
     async function clickOff() {
-        // TODO: ...
+        // TODO: turn off all selected devices
     }
 
     async function clickSet() {
-        // TODO: ...
+        // TODO: set color to all selected devices
     }
 </script>
 
-<footer class="container">
+<Container.Root height="3.5em">
     <Container.Group
         style={
             "width: 100%;" +
@@ -76,12 +76,6 @@
             ON/SET
         </Button.Root>
     </Container.Group>
-</footer>
+</Container.Root>
 
 <Components.SettingsDialog bind:this={settingsDialog} />
-
-<style>
-    footer {
-        height: 3.5em;
-    }
-</style>
