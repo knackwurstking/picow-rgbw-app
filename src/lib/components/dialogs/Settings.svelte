@@ -4,17 +4,16 @@
     import {
         Button,
         Dialog,
-        DialogFooter,
-        DialogHeader,
-        Label,
+        Text,
     } from "svelte-css";
+
     import { States } from "../../../lib";
 
     /***********
      * Bindings
      ***********/
 
-    /** @type {Dialog} */
+    /** @type {Dialog.Root} */
     let dialog;
 
     /**********************
@@ -63,34 +62,36 @@
     };
 </script>
 
-<Dialog bind:this={dialog}>
-    <DialogHeader
+<Dialog.Root bind:this={dialog}>
+    <Dialog.Header
         title="Settings"
         on:close={() => close()}
     />
 
     <section>
         <!-- TODO: theme picker -->
-        <Label
+        <Text.Label
             class="has-margin"
             secondaryText="Api Server Host"
         >
             <input bind:value={host} />
-        </Label>
+        </Text.Label>
 
-        <Label
+        <Text.Label
             class="has-margin"
             secondaryText="Api Server Port"
         >
             <input type="number" min={0} max={65535} bind:value={port} aria-invalid={invalidPort}/>
-        </Label>
+        </Text.Label>
     </section>
 
-    <DialogFooter>
-        <Button
+    <Dialog.Footer>
+        <Button.Root
             color="primary"
             variant="full"
             on:click={() => clickSubmit()}
-        >OK</Button>
-    </DialogFooter>
-</Dialog>
+        >
+            OK
+        </Button.Root>
+    </Dialog.Footer>
+</Dialog.Root>

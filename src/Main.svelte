@@ -3,9 +3,13 @@
     import AddIcon from "svelte-material-icons/PlusCircleOutline.svelte";
     import TrashIcon from "svelte-material-icons/TrashCanOutline.svelte";
 
-    import { Components, States, Api } from "./lib";
+    import {
+        Button,
+        Container,
+        Text
+    } from "svelte-css";
 
-    import { Label, IconButton, PrimaryText, Group } from "svelte-css";
+    import { Components, States, Api } from "./lib";
 
     /**
      * @typedef Device
@@ -149,7 +153,7 @@
                         >
                             <div class="background" />
 
-                            <Label
+                            <Text.Label
                                 class="has-padding"
                                 primaryText={devices.getName(device)}
                                 secondaryText={`${device.host}:${device.port}`}
@@ -160,7 +164,7 @@
                                 <pre>[255, 255, 255, 255]</pre>
                             </div>
 
-                            <IconButton
+                            <Button.Icon
                                 style={
                                     "position: absolute;" +
                                     "top: 0; right: 0; height: 100%;" +
@@ -174,13 +178,13 @@
                                 }}
                             >
                                 <DeviceSettingsIcon />
-                            </IconButton>
+                            </Button.Icon>
                         </li>
                     {/each}
                 </ul>
             {:else}
                 <div class="has-padding is-italic is-text-center">
-                    <PrimaryText>No Devices</PrimaryText>
+                    <Text.Primary>No Devices</Text.Primary>
                 </div>
             {/if}
         </section>
@@ -193,24 +197,24 @@
 
         <section>
             <div class="actions has-margin" style="display: flex; justify-content: flex-end;">
-                <Group style="font-size: 1.5em;">
-                    <IconButton
+                <Container.Group style="font-size: 1.5em;">
+                    <Button.Icon
                         on:click={async () => {
                             // TODO: color storage update (add color)
                         }}
                     >
                         <AddIcon width="100%" height="100%" />
-                    </IconButton>
+                    </Button.Icon>
 
-                    <IconButton
+                    <Button.Icon
                         color="destructive"
                         on:click={async () => {
                             // TODO: color storage update (remove color)
                         }}
                     >
                         <TrashIcon width="100%" height="100%" />
-                    </IconButton>
-                </Group>
+                    </Button.Icon>
+                </Container.Group>
             </div>
 
             <div
@@ -273,7 +277,7 @@
         </section>
 
         <section>
-            <Label
+            <Text.Label
                 useLabel
             >
                 <input
@@ -282,11 +286,11 @@
                     max={100}
                     bind:value={brightness}
                 />
-            </Label>
+            </Text.Label>
 
             <hr />
 
-            <Label
+            <Text.Label
                 secondaryText={"R"}
                 useLabel
             >
@@ -297,9 +301,9 @@
                     max={100}
                     bind:value={r}
                 />
-            </Label>
+            </Text.Label>
 
-            <Label
+            <Text.Label
                 secondaryText={"G"}
                 useLabel
             >
@@ -310,9 +314,9 @@
                     max={100}
                     bind:value={g}
                 />
-            </Label>
+            </Text.Label>
 
-            <Label
+            <Text.Label
                 secondaryText={"B"}
                 useLabel
             >
@@ -323,7 +327,7 @@
                     max={100}
                     bind:value={b}
                 />
-            </Label>
+            </Text.Label>
         </section>
     </article>
 </main>

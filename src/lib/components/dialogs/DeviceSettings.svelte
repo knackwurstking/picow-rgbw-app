@@ -1,11 +1,14 @@
 <script>
-    import { Button, Dialog, DialogFooter, DialogHeader } from "svelte-css";
+    import {
+        Button,
+        Dialog,
+    } from "svelte-css";
 
     /***********
      * Bindings
      ***********/
 
-    /** @type {Dialog} */
+    /** @type {Dialog.Root} */
     let dialog;
 
     /******************************
@@ -30,8 +33,8 @@
     }
 </script>
 
-<Dialog bind:this={dialog}>
-    <DialogHeader
+<Dialog.Root bind:this={dialog}>
+    <Dialog.Header
         title="Settings"
         on:close={() => close()}
     />
@@ -40,11 +43,13 @@
         <!-- TODO: device name change (input) -->
     </section>
 
-    <DialogFooter>
-        <Button
+    <Dialog.Footer>
+        <Button.Root
             color="primary"
             variant="full"
             on:click={() => clickSubmit()}
-        >OK</Button>
-    </DialogFooter>
-</Dialog>
+        >
+            OK
+        </Button.Root>
+    </Dialog.Footer>
+</Dialog.Root>
