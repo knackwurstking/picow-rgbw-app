@@ -1,15 +1,11 @@
 import { writable } from "svelte/store";
 
 /**
- * @typedef StateColor
- * @type {{
- *  r?: number;
- *  g?: number;
- *  b?: number;
- * }}
+ * @typedef Color
+ * @type {import("../../api").ApiColor}
  *
  * @typedef StateColorStorage
- * @type {import("svelte/store").Writable<StateColor[]>}
+ * @type {import("svelte/store").Writable<Color[]>}
  */
 
 const storageKey = "colorStorage";
@@ -28,9 +24,9 @@ colorStorage.subscribe((cs) => {
 
 export function create() {
     /**
-     * @param {StateColor} color
+     * @param {Color} color
      */
-    function add({ r = 0, g = 0, b = 0} = {}) {
+    function add({ r = 0, g = 0, b = 0}) {
         colorStorage.update((cs) => {
             const i = cs.findIndex(c => c.r === r && c.g === g && c.b === b);
             if (i === -1) {
@@ -42,9 +38,9 @@ export function create() {
     }
 
     /**
-     * @param {StateColor} color
+     * @param {Color} color
      */
-    function remove({ r = 0, g = 0, b = 0 } = {}) {
+    function remove({ r = 0, g = 0, b = 0 }) {
         colorStorage.update((cs) => {
             const i = cs.findIndex(c => c.r === r && c.g === g && c.b === b);
             if (i > -1) {

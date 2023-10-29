@@ -16,7 +16,7 @@
      * @type {import("./lib/api").ApiDevice}
      *
      * @typedef Color
-     * @type {import("./lib/states/color-storage").StateColor}
+     * @type {import("./lib/states/color-storage").Color}
      */
 
     /***********************
