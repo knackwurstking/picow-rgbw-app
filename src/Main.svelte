@@ -12,18 +12,18 @@
     import { Components, States, Api } from "./lib";
 
     /**
-     * @typedef Device
-     * @type {import("./lib/api").Device}
+     * @typedef ApiDevice
+     * @type {import("./lib/api").ApiDevice}
      *
      * @typedef Color
-     * @type {import("./lib/states/color-storage").Color}
+     * @type {import("./lib/states/color-storage").StateColor}
      */
 
     /***********************
      * Variable Definitions
      ***********************/
 
-    /** @type {Device[]} */
+    /** @type {ApiDevice[]} */
     let selected = [];
 
     /** @type {Color} */
@@ -84,7 +84,7 @@
             Api.getDevices()
                 .then((result) => devices.set(
                     result.map(
-                        /** @param {Device} r */
+                        /** @param {ApiDevice} r */
                         (r) => ({
                             ...r,
                             name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",

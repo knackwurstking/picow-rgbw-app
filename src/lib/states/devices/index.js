@@ -3,11 +3,11 @@ import c from "../../constants.json";
 import { writable } from "svelte/store";
 
 /**
- * @typedef Device
- * @type {import("../../api").Device}
+ * @typedef ApiDevice
+ * @type {import("../../api").ApiDevice}
  *
  * @typedef StateDevices
- * @type {import("svelte/store").Writable<Device[]>}
+ * @type {import("svelte/store").Writable<ApiDevice[]>}
  */
 
 /** @type {StateDevices} */
@@ -20,14 +20,14 @@ devices.subscribe((devices) => {
 
 export function create() {
     /**
-     * @param {Device} device
+     * @param {ApiDevice} device
      */
     function getName(device) {
         return localStorage.getItem(`deviceName:${device.host}:${device.port}`) || "";
     }
 
     /**
-     * @param {Device} device
+     * @param {ApiDevice} device
      * @param {string} name
      */
     function setName(device, name) {

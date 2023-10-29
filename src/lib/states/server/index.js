@@ -3,7 +3,7 @@ import c from "../../constants.json";
 import { writable, get } from "svelte/store";
 
 /**
- * @typedef Server
+ * @typedef StateServerData
  * @type {{
  *  host: string;
  *  port: number;
@@ -11,7 +11,7 @@ import { writable, get } from "svelte/store";
  * }}
  *
  * @typedef StateServer
- * @type {import("svelte/store").Writable<Server>}
+ * @type {import("svelte/store").Writable<StateServerData>}
  */
 
 const storageKey = "server";
