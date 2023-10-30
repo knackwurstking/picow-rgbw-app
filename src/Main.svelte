@@ -241,7 +241,7 @@
             >
                 <figure style="height: 100%;">
                     <div
-                        class="flex"
+                        style:display="flex"
                         style:flex-direction="row"
                         style:height="100%"
                     >
