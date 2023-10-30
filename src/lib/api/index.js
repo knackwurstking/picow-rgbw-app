@@ -24,19 +24,32 @@ import { States } from "../../lib";
  *
  * @typedef ApiColor
  * @type {{
- *  r: number;
- *  g: number;
- *  b: number;
+ *  r: ApiDevicePinDuty;
+ *  g: ApiDevicePinDuty;
+ *  b: ApiDevicePinDuty;
  * }}
  *
  * @typedef ApiColorRequest 
  * @type {{
  *  addr: string[];
- *  color: ApiColor;
+ *  color: ApiColor & { w: ApiDevicePinDuty };
  * }}
  */
 
 const server = States.server.create();
+
+/**
+ * @param {number} r
+ * @param {number} g
+ * @param {number} b
+ */
+export function newColor(r, g, b) {
+    return {
+        r: r || 0,
+        g: g || 0,
+        b: b || 0,
+    };
+}
 
 /**
  * @param {ApiDevice} device
@@ -71,7 +84,7 @@ export async function setColor(color, ...devices) {
     /** @type {ApiColorRequest} */
     const data = {
         addr: devices.map(d => `${d.host}:${d.port}`),
-        color: color,
+        color: addW(color),
     };
 
     const url = `${server.getOrigin()}${c.route.color}`;
@@ -96,4 +109,16 @@ async function handleError(response, url) {
     if (m) throw `request error: "${url}" [${response.status}]: ${m}`;
 
     throw `request error: "${url}" [${response.status}]`;
+}
+
+/**
+ * @param {ApiColor} c
+ * @returns {ApiColor & { w: ApiDevicePinDuty }}
+ */
+function addW(c) {
+    return {
+        ...c,
+        w: !!(Object.values(c).filter(color => color !== c.r)).length
+            ? 0 : c.r,
+    };
 }
