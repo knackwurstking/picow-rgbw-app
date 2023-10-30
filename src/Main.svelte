@@ -10,6 +10,15 @@
     } from "svelte-css";
 
     import { Components, States, Api } from "./lib";
+    import { newColor } from "./lib/api";
+
+    /**
+     * @typedef ApiDevice
+     * @type {import("./lib/api").ApiDevice}
+     *
+     * @typedef ApiDevicePinDuty
+     * @type {import("./lib/api").ApiDevicePinDuty}
+     */
 
     /***********
      * Bindings
@@ -18,14 +27,6 @@
     /** @type {Components.DeviceSettingsDialog} */
     let deviceSettingsDialog;
 
-    /**
-     * @typedef ApiDevice
-     * @type {import("./lib/api").ApiDevice}
-     *
-     * @typedef Color
-     * @type {import("./lib/states/color-storage").Color}
-     */
-
     /***********************
      * Variable Definitions
      ***********************/
@@ -33,36 +34,57 @@
     /** @type {ApiDevice[]} */
     let selected = [];
 
-    /** @type {Color} */
-    let activeStorageColor = { r: 0, g: 0, b: 0 };
-    $: activeStorageColor && handleActiveStorgeColorChange(activeStorageColor);
-
     let brightness = 100;
     $: typeof brightness === "number" && handleBrightnessChange(brightness);
+
     let r = 100;
     let g = 100;
     let b = 100;
     $: r && g && b && handleRGBChange(r, g, b);
 
+    /***************
+     * Store: color
+     ***************/
+
+    let color = States.color.create();
+    $: color && subscribeToColor;
+
+    /****************
+     * Store: server
+     ****************/
+
+    let server = States.server.create();
+    $: server && subscribetoServer();
+
+    /*****************
+     * Store: devices
+     *****************/
+
+    let devices = States.devices.create();
+
+    /**********************
+     * Store: colorStorage
+     **********************/
+
+    let colorStorage = States.colorStorage.create();
+
+    /***********************
+     * Function Definitions
+     ***********************/
 
     /**
-     * @param {Color} c
+     * @param {ApiDevicePinDuty} r
+     * @param {ApiDevicePinDuty} g
+     * @param {ApiDevicePinDuty} b
      */
-    function handleActiveStorgeColorChange(c) {
-        if (!c.r && !c.g && !c.b) return;
-
-        r = c.r || 0;
-        g = c.g || 0;
-        b = c.b || 0;
-
-        brightness = Math.min(...([r, g, b].filter(c => c > 0)));
-    }
-
     function handleRGBChange(r, g, b) {
         brightness = Math.min(...([r, g, b].filter(c => c > 0)));
-        activeStorageColor = { r, g, b };
+        color.set({ r, g, b })
     }
 
+    /**
+     * @param {number} brightness
+     */
     function handleBrightnessChange(brightness) {
         const rgb = [r, g, b].filter(c => c > 0);
         const min = Math.min(...rgb);
@@ -80,13 +102,19 @@
         }
     }
 
-    /****************
-     * Store: server
-     ****************/
+    async function subscribeToColor() {
+        color.subscribe((color) => {
+            if (!color.r && !color.g && !color.b) return;
 
-    let server = States.server.create();
-    $: server && initServer();
-    function initServer() {
+            r = color.r || 0;
+            g = color.g || 0;
+            b = color.b || 0;
+
+            brightness = Math.min(...([r, g, b].filter(c => c > 0)));
+        });
+    }
+
+    function subscribetoServer() {
         server.subscribe(() => {
             Api.getDevices()
                 .then((result) => devices.set(
@@ -106,18 +134,6 @@
                 });
         });
     }
-
-    /*****************
-     * Store: devices
-     *****************/
-
-    let devices = States.devices.create();
-
-    /**********************
-     * Store: colorStorage
-     **********************/
-
-    let colorStorage = States.colorStorage.create();
 </script>
 
 <main class="container">
@@ -166,7 +182,6 @@
                             />
 
                             <div style="width: fit-content; user-select: none; font-size: .9em;">
-                                <!-- TODO: maybe need an #if device here? -->
                                 <pre
                                     style:margin-left="var(--spacing)"
                                 >[{Api.getColorArray(device).join(", ")}]</pre>
@@ -231,15 +246,15 @@
             >
                 <figure style="height: 100%;">
                     <Container.Flex direction="row" height="100%">
-                        {#each $colorStorage as color}
+                        {#each $colorStorage as c}
                             <!-- svelte-ignore a11y-click-events-have-key-events -->
                             <!-- svelte-ignore a11y-no-static-element-interactions -->
                             <div
                                 class="color has-small-margin has-small-padding"
                                 class:checked={
-                                    activeStorageColor.r === color.r &&
-                                    activeStorageColor.g === color.g &&
-                                    activeStorageColor.b === color.b
+                                    $color.r === c.r &&
+                                    $color.g === c.g &&
+                                    $color.b === c.b
                                 }
                                 style={
                                     "height: calc(100% - var(--spacing));" +
@@ -250,20 +265,20 @@
                                 }
                                 on:click={() => {
                                     if (
-                                        activeStorageColor.r === color.r &&
-                                        activeStorageColor.g === color.g &&
-                                        activeStorageColor.b === color.b
+                                        $color.r === c.r &&
+                                        $color.g === c.g &&
+                                        $color.b === c.b
                                     ) {
-                                        activeStorageColor = { r: 0, g: 0, b: 0 };
+                                        color.set(Api.newColor(0, 0, 0));
                                     } else {
-                                        activeStorageColor = color;
+                                        color.set(Api.newColor(c.r, c.g, c.b));
                                     }
                                 }}
                             >
                                 <div
                                     class="background"
                                     style={
-                                        `background-color: rgb(${color.r * 2.5}, ${color.g * 2.5}, ${color.b * 2.5});` +
+                                        `background-color: rgb(${c.r * 2.5}, ${c.g * 2.5}, ${c.b * 2.5});` +
                                         "width: 100%; height: 100%;" +
                                         "border-radius: var(--radius);"
                                     }
