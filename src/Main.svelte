@@ -139,7 +139,10 @@
     }
 </script>
 
-<Container.Root>
+<Container.Root
+    style="overflow-y: auto; scroll-behavior: smooth;"
+    height="calc(100% - 3.5em)"
+>
     <article class="devices">
         <section class="header">
             <h2>Devices</h2>
@@ -344,12 +347,6 @@
 <Components.DeviceSettingsDialog bind:this={deviceSettingsDialog} />
 
 <style>
-    main {
-        height: calc(100% - 3.5em);
-        overflow-y: auto;
-        scroll-behavior: smooth;
-    }
-
     .devices .devices-list .device {
         cursor: pointer;
     }
