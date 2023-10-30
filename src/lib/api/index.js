@@ -64,6 +64,8 @@ export function getColorArray(device) {
  */
 export async function getDevices() {
     const url = `${server.getOrigin()}${c.route.devices}`;
+    console.log(`[api] get devices from ${url}`);
+
     const r = await fetch(url);
     if (r.ok) {
         try {
@@ -88,6 +90,8 @@ export async function setColor(color, ...devices) {
     };
 
     const url = `${server.getOrigin()}${c.route.color}`;
+    console.log(`[api] set color to ${url} for ${data.addr.join(", ")}`);
+
     const r = await fetch(url, {
         method: "POST",
         body: JSON.stringify(data),
