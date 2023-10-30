@@ -5,12 +5,10 @@
 
     import {
         Button,
-        Container,
         Text
     } from "svelte-css";
 
     import { Components, States, Api } from "./lib";
-    import { newColor } from "./lib/api";
 
     /**
      * @typedef ApiDevice
@@ -139,9 +137,11 @@
     }
 </script>
 
-<Container.Root
-    style="overflow-y: auto; scroll-behavior: smooth;"
-    height="calc(100% - 3.5em)"
+<main
+    class="container"
+    style:height="calc(100% - 3.5em)"
+    style:overflow-y="auto"
+    style:scroll-behavior="smooth"
 >
     <article class="devices">
         <section class="header">
@@ -214,7 +214,7 @@
 
         <section>
             <div class="actions has-margin" style="display: flex; justify-content: flex-end;">
-                <Container.Group style="font-size: 1.5em;">
+                <div class="group" style="font-size: 1.5em;">
                     <Button.Icon
                         on:click={async () => colorStorage.add({ r, g, b })}
                     >
@@ -227,7 +227,7 @@
                     >
                         <TrashIcon width="100%" height="100%" />
                     </Button.Icon>
-                </Container.Group>
+                </div>
             </div>
 
             <div
@@ -239,7 +239,11 @@
                 }
             >
                 <figure style="height: 100%;">
-                    <Container.Flex direction="row" height="100%">
+                    <div
+                        class="flex"
+                        style:flex-direction="row"
+                        style:height="100%"
+                    >
                         {#each $colorStorage as c}
                             <!-- svelte-ignore a11y-click-events-have-key-events -->
                             <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -279,7 +283,7 @@
                                 />
                             </div>
                         {/each}
-                    </Container.Flex>
+                    </div>
                 </figure>
             </div>
         </section>
@@ -344,7 +348,7 @@
             </Text.Label>
         </section>
     </article>
-</Container.Root>
+</main>
 
 <Components.DeviceSettingsDialog bind:this={deviceSettingsDialog} />
 

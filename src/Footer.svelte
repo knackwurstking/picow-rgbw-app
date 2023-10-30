@@ -2,7 +2,6 @@
     import SettingsIcon from "svelte-material-icons/CogOutline.svelte";
 
     import {
-        Container,
         Button,
     } from "svelte-css";
 
@@ -50,8 +49,11 @@
     }
 </script>
 
-<Container.Root height="3.5em">
-    <Container.Group
+<footer
+    class="container"
+    style:height="3.5em"
+>
+    <div class="group"
         style={
             "width: 100%;" +
             "height: 100%;"
@@ -93,7 +95,7 @@
         >
             ON/SET
         </Button.Root>
-    </Container.Group>
-</Container.Root>
+    </div>
+</footer>
 
 <Components.SettingsDialog bind:this={settingsDialog} />
