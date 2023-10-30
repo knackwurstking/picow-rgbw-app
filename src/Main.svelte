@@ -302,10 +302,7 @@
                 <Input.Slider
                     min={0}
                     max={100}
-                    value={brightness}
-                    on:change={({ detail }) => {
-                        brightness = detail;
-                    }}
+                    bind:value={brightness}
                 />
             </Text.Label>
 
@@ -319,10 +316,7 @@
                 <Input.Slider
                     min={0}
                     max={100}
-                    value={r}
-                    on:change={({ detail }) => {
-                        r = detail;
-                    }}
+                    bind:value={r}
                 />
             </Text.Label>
 
@@ -334,10 +328,7 @@
                 <Input.Slider
                     min={0}
                     max={100}
-                    value={g}
-                    on:change={({ detail }) => {
-                        g = detail;
-                    }}
+                    bind:value={g}
                 />
             </Text.Label>
 
@@ -349,10 +340,7 @@
                 <Input.Slider
                     min={0}
                     max={100}
-                    value={b}
-                    on:change={({ detail }) => {
-                        b = detail;
-                    }}
+                    bind:value={b}
                 />
             </Text.Label>
         </section>
