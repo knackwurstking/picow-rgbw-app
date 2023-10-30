@@ -6,7 +6,7 @@
         Button
     } from "svelte-css";
 
-    import { Components } from "./lib";
+    import { Components, Api, States } from "./lib";
 
     /***********
      * Bindings
@@ -14,6 +14,13 @@
 
     /** @type {Components.SettingsDialog} */
     let settingsDialog;
+
+    /*****************
+     * Store: devices
+     *****************/
+
+    let devices = States.devices.create();
+    let color = States.color.create();
 
     /***********************
      * Function Definitions
@@ -24,11 +31,11 @@
     }
 
     async function clickOff() {
-        // TODO: turn off all selected devices
+        await Api.setColor(Api.newColor(0, 0, 0), ...$devices);
     }
 
     async function clickSet() {
-        // TODO: set color to all selected devices
+        await Api.setColor($color)
     }
 </script>
 
