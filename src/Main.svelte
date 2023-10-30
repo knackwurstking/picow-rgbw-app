@@ -151,51 +151,53 @@
         <section class="has-padding">
             {#if $devices.length > 0}
                 <ul class="devices-list">
-                    {#each $devices as device}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                        <li
-                            class="device has-padding"
-                            class:checked={selected.contains(device)}
-                            on:click={() => {
-                                if (selected.contains(device)) {
-                                    selected.remove(device);
-                                } else {
-                                    selected.add(device);
-                                }
-                            }}
-                        >
-                            <div class="background" />
-
-                            <Text.Label
-                                class="has-padding"
-                                primary={devices.getName(device)}
-                                secondary={`${device.host}:${device.port}`}
-                            />
-
-                            <div style="width: fit-content; user-select: none; font-size: .9em;">
-                                <pre
-                                    style:margin-left="var(--spacing)"
-                                >[{Api.getColorArray(device).join(", ")}]</pre>
-                            </div>
-
-                            <Button.Icon
-                                style={
-                                    "position: absolute;" +
-                                    "top: 0; right: 0; height: 100%;" +
-                                    "border-radius: 0;" +
-                                    "border-left: var(--border-width) solid hsl(var(--border));"
-                                }
-                                ghost
-                                on:click={(ev) => {
-                                    ev.stopPropagation();
-                                    deviceSettingsDialog.open();
+                    {#key $selected}
+                        {#each $devices as device}
+                            <!-- svelte-ignore a11y-click-events-have-key-events -->
+                            <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                            <li
+                                class="device has-padding"
+                                class:checked={selected.contains(device)}
+                                on:click={() => {
+                                    if (selected.contains(device)) {
+                                        selected.remove(device);
+                                    } else {
+                                        selected.add(device);
+                                    }
                                 }}
                             >
-                                <DeviceSettingsIcon />
-                            </Button.Icon>
-                        </li>
-                    {/each}
+                                <div class="background" />
+
+                                <Text.Label
+                                    class="has-padding"
+                                    primary={devices.getName(device)}
+                                    secondary={`${device.host}:${device.port}`}
+                                />
+
+                                <div style="width: fit-content; user-select: none; font-size: .9em;">
+                                    <pre
+                                        style:margin-left="var(--spacing)"
+                                    >[{Api.getColorArray(device).join(", ")}]</pre>
+                                </div>
+
+                                <Button.Icon
+                                    style={
+                                        "position: absolute;" +
+                                        "top: 0; right: 0; height: 100%;" +
+                                        "border-radius: 0;" +
+                                        "border-left: var(--border-width) solid hsl(var(--border));"
+                                    }
+                                    ghost
+                                    on:click={(ev) => {
+                                        ev.stopPropagation();
+                                        deviceSettingsDialog.open();
+                                    }}
+                                >
+                                    <DeviceSettingsIcon />
+                                </Button.Icon>
+                            </li>
+                        {/each}
+                    {/key}
                 </ul>
             {:else}
                 <div class="has-padding is-italic is-text-center">
