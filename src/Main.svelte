@@ -47,14 +47,14 @@
      ***************/
 
     let color = States.color.create();
-    $: color && subscribeToColor;
+    $: $color && subscribeToColor();
 
     /****************
      * Store: server
      ****************/
 
     let server = States.server.create();
-    $: server && subscribetoServer();
+    $: $server && subscribeToServer();
 
     /*****************
      * Store: devices
@@ -114,7 +114,7 @@
         });
     }
 
-    function subscribetoServer() {
+    function subscribeToServer() {
         server.subscribe(() => {
             Api.getDevices()
                 .then((result) => devices.set(
