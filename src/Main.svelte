@@ -139,7 +139,7 @@
     }
 </script>
 
-<main class="container">
+<Container.Root>
     <article class="devices">
         <section class="header">
             <h2>Devices</h2>
@@ -339,7 +339,7 @@
             </Text.Label>
         </section>
     </article>
-</main>
+</Container.Root>
 
 <Components.DeviceSettingsDialog bind:this={deviceSettingsDialog} />
 
