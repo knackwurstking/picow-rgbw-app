@@ -5,7 +5,8 @@
 
     import {
         Button,
-        Text
+        Text,
+        Input
     } from "svelte-css";
 
     import { Components, States, Api } from "./lib";
@@ -298,11 +299,13 @@
             <Text.Label
                 useLabel
             >
-                <input
-                    type="range"
+                <Input.Slider
                     min={0}
                     max={100}
-                    bind:value={brightness}
+                    value={brightness}
+                    on:change={({ detail }) => {
+                        brightness = detail;
+                    }}
                 />
             </Text.Label>
 
@@ -313,11 +316,13 @@
                 useLabel
             >
                 <code slot="secondary">{r.toString()}</code>
-                <input
-                    type="range"
+                <Input.Slider
                     min={0}
                     max={100}
-                    bind:value={r}
+                    value={r}
+                    on:change={({ detail }) => {
+                        r = detail;
+                    }}
                 />
             </Text.Label>
 
@@ -326,11 +331,13 @@
                 useLabel
             >
                 <code slot="secondary">{g.toString()}</code>
-                <input
-                    type="range"
+                <Input.Slider
                     min={0}
                     max={100}
-                    bind:value={g}
+                    value={g}
+                    on:change={({ detail }) => {
+                        g = detail;
+                    }}
                 />
             </Text.Label>
 
@@ -339,11 +346,13 @@
                 useLabel
             >
                 <code slot="secondary">{b.toString()}</code>
-                <input
-                    type="range"
+                <Input.Slider
                     min={0}
                     max={100}
-                    bind:value={b}
+                    value={b}
+                    on:change={({ detail }) => {
+                        b = detail;
+                    }}
                 />
             </Text.Label>
         </section>
