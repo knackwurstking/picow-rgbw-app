@@ -3,7 +3,7 @@
 
     import {
         Container,
-        Button
+        Button,
     } from "svelte-css";
 
     import { Components, Api, States } from "./lib";
@@ -16,10 +16,21 @@
     let settingsDialog;
 
     /*****************
+     * Store: selected
+     *****************/
+
+    let selected = States.selected.create();
+
+    /*****************
      * Store: devices
      *****************/
 
     let devices = States.devices.create();
+
+    /***************
+     * Store: color
+     ***************/
+
     let color = States.color.create();
 
     /***********************
@@ -31,11 +42,11 @@
     }
 
     async function clickOff() {
-        await Api.setColor(Api.newColor(0, 0, 0), ...$devices);
+        await Api.setColor(Api.newColor(0, 0, 0), ...$selected);
     }
 
     async function clickSet() {
-        await Api.setColor($color)
+        await Api.setColor($color, ...$selected);
     }
 </script>
 

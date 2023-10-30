@@ -31,9 +31,6 @@
      * Variable Definitions
      ***********************/
 
-    /** @type {ApiDevice[]} */
-    let selected = [];
-
     let brightness = 100;
     $: typeof brightness === "number" && handleBrightnessChange(brightness);
 
@@ -55,6 +52,12 @@
 
     let server = States.server.create();
     $: $server && subscribeToServer();
+
+    /******************
+     * Store: selected
+     ******************/
+
+    let selected = States.selected.create();
 
     /*****************
      * Store: devices
@@ -150,26 +153,12 @@
                         <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                         <li
                             class="device has-padding"
-                            class:checked={
-                                !!selected.find(
-                                    d => (d.host === device.host && d.port === device.port)
-                                )
-                            }
+                            class:checked={selected.contains(device)}
                             on:click={() => {
-                                const i = selected.findIndex(
-                                    (d) => (d.host === device.host && d.port === device.port)
-                                );
-
-                                if (i > -1) {
-                                    selected = [
-                                        ...selected.slice(0, i),
-                                        ...selected.slice(i+1),
-                                    ];
+                                if (selected.contains(device)) {
+                                    selected.remove(device);
                                 } else {
-                                    selected = [
-                                        ...selected,
-                                        device,
-                                    ];
+                                    selected.add(device);
                                 }
                             }}
                         >
