@@ -14,7 +14,7 @@ const storageKey = "colorStorage";
 const colorStorage = writable((() => {
     return JSON.parse(
         localStorage.getItem(storageKey) ||
-            JSON.stringify([{ r: 100, g: 100, b: 100, w: 100 }])
+            JSON.stringify([{ r: 100, g: 100, b: 100 }])
     );
 })());
 
