@@ -130,9 +130,15 @@
 
             Api.WebSocket.connect(server);
 
-            Api.WebSocket.on(Api.WebSocket.events.devices.updated, onDevicesUpdated);
+            Api.WebSocket.on(
+                Api.WebSocket.events.devices.updated,
+                onDevicesUpdated
+            );
             cleanUp.push(() => {
-                Api.WebSocket.off(Api.WebSocket.events.devices.updated, onDevicesUpdated);
+                Api.WebSocket.off(
+                    Api.WebSocket.events.devices.updated,
+                    onDevicesUpdated
+                );
             });
 
             // TODO: init all other events
