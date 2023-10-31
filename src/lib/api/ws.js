@@ -93,10 +93,18 @@ export function connect(server) {
     connectToServer();
 }
 
-export function on() {
+/**
+ * @param {string} event
+ * @param {(data: any) => void|Promise<void>} listener 
+ */
+export function on(event, listener) {
     // TODO: ...
 }
 
-export function off() {
+/**
+ * @param {string} event
+ * @param {(data: any) => void|Promise<void>} listener 
+ */
+export function off(event, listener) {
     // TODO: ...
 }
