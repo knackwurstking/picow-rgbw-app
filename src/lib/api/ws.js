@@ -40,7 +40,7 @@ export const events = {
 export function connect(server) {
     const fetchDevices = async () => {
         try {
-            const result = await Api.getDevices()
+            const result = await Api.getDevices(server)
             devices.set(result.map(
                 /** @param {ApiDevice} r */
                 (r) => ({

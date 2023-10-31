@@ -15,16 +15,16 @@
     let settingsDialog;
 
     /*****************
+     * Store: server 
+     *****************/
+
+    let server = States.server.create();
+
+    /*****************
      * Store: selected
      *****************/
 
     let selected = States.selected.create();
-
-    /*****************
-     * Store: devices
-     *****************/
-
-    let devices = States.devices.create();
 
     /***************
      * Store: color
@@ -41,11 +41,11 @@
     }
 
     async function clickOff() {
-        await Api.setColor(Api.newColor(0, 0, 0), ...$selected);
+        await Api.setColor($server, Api.newColor(0, 0, 0), ...$selected);
     }
 
     async function clickSet() {
-        await Api.setColor($color, ...$selected);
+        await Api.setColor($server, $color, ...$selected);
     }
 </script>
 

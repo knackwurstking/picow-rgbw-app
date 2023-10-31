@@ -1,7 +1,5 @@
 import c from "../constants.json";
 
-import { States } from "../../lib";
-
 /**
  * @typedef ApiDevicePinNumber
  * @type {import(".").ApiDevicePinNumber}
@@ -20,9 +18,10 @@ import { States } from "../../lib";
  *
  * @typedef ApiColorRequest 
  * @type {import(".").ApiColorRequest}
+ *
+ * @typedef ServerData
+ * @type {import("../states/server").StateServerData}
  */
-
-const server = States.server.create();
 
 /**
  * @param {number} r
@@ -46,10 +45,11 @@ export function getColorArray(device) {
 }
 
 /**
+ * @param {ServerData} server
  * @returns {Promise<ApiDevice[]>}
  */
-export async function getDevices() {
-    const url = `${server.getOrigin()}${c.route.devices}`;
+export async function getDevices(server) {
+    const url = `${server.protocol}//${server.host}:${server.port}${c.route.devices}`;
     console.log(`[api] get devices from ${url}`);
 
     const r = await fetch(url);
@@ -65,17 +65,18 @@ export async function getDevices() {
 }
 
 /**
+ * @param {ServerData} server
  * @param {ApiColor} color 
  * @param {...ApiDevice} devices
  */
-export async function setColor(color, ...devices) {
+export async function setColor(server, color, ...devices) {
     /** @type {ApiColorRequest} */
     const data = {
         addr: devices.map(d => `${d.host}:${d.port}`),
         color: addW(color),
     };
 
-    const url = `${server.getOrigin()}${c.route.color}`;
+    const url = `${server.protocol}//${server.host}:${server.port}${c.route.color}`;
     console.log(`[api] set color to ${url} for ${data.addr.join(", ")}`);
 
     const r = await fetch(url, {

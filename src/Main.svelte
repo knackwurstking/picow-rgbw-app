@@ -124,10 +124,10 @@
             // TODO: ...
         };
 
-        server.subscribe(() => {
+        server.subscribe((server) => {
             cleanUp.forEach(fn => fn());
 
-            Api.WebSocket.connect();
+            Api.WebSocket.connect(server);
 
             Api.WebSocket.on(Api.WebSocket.devices.updated, onDevicesUpdated);
             cleanUp.push(() => {
