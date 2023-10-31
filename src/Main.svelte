@@ -1,4 +1,5 @@
 <script>
+    import { onDestroy } from "svelte";
     import DeviceSettingsIcon from "svelte-material-icons/DotsVertical.svelte";
     import AddIcon from "svelte-material-icons/PlusCircleOutline.svelte";
     import TrashIcon from "svelte-material-icons/TrashCanOutline.svelte";
@@ -29,6 +30,8 @@
     /***********************
      * Variable Definitions
      ***********************/
+
+    let cleanUp = [];
 
     let brightness = 100;
     $: typeof brightness === "number" && handleBrightnessChange(brightness);
@@ -117,7 +120,23 @@
     }
 
     function subscribeToServer() {
+        const onDevicesUpdated = (ws) => {
+            // TODO: ...
+        };
+
         server.subscribe(() => {
+            cleanUp.forEach(fn => fn());
+
+            Api.WebSocket.start();
+
+            Api.WebSocket.on(Api.WebSocket.devices.updated, onDevicesUpdated);
+            cleanUp.push(() => {
+                Api.WebSocket.off(Api.WebSocket.devices.updated, onDevicesUpdated);
+            });
+
+            // TODO: init all other devices
+
+            // TODO: move this to websocket connect handler
             Api.getDevices()
                 .then((result) => devices.set(
                     result.map(
@@ -136,6 +155,8 @@
                 });
         });
     }
+
+    onDestroy(() => cleanUp.forEach(fn => fn()));
 </script>
 
 <main
