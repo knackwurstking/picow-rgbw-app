@@ -120,7 +120,8 @@
     }
 
     function subscribeToServer() {
-        const onDevicesUpdated = (ws) => {
+        const onDevicesUpdated = (data) => {
+            console.debug("[main] onDevicesUpdated:", data);
             // TODO: ...
         };
 
