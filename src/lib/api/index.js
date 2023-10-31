@@ -20,6 +20,7 @@ import { States } from "../../lib";
  *  host: string;
  *  port: number;
  *  data: ApiDevicePin[];
+ *  offline: boolean;
  * }}
  *
  * @typedef ApiColor

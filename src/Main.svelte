@@ -181,6 +181,19 @@
                                     >[{Api.getColorArray(device).join(", ")}]</pre>
                                 </div>
 
+                                <span
+                                    style={
+                                        "position: absolute;" +
+                                        "top: var(--spacing);" +
+                                        "right: calc(2.5em + var(--spacing));" +
+                                        "width: .5em;" +
+                                        "height: .5em;" +
+                                        "border-radius: 50%;" +
+                                        "filter: blur(3px);"
+                                    }
+                                    style:background-color={device.offline ? "red" : "green"}
+                                />
+
                                 <Button.Icon
                                     style={
                                         "position: absolute;" +
@@ -379,10 +392,6 @@
     .color-storage .data .color.checked,
     .color-storage .data .color.checked .background {
         border-color: hsl(var(--primar)) !important;
-    }
-
-    .color-picker input {
-        width: 100%;
     }
 
     .color-picker code {
