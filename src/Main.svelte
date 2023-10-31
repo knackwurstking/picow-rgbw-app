@@ -127,32 +127,14 @@
         server.subscribe(() => {
             cleanUp.forEach(fn => fn());
 
-            Api.WebSocket.start();
+            Api.WebSocket.connect();
 
             Api.WebSocket.on(Api.WebSocket.devices.updated, onDevicesUpdated);
             cleanUp.push(() => {
                 Api.WebSocket.off(Api.WebSocket.devices.updated, onDevicesUpdated);
             });
 
-            // TODO: init all other devices
-
-            // TODO: move this to websocket connect handler
-            Api.getDevices()
-                .then((result) => devices.set(
-                    result.map(
-                        /** @param {ApiDevice} r */
-                        (r) => ({
-                            ...r,
-                            name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",
-                        })
-                    ) || []
-                ))
-                .catch((err) => {
-                    // TODO: Notification
-                    devices.set([]);
-
-                    console.warn("[main]", err);
-                });
+            // TODO: init all other events
         });
     }
 
