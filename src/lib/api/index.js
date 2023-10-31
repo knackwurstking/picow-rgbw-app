@@ -1,5 +1,5 @@
 export * from "./api";
-export * from "./ws";
+export * as WebSocket from "./ws";
 
 /**
  * @typedef ApiDevicePinNumber
