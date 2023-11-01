@@ -2,9 +2,9 @@
     import {
         Button,
         Dialog,
-        Text,
         Input,
     } from "svelte-css";
+
     import { States } from "../..";
 
     /***********
