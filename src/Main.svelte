@@ -119,31 +119,27 @@
         });
     }
 
-    function subscribeToServer() {
+    async function subscribeToServer() {
         const handlers = {};
         let event = Api.WebSocket.events.devices.updated;
-        handlers[`${event}`] = async (data) => {
+        handlers[`${event}`] = async () => {
             console.debug(`[main] event "${event}"`);
-            console.table(data)
-            // TODO: ...
+            await fetchDevices();
         },
         event = Api.WebSocket.events.device.error;
-        handlers[`${event}`] = async (data) => {
+        handlers[`${event}`] = async (/**@type {ApiDevice}*/device) => {
             console.debug(`[main] event "${event}"`);
-            console.table(data)
-            // TODO: ...
+            devices.updateDevice(device);
         },
         event = Api.WebSocket.events.device.online;
-        handlers[`${event}`] = async (data) => {
+        handlers[`${event}`] = async (/**@type {ApiDevice}*/device) => {
             console.debug(`[main] event "${event}"`);
-            console.table(data)
-            // TODO: ...
+            devices.updateDevice(device);
         },
         event = Api.WebSocket.events.device.offline;
-        handlers[`${event}`] = async (data) => {
+        handlers[`${event}`] = async (/**@type {ApiDevice}*/device) => {
             console.debug(`[main] event "${event}"`);
-            console.table(data)
-            // TODO: ...
+            devices.updateDevice(device);
         },
         event = Api.WebSocket.events.color.changed;
         handlers[`${event}`] = async (/**@type {ApiDevice}*/device) => {
@@ -167,6 +163,24 @@
                 cleanUp.push(() => Api.WebSocket.off(event, handlers[event]));
             }
         });
+    }
+
+    async function fetchDevices() {
+        try {
+            const result = await Api.getDevices($server)
+            devices.set(result.map(
+                /** @param {ApiDevice} r */
+                (r) => ({
+                    ...r,
+                    name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",
+                })
+            ) || []);
+        } catch (err) {
+            // TODO: Notification
+            devices.set([]);
+
+            console.warn("[main]", err);
+        }
     }
 
     onDestroy(() => cleanUp.forEach(fn => fn()));
