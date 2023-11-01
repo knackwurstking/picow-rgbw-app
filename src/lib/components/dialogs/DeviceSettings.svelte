@@ -2,7 +2,9 @@
     import {
         Button,
         Dialog,
+        Text,
     } from "svelte-css";
+    import { States } from "../..";
 
     /***********
      * Bindings
@@ -11,15 +13,35 @@
     /** @type {Dialog.Root} */
     let dialog;
 
+    /***********************
+     * Variable Definitions
+     ***********************/
+
+    /** @type {import("../../api").Device | undefined} */
+    let device;
+    let name = "";
+
+    /*****************
+     * State: devices
+     *****************/
+
+    const devices = States.devices.create();
+
     /******************************
      * Function Export Definitions
      ******************************/
 
-    export async function open() {
+    /** @param {import("../../api").Device} d */
+    export async function open(d) {
+        if (!d) return;
+        device = d;
+        name = devices.getName(d);
         dialog.showModal();
     }
 
     export async function close() {
+        device = undefined;
+        name = "";
         dialog.close();
     }
 
@@ -28,7 +50,7 @@
      ***********************/
 
     async function clickSubmit() {
-        // TODO: write device settings to store and close the dialog
+        devices.setName(device, name);
         close();
     }
 </script>
@@ -40,7 +62,11 @@
     />
 
     <section>
-        <!-- TODO: device name change (input) -->
+        <Text.Label
+            secondary="Device Name"
+        >
+            <input value={name} placeholder={`${device?.host}:${device?.port}`} />
+        </Text.Label>
     </section>
 
     <Dialog.Footer>
