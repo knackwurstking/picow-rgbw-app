@@ -66,7 +66,7 @@ export function connect(server) {
         ws = new WebSocket(url);
 
         ws.onopen = (ev) => {
-            console.debug(`[api/ws] connection established to "ws://${url}"`);
+            console.debug(`[api/ws] connection established to "${url}"`);
             console.debug("[api/ws]", ev);
 
             fetchDevices();
@@ -78,14 +78,14 @@ export function connect(server) {
         };
 
         ws.onerror = (ev) => {
-            console.debug(`[api/ws] connection error to "ws://${url}`)
+            console.debug(`[api/ws] connection error to "${url}`)
             console.debug("[api/ws]", ev)
 
             ws.close();
         };
 
         ws.onclose = (ev) => {
-            console.debug(`[api/ws] close connection to "ws://${url}`)
+            console.debug(`[api/ws] close connection to "${url}`)
             console.debug("[api/ws]", ev)
 
             ws.close();
