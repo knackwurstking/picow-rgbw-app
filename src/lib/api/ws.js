@@ -7,6 +7,12 @@ import { Api, States } from "..";
  *
  * @typedef ApiDevice
  * @type {import(".").ApiDevice}
+ *
+ * @typedef WSMessageData
+ * @type {{
+ *  eventName: string;
+ *  data: any;
+ * }}
  */
 
 const devices = States.devices.create();
@@ -14,10 +20,6 @@ const devices = States.devices.create();
 /** @type {boolean} */
 export let connected = false;
 export let reconnectInterval = 1250;
-
-/** @type {WebSocket | undefined} */
-let ws;
-let interval;
 
 export const events = {
     devices: {
@@ -36,9 +38,20 @@ export const events = {
 };
 
 /**
+ * @type {{
+ *  [key: string]: ((data: any) => void|Promise<void>)[];
+ * }}
+ */
+const eventListener = {};
+
+/** @type {WebSocket | undefined} */
+let ws;
+let interval;
+
+/**
  * @param {ServerData} server
  */
-export function connect(server) {
+export async function connect(server) {
     const fetchDevices = async () => {
         try {
             const result = await Api.getDevices(server)
@@ -71,7 +84,12 @@ export function connect(server) {
             fetchDevices();
 
             ws.onmessage = (ev) => {
-                console.debug("[api/ws] message received", ev);
+                console.debug("[api/ws] message received");
+                /**
+                 * @type {WSMessageData}
+                 */
+                const data = JSON.parse(ev.data);
+                dispatch(data.eventName, data.data);
             };
         };
 
@@ -101,14 +119,41 @@ export function connect(server) {
  * @param {string} event
  * @param {(data: any) => void|Promise<void>} listener 
  */
-export function on(event, listener) {
-    // TODO: ...
+export async function on(event, listener) {
+    if (!eventListener[event]) eventListener[event] = [];
+    else {
+        for (const fn of eventListener[event]) {
+            if (fn === listener) return;
+        }
+    }
+
+    eventListener[event].push(listener);
 }
 
 /**
  * @param {string} event
  * @param {(data: any) => void|Promise<void>} listener 
  */
-export function off(event, listener) {
-    // TODO: ...
+export async function off(event, listener) {
+    let index = 0;
+    for (let i = 0; i < (eventListener[event] || []).length; i++) {
+        if (eventListener[event][i] === listener) {
+            index = i;
+        }
+    }
+
+    eventListener[event] = [
+        ...eventListener[event].slice(0, index),
+        ...eventListener[event].slice(index+1),
+    ];
+}
+
+/**
+ * @param {string} event
+ * @param {any} data
+ */
+export async function dispatch(event, data) {
+    for (const fn of eventListener[event] || []) {
+        fn(data);
+    }
 }
