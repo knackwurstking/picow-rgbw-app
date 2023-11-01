@@ -257,7 +257,7 @@
                                         "filter: blur(3px);"
                                     }
                                     style:background-color={
-                                        connected
+                                        !connected
                                             ? "yellow"
                                             : device.offline
                                                 ? "red"
