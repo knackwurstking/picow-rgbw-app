@@ -12,11 +12,12 @@ import { Api, States } from "..";
 const devices = States.devices.create();
 
 /** @type {boolean} */
-export const connected = false;
-export const reconnectIntervall = 1250;
+export let connected = false;
+export let reconnectIntervall = 1250;
 
 /** @type {WebSocket | undefined} */
 let ws;
+let intervall;
 
 export const events = {
     devices: {
@@ -57,6 +58,10 @@ export function connect(server) {
     }
 
     const connectToServer = () => {
+        if (intervall) clearInterval(intervall);
+        if (connected) ws.close();
+        if (!server.host && !server.port) return;
+
         const url = `ws://${server.host}:${server.port}${c.route.events}`;
         ws = new WebSocket(url);
 
@@ -82,12 +87,15 @@ export function connect(server) {
         ws.onclose = (ev) => {
             console.debug(`[api/ws] close connection to "ws://${url}`)
             console.debug("[api/ws]", ev)
-            // TODO: reconnect handling if server is offline
-        };
-    }
 
-    if (connected) {
-        ws.close();
+            ws.close();
+            connected = true;
+
+            intervall = setInterval(
+                () => connectToServer(),
+                reconnectIntervall
+            );
+        };
     }
 
     connectToServer();
