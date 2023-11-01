@@ -5,9 +5,6 @@ import { Api, States } from "..";
  * @typedef StateServerData
  * @type {import("../states/server").StateServerData}
  *
- * @typedef ApiDevice
- * @type {import(".").ApiDevice}
- *
  * @typedef WSMessageData
  * @type {{
  *  eventName: string;
@@ -56,7 +53,7 @@ export async function connect(server) {
         try {
             const result = await Api.getDevices(server)
             devices.set(result.map(
-                /** @param {ApiDevice} r */
+                /** @param {Api.Device} r */
                 (r) => ({
                     ...r,
                     name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",

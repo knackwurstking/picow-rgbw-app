@@ -2,36 +2,36 @@ export * from "./api";
 export * as WebSocket from "./ws";
 
 /**
- * @typedef ApiDevicePinNumber
+ * @typedef DevicePinNumber
  * @type {number}
  *
- * @typedef ApiDevicePinDuty
+ * @typedef DevicePinDuty
  * @type {number}
  *
- * @typedef ApiDevicePin
+ * @typedef DevicePin
  * @type {{
- *  duty: ApiDevicePinDuty;
- *  pin: ApiDevicePinNumber;
+ *  duty: DevicePinDuty;
+ *  pin: DevicePinNumber;
  * }}
  *
- * @typedef ApiDevice
+ * @typedef Device
  * @type {{
  *  host: string;
  *  port: number;
- *  data: ApiDevicePin[];
+ *  data: DevicePin[];
  *  offline: boolean;
  * }}
  *
- * @typedef ApiColor
+ * @typedef Color
  * @type {{
- *  r: ApiDevicePinDuty;
- *  g: ApiDevicePinDuty;
- *  b: ApiDevicePinDuty;
+ *  r: DevicePinDuty;
+ *  g: DevicePinDuty;
+ *  b: DevicePinDuty;
  * }}
  *
- * @typedef ApiColorRequest 
+ * @typedef ColorRequest 
  * @type {{
  *  addr: string[];
- *  color: ApiColor & { w: ApiDevicePinDuty };
+ *  color: Color & { w: DevicePinDuty };
  * }}
  */

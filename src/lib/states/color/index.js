@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 
 /**
  * @typedef Color
- * @type {import("../../api").ApiColor}
+ * @type {import("../../api").Color}
  *
  * @typedef StateColor
  * @type {import("svelte/store").Writable<Color>}

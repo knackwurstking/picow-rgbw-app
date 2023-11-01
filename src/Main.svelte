@@ -12,14 +12,6 @@
 
     import { Components, States, Api } from "./lib";
 
-    /**
-     * @typedef ApiDevice
-     * @type {import("./lib/api").ApiDevice}
-     *
-     * @typedef ApiDevicePinDuty
-     * @type {import("./lib/api").ApiDevicePinDuty}
-     */
-
     /***********
      * Bindings
      ***********/
@@ -78,9 +70,9 @@
      ***********************/
 
     /**
-     * @param {ApiDevicePinDuty} r
-     * @param {ApiDevicePinDuty} g
-     * @param {ApiDevicePinDuty} b
+     * @param {Api.DevicePinDuty} r
+     * @param {Api.DevicePinDuty} g
+     * @param {Api.DevicePinDuty} b
      */
     async function handleRGBChange(r, g, b) {
         brightness = Math.max(...([r, g, b].filter(c => c > 0)));
@@ -121,31 +113,41 @@
 
     async function subscribeToServer() {
         const handlers = {};
+
         let event = Api.WebSocket.events.devices.updated;
+        /** @type {() => Promise<void>} */
         handlers[`${event}`] = async () => {
             console.debug(`[main] event "${event}"`);
-            await fetchDevices();
-        },
+            fetchDevices();
+        };
+
         event = Api.WebSocket.events.device.error;
-        handlers[`${event}`] = async (/**@type {ApiDevice}*/device) => {
+        /** @type {(data: Api.Device) => Promise<void>} */
+        handlers[`${event}`] = async (device) => {
             console.debug(`[main] event "${event}"`);
             devices.updateDevice(device);
-        },
+        };
+
         event = Api.WebSocket.events.device.online;
-        handlers[`${event}`] = async (/**@type {ApiDevice}*/device) => {
+        /** @type {(data: Api.Device) => Promise<void>} */
+        handlers[`${event}`] = async (device) => {
             console.debug(`[main] event "${event}"`);
             devices.updateDevice(device);
-        },
+        };
+
         event = Api.WebSocket.events.device.offline;
-        handlers[`${event}`] = async (/**@type {ApiDevice}*/device) => {
+        /** @type {(data: Api.Device) => Promise<void>} */
+        handlers[`${event}`] = async (device) => {
             console.debug(`[main] event "${event}"`);
             devices.updateDevice(device);
-        },
+        };
+
         event = Api.WebSocket.events.color.changed;
-        handlers[`${event}`] = async (/**@type {ApiDevice}*/device) => {
+        /** @type {(data: Api.Device) => Promise<void>} */
+        handlers[`${event}`] = async (device) => {
             console.debug(`[main] event "${event}"`);
             devices.updateDevice(device);
-        },
+        };
 
         server.subscribe((server) => {
             cleanUp.forEach(fn => fn());
@@ -169,7 +171,7 @@
         try {
             const result = await Api.getDevices($server)
             devices.set(result.map(
-                /** @param {ApiDevice} r */
+                /** @param {Api.Device} r */
                 (r) => ({
                     ...r,
                     name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",

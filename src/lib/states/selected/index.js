@@ -2,7 +2,7 @@ import { writable, get } from "svelte/store";
 
 /**
  * @typedef Device
- * @type {import("../devices").ApiDevice}
+ * @type {import("../devices").Device}
  *
  * @typedef StateSelected
  * @type {import("svelte/store").Writable<Device[]>}

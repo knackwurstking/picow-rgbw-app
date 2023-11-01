@@ -1,23 +1,23 @@
 import c from "../constants.json";
 
 /**
- * @typedef ApiDevicePinNumber
- * @type {import(".").ApiDevicePinNumber}
+ * @typedef DevicePinNumber
+ * @type {import(".").DevicePinNumber}
  *
- * @typedef ApiDevicePinDuty
- * @type {import(".").ApiDevicePinDuty}
+ * @typedef DevicePinDuty
+ * @type {import(".").DevicePinDuty}
  *
- * @typedef ApiDevicePin
- * @type {import(".").ApiDevicePin}
+ * @typedef DevicePin
+ * @type {import(".").DevicePin}
  *
- * @typedef ApiDevice
- * @type {import(".").ApiDevice}
+ * @typedef Device
+ * @type {import(".").Device}
  *
- * @typedef ApiColor
- * @type {import(".").ApiColor}
+ * @typedef Color
+ * @type {import(".").Color}
  *
- * @typedef ApiColorRequest 
- * @type {import(".").ApiColorRequest}
+ * @typedef ColorRequest 
+ * @type {import(".").ColorRequest}
  *
  * @typedef StateServerData
  * @type {import("../states/server").StateServerData}
@@ -37,8 +37,8 @@ export function newColor(r, g, b) {
 }
 
 /**
- * @param {ApiDevice} device
- * @returns {ApiDevicePinDuty[]}
+ * @param {Device} device
+ * @returns {DevicePinDuty[]}
  */
 export function getColorArray(device) {
     return device.data.map(pin => pin.duty);
@@ -46,7 +46,7 @@ export function getColorArray(device) {
 
 /**
  * @param {StateServerData} server
- * @returns {Promise<ApiDevice[]>}
+ * @returns {Promise<Device[]>}
  */
 export async function getDevices(server) {
     const url = `${server.protocol}//${server.host}:${server.port}${c.route.devices}`;
@@ -66,11 +66,11 @@ export async function getDevices(server) {
 
 /**
  * @param {StateServerData} server
- * @param {ApiColor} color 
- * @param {...ApiDevice} devices
+ * @param {Color} color 
+ * @param {...Device} devices
  */
 export async function setColor(server, color, ...devices) {
-    /** @type {ApiColorRequest} */
+    /** @type {ColorRequest} */
     const data = {
         addr: devices.map(d => `${d.host}:${d.port}`),
         color: addW(color),
@@ -103,8 +103,8 @@ async function handleError(response, url) {
 }
 
 /**
- * @param {ApiColor} c
- * @returns {ApiColor & { w: ApiDevicePinDuty }}
+ * @param {Color} c
+ * @returns {Color & { w: DevicePinDuty }}
  */
 function addW(c) {
     return {
