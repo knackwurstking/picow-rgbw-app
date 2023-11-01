@@ -83,7 +83,7 @@
      * @param {ApiDevicePinDuty} b
      */
     function handleRGBChange(r, g, b) {
-        brightness = Math.min(...([r, g, b].filter(c => c > 0)));
+        brightness = Math.max(...([r, g, b].filter(c => c > 0)));
         color.set({ r, g, b })
     }
 
@@ -115,7 +115,7 @@
             g = color.g || 0;
             b = color.b || 0;
 
-            brightness = Math.min(...([r, g, b].filter(c => c > 0)));
+            brightness = Math.max(...([r, g, b].filter(c => c > 0)));
         });
     }
 
