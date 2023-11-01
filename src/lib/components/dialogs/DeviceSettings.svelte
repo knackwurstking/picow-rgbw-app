@@ -3,6 +3,7 @@
         Button,
         Dialog,
         Text,
+        Input,
     } from "svelte-css";
     import { States } from "../..";
 
@@ -62,11 +63,11 @@
     />
 
     <section>
-        <Text.Label
-            secondary="Device Name"
-        >
-            <input value={name} placeholder={`${device?.host}:${device?.port}`} />
-        </Text.Label>
+        <Input.Text
+            title="Device Name"
+            bind:value={name}
+            placeholder={`${device?.host}:${device?.port}`}
+        />
     </section>
 
     <Dialog.Footer>
