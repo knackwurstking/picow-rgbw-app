@@ -4,7 +4,7 @@
     import {
         Button,
         Dialog,
-        Text,
+        Input,
     } from "svelte-css";
 
     import { States } from "../../../lib";
@@ -53,7 +53,7 @@
      ***********************/
 
     async function validatePort() {
-        return (port >= 0 && port <= 65535);
+        invalidPort = !(port >= 0 && port <= 65535);
     }
 
     const clickSubmit = () => {
@@ -69,20 +69,20 @@
     />
 
     <section>
-        <!-- TODO: theme picker -->
-        <Text.Label
+        <Input.Text
             class="has-margin"
-            secondary="Api Server Host"
-        >
-            <input bind:value={host} />
-        </Text.Label>
+            title="Api Server Host"
+            bind:value={host}
+        />
 
-        <Text.Label
+        <Input.Number
             class="has-margin"
-            secondary="Api Server Port"
-        >
-            <input type="number" min={0} max={65535} bind:value={port} aria-invalid={invalidPort}/>
-        </Text.Label>
+            title="Api Server Port"
+            bind:value={port}
+            min={0}
+            max={65535}
+            invalid={invalidPort}
+        />
     </section>
 
     <Dialog.Footer>
