@@ -13,11 +13,11 @@ const devices = States.devices.create();
 
 /** @type {boolean} */
 export let connected = false;
-export let reconnectIntervall = 1250;
+export let reconnectInterval = 1250;
 
 /** @type {WebSocket | undefined} */
 let ws;
-let intervall;
+let interval;
 
 export const events = {
     devices: {
@@ -58,7 +58,7 @@ export function connect(server) {
     }
 
     const connectToServer = () => {
-        if (intervall) clearInterval(intervall);
+        if (interval) clearInterval(interval);
         if (connected) ws.close();
         if (!server.host && !server.port) return;
 
@@ -91,9 +91,9 @@ export function connect(server) {
             ws.close();
             connected = true;
 
-            intervall = setInterval(
+            interval = setInterval(
                 () => connectToServer(),
-                reconnectIntervall
+                reconnectInterval
             );
         };
     }
