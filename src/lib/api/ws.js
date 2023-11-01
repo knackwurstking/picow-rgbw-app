@@ -74,6 +74,7 @@ export async function connect(server) {
 
         ws.onopen = (ev) => {
             console.debug(`[api/ws] connection established to "${url}"`, ev);
+            dispatch("open");
 
             fetchDevices();
 
@@ -95,6 +96,7 @@ export async function connect(server) {
 
         ws.onclose = (ev) => {
             console.debug(`[api/ws] close connection to "${url}`, ev);
+            dispatch("close");
 
             ws.close();
             connected = true;

@@ -31,6 +31,8 @@
     let g = 100;
     let b = 100;
 
+    let connected = false;
+
     /***************
      * Store: color
      ***************/
@@ -90,13 +92,11 @@
             if (r > 0) r = r+diff;
             if (g > 0) g = g+diff;
             if (b > 0) b = b+diff;
-            return;
         } else if (!!rgb.find(c => c-diff <= 5)) {
             diff = 5-Math.min(...rgb);
             if (r > 0) r = r+diff;
             if (g > 0) g = g+diff;
             if (b > 0) b = b+diff;
-            return;
         } else {
             if (r > 0) r = r-diff;
             if (g > 0) g = g-diff;
@@ -169,6 +169,18 @@
                 Api.WebSocket.on(event, handlers[event]);
                 cleanUp.push(() => Api.WebSocket.off(event, handlers[event]));
             }
+
+            let listener = async () => {
+                connected = true;
+            };
+            Api.WebSocket.on("open", listener);
+            cleanUp.push(() => Api.WebSocket.off("open", listener));
+
+            listener = async () => {
+                connected = false;
+            };
+            Api.WebSocket.on("close", listener);
+            cleanUp.push(() => Api.WebSocket.off("close", listener));
         });
     }
 
@@ -183,10 +195,8 @@
                 })
             ) || []);
         } catch (err) {
-            // TODO: Notification
-            devices.set([]);
-
             console.warn("[main]", err);
+            devices.set([]);
         }
     }
 
@@ -246,7 +256,13 @@
                                         "border-radius: 50%;" +
                                         "filter: blur(3px);"
                                     }
-                                    style:background-color={device.offline ? "red" : "green"}
+                                    style:background-color={
+                                        connected
+                                            ? "yellow"
+                                            : device.offline
+                                                ? "red"
+                                                : "green"
+                                    }
                                 />
 
                                 <Button.Icon
