@@ -1,11 +1,8 @@
 import { writable } from "svelte/store";
 
 /**
- * @typedef Color
- * @type {import("../../api").Color}
- *
  * @typedef StateColorStorage
- * @type {import("svelte/store").Writable<Color[]>}
+ * @type {import("svelte/store").Writable<import("../../api").Color[]>}
  */
 
 const storageKey = "colorStorage";
@@ -24,7 +21,7 @@ colorStorage.subscribe((cs) => {
 
 export function create() {
     /**
-     * @param {Color} color
+     * @param {import("../../api").Color} color
      */
     function add({ r = 0, g = 0, b = 0}) {
         colorStorage.update((cs) => {
@@ -38,7 +35,7 @@ export function create() {
     }
 
     /**
-     * @param {Color} color
+     * @param {import("../../api").Color} color
      */
     function remove({ r = 0, g = 0, b = 0 }) {
         colorStorage.update((cs) => {

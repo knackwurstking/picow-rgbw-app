@@ -254,7 +254,7 @@
                                     ghost
                                     on:click={(ev) => {
                                         ev.stopPropagation();
-                                        deviceSettingsDialog.open();
+                                        deviceSettingsDialog.open(device);
                                     }}
                                 >
                                     <DeviceSettingsIcon />

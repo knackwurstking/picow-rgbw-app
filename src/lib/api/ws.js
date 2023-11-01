@@ -2,9 +2,6 @@ import c from "../constants.json";
 import { Api, States } from "..";
 
 /**
- * @typedef StateServerData
- * @type {import("../states/server").StateServerData}
- *
  * @typedef WSMessageData
  * @type {{
  *  eventName: string;
@@ -46,7 +43,7 @@ let ws;
 let interval;
 
 /**
- * @param {StateServerData} server
+ * @param {import("../states/server").StateServerData} server
  */
 export async function connect(server) {
     const fetchDevices = async () => {

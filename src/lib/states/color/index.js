@@ -1,11 +1,8 @@
 import { writable } from "svelte/store";
 
 /**
- * @typedef Color
- * @type {import("../../api").Color}
- *
  * @typedef StateColor
- * @type {import("svelte/store").Writable<Color>}
+ * @type {import("svelte/store").Writable<import("../../api").Color>}
  */
 
 const storageKey = "color";

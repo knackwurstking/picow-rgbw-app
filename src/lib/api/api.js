@@ -1,29 +1,6 @@
 import c from "../constants.json";
 
 /**
- * @typedef DevicePinNumber
- * @type {import(".").DevicePinNumber}
- *
- * @typedef DevicePinDuty
- * @type {import(".").DevicePinDuty}
- *
- * @typedef DevicePin
- * @type {import(".").DevicePin}
- *
- * @typedef Device
- * @type {import(".").Device}
- *
- * @typedef Color
- * @type {import(".").Color}
- *
- * @typedef ColorRequest 
- * @type {import(".").ColorRequest}
- *
- * @typedef StateServerData
- * @type {import("../states/server").StateServerData}
- */
-
-/**
  * @param {number} r
  * @param {number} g
  * @param {number} b
@@ -37,16 +14,16 @@ export function newColor(r, g, b) {
 }
 
 /**
- * @param {Device} device
- * @returns {DevicePinDuty[]}
+ * @param {import(".").Device} device
+ * @returns {import(".").DevicePinDuty[]}
  */
 export function getColorArray(device) {
     return device.data.map(pin => pin.duty);
 }
 
 /**
- * @param {StateServerData} server
- * @returns {Promise<Device[]>}
+ * @param {import("../states/server").StateServerData} server
+ * @returns {Promise<import(".").Device[]>}
  */
 export async function getDevices(server) {
     const url = `${server.protocol}//${server.host}:${server.port}${c.route.devices}`;
@@ -65,12 +42,12 @@ export async function getDevices(server) {
 }
 
 /**
- * @param {StateServerData} server
- * @param {Color} color 
- * @param {...Device} devices
+ * @param {import("../states/server").StateServerData} server
+ * @param {import(".").Color} color 
+ * @param {...import(".").Device} devices
  */
 export async function setColor(server, color, ...devices) {
-    /** @type {ColorRequest} */
+    /** @type {import(".").ColorRequest} */
     const data = {
         addr: devices.map(d => `${d.host}:${d.port}`),
         color: addW(color),
@@ -93,7 +70,7 @@ export async function setColor(server, color, ...devices) {
 
 /**
  * @param {Response} response
- * @param {string} url 
+ * @param {string} url
  */
 async function handleError(response, url) {
     let m = await response.text();
@@ -103,8 +80,8 @@ async function handleError(response, url) {
 }
 
 /**
- * @param {Color} c
- * @returns {Color & { w: DevicePinDuty }}
+ * @param {import(".").Color} c
+ * @returns {import(".").Color & { w: import(".").DevicePinDuty }}
  */
 function addW(c) {
     return {

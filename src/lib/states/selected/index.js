@@ -1,11 +1,8 @@
 import { writable, get } from "svelte/store";
 
 /**
- * @typedef Device
- * @type {import("../devices").Device}
- *
  * @typedef StateSelected
- * @type {import("svelte/store").Writable<Device[]>}
+ * @type {import("svelte/store").Writable<import("../../api").Device[]>}
  */
 
 const storageKey = "selected";
@@ -20,7 +17,7 @@ selected.subscribe((devices) => {
 });
 
 export function create() {
-    /** @param {Device} d */
+    /** @param {import("../../api").Device} d */
     function findIndex(d) {
         const devices = get(selected);
         for (let i = 0; i < devices.length; i++) {
@@ -31,12 +28,12 @@ export function create() {
         return -1;
     }
 
-    /** @param {Device} d */
+    /** @param {import("../../api").Device} d */
     function contains(d) {
         return findIndex(d) > -1;
     }
 
-    /** @param {Device} d */
+    /** @param {import("../../api").Device} d */
     function remove(d) {
         const i = findIndex(d);
         if (i > -1) {
@@ -49,7 +46,7 @@ export function create() {
         }
     }
 
-    /** @param {Device} d */
+    /** @param {import("../../api").Device} d */
     function add(d) {
         const i = findIndex(d);
         if (i === -1) {

@@ -29,7 +29,7 @@ export * as WebSocket from "./ws";
  *  b: DevicePinDuty;
  * }}
  *
- * @typedef ColorRequest 
+ * @typedef ColorRequest
  * @type {{
  *  addr: string[];
  *  color: Color & { w: DevicePinDuty };
