@@ -30,6 +30,7 @@ export function create() {
         const k = `deviceName:${device.host}:${device.port}`;
         if (!name) localStorage.removeItem(k);
         else localStorage.setItem(k, name);
+        devices.update(devices => devices);
     }
 
     /**
