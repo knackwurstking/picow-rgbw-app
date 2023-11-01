@@ -26,12 +26,10 @@
     let cleanUp = [];
 
     let brightness = 100;
-    $: typeof brightness === "number" && handleBrightnessChange(brightness);
 
     let r = 100;
     let g = 100;
     let b = 100;
-    $: r && g && b && handleRGBChange(r, g, b);
 
     /***************
      * Store: color
@@ -75,7 +73,7 @@
      * @param {Api.DevicePinDuty} b
      */
     async function handleRGBChange(r, g, b) {
-        brightness = Math.max(...([r, g, b].filter(c => c > 0)));
+        brightness = Math.min(...([r, g, b].filter(c => c > 0)));
         color.set({ r, g, b })
     }
 
@@ -85,13 +83,20 @@
     async function handleBrightnessChange(brightness) {
         const rgb = [r, g, b].filter(c => c > 0);
         const min = Math.min(...rgb);
-        const diff = min - brightness;
+        let diff = min - brightness;
 
-        if (
-            !!rgb.find(c => c - diff > 100) ||
-            !!rgb.find(c => c-diff < 5)
-        ) {
-            return
+        if (!!rgb.find(c => c-diff > 100)) {
+            diff = 100-Math.max(...rgb);
+            if (r > 0) r = r+diff;
+            if (g > 0) g = g+diff;
+            if (b > 0) b = b+diff;
+            return;
+        } else if (!!rgb.find(c => c-diff <= 5)) {
+            diff = 5-Math.min(...rgb);
+            if (r > 0) r = r+diff;
+            if (g > 0) g = g+diff;
+            if (b > 0) b = b+diff;
+            return;
         } else {
             r = r-diff;
             g = g-diff;
@@ -366,6 +371,9 @@
                     min={0}
                     max={100}
                     bind:value={brightness}
+                    on:change={() => {
+                        handleBrightnessChange(brightness);
+                    }}
                 />
             </Text.Label>
 
@@ -380,6 +388,9 @@
                     min={0}
                     max={100}
                     bind:value={r}
+                    on:change={() => {
+                        handleRGBChange(r, g, b);
+                    }}
                 />
             </Text.Label>
 
@@ -392,6 +403,9 @@
                     min={0}
                     max={100}
                     bind:value={g}
+                    on:change={() => {
+                        handleRGBChange(r, g, b);
+                    }}
                 />
             </Text.Label>
 
@@ -404,6 +418,9 @@
                     min={0}
                     max={100}
                     bind:value={b}
+                    on:change={() => {
+                        handleRGBChange(r, g, b);
+                    }}
                 />
             </Text.Label>
         </section>
