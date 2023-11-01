@@ -146,10 +146,9 @@
             // TODO: ...
         },
         event = Api.WebSocket.events.color.changed;
-        handlers[`${event}`] = async (data) => {
+        handlers[`${event}`] = async (/**@type {ApiDevice}*/device) => {
             console.debug(`[main] event "${event}"`);
-            console.table(data)
-            // TODO: ...
+            devices.updateDevice(device);
         },
 
         server.subscribe((server) => {

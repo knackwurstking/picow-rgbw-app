@@ -2,7 +2,7 @@ import c from "../constants.json";
 import { Api, States } from "..";
 
 /**
- * @typedef ServerData
+ * @typedef StateServerData
  * @type {import("../states/server").StateServerData}
  *
  * @typedef ApiDevice
@@ -49,7 +49,7 @@ let ws;
 let interval;
 
 /**
- * @param {ServerData} server
+ * @param {StateServerData} server
  */
 export async function connect(server) {
     const fetchDevices = async () => {

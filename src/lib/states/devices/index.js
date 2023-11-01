@@ -1,6 +1,5 @@
 import c from "../../constants.json";
-
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 
 /**
  * @typedef ApiDevice
@@ -36,9 +35,26 @@ export function create() {
         else localStorage.setItem(k, name);
     }
 
+    /**
+     * @param {ApiDevice} device
+     */
+    function updateDevice(device) {
+        devices.update((data) => {
+            for (let i = 0; i < data.length; i++) {
+                const d = data[i];
+                if (d.host === device.host && d.port === device.port) {
+                    data[i] = device;
+                }
+            }
+
+            return data;
+        });
+    }
+
     return {
         ...devices,
         getName,
         setName,
+        updateDevice,
     };
 }

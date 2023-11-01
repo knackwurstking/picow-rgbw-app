@@ -19,7 +19,7 @@ import c from "../constants.json";
  * @typedef ApiColorRequest 
  * @type {import(".").ApiColorRequest}
  *
- * @typedef ServerData
+ * @typedef StateServerData
  * @type {import("../states/server").StateServerData}
  */
 
@@ -45,7 +45,7 @@ export function getColorArray(device) {
 }
 
 /**
- * @param {ServerData} server
+ * @param {StateServerData} server
  * @returns {Promise<ApiDevice[]>}
  */
 export async function getDevices(server) {
@@ -65,7 +65,7 @@ export async function getDevices(server) {
 }
 
 /**
- * @param {ServerData} server
+ * @param {StateServerData} server
  * @param {ApiColor} color 
  * @param {...ApiDevice} devices
  */
