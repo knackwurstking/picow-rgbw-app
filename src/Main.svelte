@@ -120,28 +120,53 @@
     }
 
     function subscribeToServer() {
-        const onDevicesUpdated = (data) => {
-            console.debug("[main] onDevicesUpdated:", data);
+        const handlers = {};
+        let event = Api.WebSocket.events.devices.updated;
+        handlers[`${event}`] = async (data) => {
+            console.debug(`[main] event "${event}"`);
+            console.table(data)
             // TODO: ...
-        };
+        },
+        event = Api.WebSocket.events.device.error;
+        handlers[`${event}`] = async (data) => {
+            console.debug(`[main] event "${event}"`);
+            console.table(data)
+            // TODO: ...
+        },
+        event = Api.WebSocket.events.device.online;
+        handlers[`${event}`] = async (data) => {
+            console.debug(`[main] event "${event}"`);
+            console.table(data)
+            // TODO: ...
+        },
+        event = Api.WebSocket.events.device.offline;
+        handlers[`${event}`] = async (data) => {
+            console.debug(`[main] event "${event}"`);
+            console.table(data)
+            // TODO: ...
+        },
+        event = Api.WebSocket.events.color.changed;
+        handlers[`${event}`] = async (data) => {
+            console.debug(`[main] event "${event}"`);
+            console.table(data)
+            // TODO: ...
+        },
 
         server.subscribe((server) => {
             cleanUp.forEach(fn => fn());
+            cleanUp = [];
 
             Api.WebSocket.connect(server);
 
-            Api.WebSocket.on(
-                Api.WebSocket.events.devices.updated,
-                onDevicesUpdated
-            );
-            cleanUp.push(() => {
-                Api.WebSocket.off(
-                    Api.WebSocket.events.devices.updated,
-                    onDevicesUpdated
-                );
-            });
-
-            // TODO: init all other events
+            const events = [
+                ...Object.values(Api.WebSocket.events.devices),
+                ...Object.values(Api.WebSocket.events.device),
+                ...Object.values(Api.WebSocket.events.color),
+            ];
+            for (const event of events) {
+                Api.WebSocket.on(event, handlers[event]);
+                cleanUp.push(() => Api.WebSocket.off(event, handlers[event]));
+            }
         });
     }
 
