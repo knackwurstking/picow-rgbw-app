@@ -98,9 +98,9 @@
             if (b > 0) b = b+diff;
             return;
         } else {
-            r = r-diff;
-            g = g-diff;
-            b = b-diff;
+            if (r > 0) r = r-diff;
+            if (g > 0) g = g-diff;
+            if (b > 0) b = b-diff;
         }
     }
 
