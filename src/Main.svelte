@@ -82,7 +82,7 @@
      * @param {ApiDevicePinDuty} g
      * @param {ApiDevicePinDuty} b
      */
-    function handleRGBChange(r, g, b) {
+    async function handleRGBChange(r, g, b) {
         brightness = Math.max(...([r, g, b].filter(c => c > 0)));
         color.set({ r, g, b })
     }
@@ -90,7 +90,7 @@
     /**
      * @param {number} brightness
      */
-    function handleBrightnessChange(brightness) {
+    async function handleBrightnessChange(brightness) {
         const rgb = [r, g, b].filter(c => c > 0);
         const min = Math.min(...rgb);
         const diff = min - brightness;
