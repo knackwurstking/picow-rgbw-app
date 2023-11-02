@@ -125,6 +125,7 @@
             cleanUp.forEach(fn => fn());
             cleanUp = [];
 
+            // TODO: Handle android suspend (websocket takes too long to reconnect)
             Api.WebSocket.connect(server);
 
             const events = [
