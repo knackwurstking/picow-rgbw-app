@@ -76,8 +76,9 @@ export async function connect(server) {
         const interval = setInterval(() => {
             if (count >= 2 && !!ws.onclose) {
                 ws.close();
-                ws.onclose(null);
+                return;
             }
+
             if (ws.readyState === ws.CONNECTING) count += 1;
         }, 500);
 
