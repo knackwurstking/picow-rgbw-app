@@ -348,6 +348,7 @@
                                     "border-radius: var(--radius);" +
                                     "cursor: pointer;"
                                 }
+                                style:flex-shrink="0"
                                 on:click={() => {
                                     if (
                                         $color.r === c.r &&
