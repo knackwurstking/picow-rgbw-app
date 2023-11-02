@@ -75,7 +75,7 @@ export async function connect(server) {
         let count = 0;
         const interval = setInterval(() => {
             if (count >= 2 && !!ws.onclose) {
-                ws.close();
+                ws.onclose(null);
                 return;
             }
 
@@ -107,6 +107,11 @@ export async function connect(server) {
 
         ws.onclose = (ev) => {
             console.debug(`[api/ws] close connection to "${url}`, ev);
+
+            ws.close();
+            clearInterval(interval);
+            clearTimeout(interval);
+
             dispatch("close");
 
             timeout = setTimeout(
