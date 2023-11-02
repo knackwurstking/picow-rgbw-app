@@ -40,12 +40,15 @@ const eventListener = {};
 
 /** @type {WebSocket | undefined} */
 let ws;
-let interval;
+let timeout;
 
 /**
  * @param {import("../states/server").StateServerData} server
  */
 export async function connect(server) {
+    if (!!timeout) clearTimeout(timeout);
+    if (!!ws) ws.close();
+
     const fetchDevices = async () => {
         try {
             const result = await Api.getDevices(server)
@@ -65,8 +68,7 @@ export async function connect(server) {
     }
 
     const connectToServer = () => {
-        if (interval) clearInterval(interval);
-        if (connected) ws.close();
+        if (!!timeout) clearTimeout(timeout);
         if (!server.host && !server.port) return;
 
         const url = `ws://${server.host}:${server.port}${c.route.events}`;
@@ -96,12 +98,10 @@ export async function connect(server) {
 
         ws.onclose = (ev) => {
             console.debug(`[api/ws] close connection to "${url}`, ev);
+            connected = true;
             dispatch("close");
 
-            ws.close();
-            connected = true;
-
-            interval = setInterval(
+            timeout = setTimeout(
                 () => connectToServer(),
                 reconnectInterval
             );
