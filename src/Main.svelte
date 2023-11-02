@@ -71,41 +71,6 @@
      * Function Definitions
      ***********************/
 
-    /**
-     * @param {Api.DevicePinDuty} r
-     * @param {Api.DevicePinDuty} g
-     * @param {Api.DevicePinDuty} b
-     */
-    async function handleRGBChange(r, g, b) {
-        brightness = Math.min(...([r, g, b].filter(c => c > 0)));
-        color.set({ r, g, b })
-    }
-
-    /**
-     * @param {number} brightness
-     */
-    async function handleBrightnessChange(brightness) {
-        const rgb = [r, g, b].filter(c => c > 0);
-        const min = Math.min(...rgb);
-        let diff = min - brightness;
-
-        if (!!rgb.find(c => c-diff > 100)) {
-            diff = 100-Math.max(...rgb);
-            if (r > 0) r = r+diff;
-            if (g > 0) g = g+diff;
-            if (b > 0) b = b+diff;
-        } else if (!!rgb.find(c => c-diff <= 5)) {
-            diff = 5-Math.min(...rgb);
-            if (r > 0) r = r+diff;
-            if (g > 0) g = g+diff;
-            if (b > 0) b = b+diff;
-        } else {
-            if (r > 0) r = r-diff;
-            if (g > 0) g = g-diff;
-            if (b > 0) b = b-diff;
-        }
-    }
-
     async function subscribeToColor() {
         color.subscribe((color) => {
             if (!color.r && !color.g && !color.b) return;
