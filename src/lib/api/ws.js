@@ -11,8 +11,6 @@ import { Api, States } from "..";
 
 const devices = States.devices.create();
 
-/** @type {boolean} */
-export let connected = false;
 export let reconnectInterval = 1250;
 
 export const events = {
@@ -74,8 +72,18 @@ export async function connect(server) {
         const url = `ws://${server.host}:${server.port}${c.route.events}`;
         ws = new WebSocket(url);
 
+        let count = 0;
+        const interval = setInterval(() => {
+            if (count >= 2 && !!ws.onclose) {
+                ws.close();
+                ws.onclose(null);
+            }
+            if (ws.readyState === ws.CONNECTING) count += 1;
+        }, 500);
+
         ws.onopen = (ev) => {
             console.debug(`[api/ws] connection established to "${url}"`, ev);
+            clearInterval(interval);
             dispatch("open");
 
             fetchDevices();
@@ -98,7 +106,6 @@ export async function connect(server) {
 
         ws.onclose = (ev) => {
             console.debug(`[api/ws] close connection to "${url}`, ev);
-            connected = true;
             dispatch("close");
 
             timeout = setTimeout(
