@@ -30,6 +30,8 @@
     let r = 100;
     let g = 100;
     let b = 100;
+    $: r > -1,g > -1,b > -1 && setColor();
+    const setColor = async () => color.set({ r, g, b });
 
     let connected = false;
 
@@ -112,7 +114,7 @@
             g = color.g || 0;
             b = color.b || 0;
 
-            brightness = Math.max(...([r, g, b].filter(c => c > 0)));
+            brightness = Math.min(...([r, g, b].filter(c => c > 0)));
         });
     }
 
@@ -379,7 +381,7 @@
             <h2>Color Picker</h2>
         </section>
 
-        <section>
+        <section style="user-select: none;">
             <Text.Label
                 useLabel
             >
@@ -387,8 +389,25 @@
                     min={0}
                     max={100}
                     bind:value={brightness}
-                    on:change={() => {
-                        handleBrightnessChange(brightness);
+                    on:input={() => {
+                        const min = Math.min(...[r, g, b].filter(c => c > 0));
+                        const max = Math.max(r, g, b);
+
+                        if (min !== brightness) {
+                            let diff = brightness-min;
+
+                            if (max+diff > 100) {
+                                diff = 100-max;
+                            } else if (min+diff < 1) {
+                                diff = 0 - (min-1);
+                            }
+
+                            if (min+diff < 1 || max+diff > 100) return;
+
+                            if (r > 0) r = r+diff;
+                            if (g > 0) g = g+diff;
+                            if (b > 0) b = b+diff;
+                        }
                     }}
                 />
             </Text.Label>
@@ -404,9 +423,6 @@
                     min={0}
                     max={100}
                     bind:value={r}
-                    on:change={() => {
-                        handleRGBChange(r, g, b);
-                    }}
                 />
             </Text.Label>
 
@@ -419,9 +435,6 @@
                     min={0}
                     max={100}
                     bind:value={g}
-                    on:change={() => {
-                        handleRGBChange(r, g, b);
-                    }}
                 />
             </Text.Label>
 
@@ -434,9 +447,6 @@
                     min={0}
                     max={100}
                     bind:value={b}
-                    on:change={() => {
-                        handleRGBChange(r, g, b);
-                    }}
                 />
             </Text.Label>
         </section>
