@@ -1,5 +1,5 @@
 <script>
-    import { onDestroy } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import DeviceSettingsIcon from "svelte-material-icons/DotsVertical.svelte";
     import AddIcon from "svelte-material-icons/PlusCircleOutline.svelte";
     import TrashIcon from "svelte-material-icons/TrashCanOutline.svelte";
@@ -168,6 +168,11 @@
         }
     }
 
+    onMount(() => {
+        window.addEventListener("focus", () => {
+            Api.WebSocket.connect($server);
+        });
+    });
     onDestroy(() => cleanUp.forEach(fn => fn()));
 </script>
 
