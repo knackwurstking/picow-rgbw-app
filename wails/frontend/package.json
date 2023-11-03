@@ -1,0 +1,18 @@
+{
+    "name": "picow-rgbw-app",
+    "private": true,
+    "version": "2.0.1",
+    "type": "module",
+    "scripts": {
+        "dev": "vite --host",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "@sveltejs/vite-plugin-svelte": "^2.4.2",
+        "svelte": "^4.0.5",
+        "svelte-css": "github:knackwurstking/svelte-css#v0.4.0",
+        "svelte-material-icons": "^3.0.5",
+        "vite": "^4.4.5"
+    }
+}
