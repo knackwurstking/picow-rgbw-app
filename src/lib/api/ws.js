@@ -47,23 +47,7 @@ export async function connect(server) {
     if (!!timeout) clearTimeout(timeout);
     if (!!ws) ws.close();
 
-    const fetchDevices = async () => {
-        try {
-            const result = await Api.getDevices(server)
-            devices.set(result.map(
-                /** @param {Api.Device} r */
-                (r) => ({
-                    ...r,
-                    name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",
-                })
-            ) || []);
-        } catch (err) {
-            // TODO: Notification
-            devices.set([]);
 
-            console.warn("[main]", err);
-        }
-    }
 
     const connectToServer = () => {
         if (!!timeout) clearTimeout(timeout);
@@ -82,12 +66,11 @@ export async function connect(server) {
             if (ws.readyState === ws.CONNECTING) count += 1;
         }, 500);
 
-        ws.onopen = (ev) => {
-            console.debug(`[api/ws] connection established to "${url}"`, ev);
+        ws.onopen = () => {
+            console.debug(`[api/ws] connection established to "${url}"`);
             clearInterval(interval);
+            fetchDevices(server);
             dispatch("open");
-
-            fetchDevices();
 
             ws.onmessage = (ev) => {
                 console.debug("[api/ws] message received");
@@ -95,29 +78,25 @@ export async function connect(server) {
                  * @type {WSMessageData}
                  */
                 const data = JSON.parse(ev.data);
-                dispatch(data.eventName, data.data);
+                dispatch(data.eventName, data.data || null);
             };
         };
 
-        ws.onerror = (ev) => {
-            console.debug(`[api/ws] connection error to "${url}`, ev);
-
+        ws.onerror = () => {
+            console.debug(`[api/ws] connection error to "${url}`);
             ws.close();
         };
 
-        ws.onclose = (ev) => {
-            console.debug(`[api/ws] close connection to "${url}`, ev);
-
-            ws.close();
+        ws.onclose = () => {
+            console.debug(`[api/ws] close connection to "${url}`);
             clearInterval(interval);
             clearTimeout(interval);
-
-            dispatch("close");
-
+            ws.close();
             timeout = setTimeout(
                 () => connectToServer(),
                 reconnectInterval
             );
+            dispatch("close");
         };
     }
 
@@ -164,5 +143,26 @@ export async function off(event, listener) {
 export async function dispatch(event, data) {
     for (const fn of eventListener[event] || []) {
         fn(data);
+    }
+}
+
+/**
+ * @param {import("../states/server").StateServerData} server
+ */
+async function fetchDevices (server) {
+    try {
+        const result = await Api.getDevices(server)
+        devices.set(result.map(
+            /** @param {Api.Device} r */
+            (r) => ({
+                ...r,
+                name: localStorage.getItem(`deviceName:${r.host}:${r.port}`) || "",
+            })
+        ) || []);
+    } catch (err) {
+        // TODO: Notification
+        devices.set([]);
+
+        console.warn("[main]", err);
     }
 }
