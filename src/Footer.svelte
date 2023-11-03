@@ -62,6 +62,7 @@
         <Button.Root
             class="col"
             style={
+                "display: flex;" +
                 "max-width: 20%;" +
                 "padding: calc(var(--spacing) / 2);"
             }
