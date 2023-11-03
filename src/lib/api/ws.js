@@ -39,15 +39,15 @@ const eventListener = {};
 /** @type {WebSocket | undefined} */
 let ws;
 let timeout;
+let interval;
 
 /**
  * @param {import("../states/server").StateServerData} server
  */
 export async function connect(server) {
     if (!!timeout) clearTimeout(timeout);
+    if (!!interval) clearInterval(interval);
     if (!!ws) ws.close();
-
-
 
     const connectToServer = () => {
         if (!!timeout) clearTimeout(timeout);
@@ -57,20 +57,22 @@ export async function connect(server) {
         ws = new WebSocket(url);
 
         let count = 0;
-        const interval = setInterval(() => {
-            if (count >= 2 && !!ws.onclose) {
-                ws.onclose(null);
-                return;
+        interval = setInterval(() => {
+            if (ws.readyState === 0) {
+                count += 1;
             }
-
-            if (ws.readyState === ws.CONNECTING) count += 1;
+            if (count === 5) {
+                clearInterval(interval);
+                ws.close();
+            }
         }, 500);
 
         ws.onopen = () => {
             console.debug(`[api/ws] connection established to "${url}"`);
+
+            dispatch("open");
             clearInterval(interval);
             fetchDevices(server);
-            dispatch("open");
 
             ws.onmessage = (ev) => {
                 console.debug("[api/ws] message received");
@@ -88,15 +90,19 @@ export async function connect(server) {
         };
 
         ws.onclose = () => {
-            console.debug(`[api/ws] close connection to "${url}`);
             clearInterval(interval);
-            clearTimeout(interval);
+            console.debug(`[api/ws] close connection to "${url}`);
+
             ws.close();
+            dispatch("close");
+
             timeout = setTimeout(
-                () => connectToServer(),
+                () => {
+                    console.debug(`[api/ws] try to reconnect to ${url}`);
+                    connectToServer()
+                },
                 reconnectInterval
             );
-            dispatch("close");
         };
     }
 
