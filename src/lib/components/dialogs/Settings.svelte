@@ -70,13 +70,11 @@
 
     <section>
         <Input.Text
-            class="has-margin"
             title="Api Server Host"
             bind:value={host}
         />
 
         <Input.Number
-            class="has-margin"
             title="Api Server Port"
             bind:value={port}
             min={0}
