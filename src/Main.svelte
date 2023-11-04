@@ -291,16 +291,20 @@
             <div
                 class="data"
                 style={
-                    "height: 4em;" +
                     "border: var(--border-width) solid hsl(var(--border));" +
                     "border-radius: var(--radius);"
                 }
             >
-                <figure style="height: 100%;">
+                <figure>
                     <div
-                        style:display="flex"
-                        style:flex-direction="row"
-                        style:height="100%"
+                        style={
+                            "display: flex;" +
+                            "flex-wrap: wrap;" +
+                            "flex-direction: row;" +
+                            "justify-content: center;" +
+                            "padding: calc(var(--spacing) / 2);" +
+                            "height: 100%"
+                        }
                     >
                         {#each $colorStorage as c}
                             <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -313,13 +317,14 @@
                                     $color.b === c.b
                                 }
                                 style={
-                                    "height: calc(100% - var(--spacing));" +
-                                    "width: calc(5em - (var(--spacing) * 3));" +
+                                    "flex-shrink: 0;" +
+                                    "height: 4em;" +
+                                    "width: 4em;" +
+                                    "margin: calc(var(--spacing) / 4);" +
                                     "border: var(--border-width) solid hsl(var(--border));" +
                                     "border-radius: var(--radius);" +
                                     "cursor: pointer;"
                                 }
-                                style:flex-shrink="0"
                                 on:click={() => {
                                     if (
                                         $color.r === c.r &&
