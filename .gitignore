@@ -25,5 +25,3 @@ dist-ssr
 
 # wails 
 build/bin
-node_modules
-frontend/dist
