@@ -64,7 +64,7 @@
 
     <section>
         <Input.Text
-            style="min-width: 13em;"
+            style="width: 13em;"
             title="Device Name"
             bind:value={name}
             placeholder={`${device?.host}:${device?.port}`}

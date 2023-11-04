@@ -70,7 +70,7 @@
 
     <section>
         <Input.Text
-            style="min-width: 13em;"
+            style="width: 13em;"
             title="Api Server Host"
             bind:value={host}
         />
@@ -78,7 +78,7 @@
         <br />
 
         <Input.Number
-            style="min-width: 13em;"
+            style="width: 13em;"
             title="Api Server Port"
             bind:value={port}
             min={0}
