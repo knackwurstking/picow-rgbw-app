@@ -58,7 +58,12 @@ export async function connect(server) {
         if (!server.host && !server.port) return;
 
         const url = `ws://${server.host}:${server.port}${c.route.events}`;
-        ws = new WebSocket(url);
+        try {
+            ws = new WebSocket(url);
+        } catch (err) {
+            console.warn(`[api/ws] Create websocket to "${url}" failed!`, err);
+            return;
+        }
 
         let count = 0;
         interval = setInterval(() => {
