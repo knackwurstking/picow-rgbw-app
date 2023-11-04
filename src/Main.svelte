@@ -169,7 +169,8 @@
     }
 
     onMount(() => {
-        window.addEventListener("focus", () => {
+        // NOTE: pause/resume events fired on cordova app (background/foreground)
+        document.addEventListener("resume", () => {
             Api.WebSocket.connect($server);
         });
     });
