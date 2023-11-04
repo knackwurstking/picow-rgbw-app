@@ -326,17 +326,7 @@
                                     "border-radius: var(--radius);" +
                                     "cursor: pointer;"
                                 }
-                                on:click={() => {
-                                    if (
-                                        $color.r === c.r &&
-                                        $color.g === c.g &&
-                                        $color.b === c.b
-                                    ) {
-                                        color.set(Api.newColor(0, 0, 0));
-                                    } else {
-                                        color.set(Api.newColor(c.r, c.g, c.b));
-                                    }
-                                }}
+                                on:click={() => color.set(Api.newColor(c.r, c.g, c.b))}
                             >
                                 <div
                                     class="background"
