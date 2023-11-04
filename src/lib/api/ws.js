@@ -40,6 +40,7 @@ const eventListener = {};
 let ws;
 let timeout;
 let interval;
+let skipTimeout;
 
 /**
  * @param {import("../states/server").StateServerData} server
@@ -47,7 +48,10 @@ let interval;
 export async function connect(server) {
     if (!!timeout) clearTimeout(timeout);
     if (!!interval) clearInterval(interval);
-    if (!!ws) ws.close();
+    if (!!ws) {
+        skipTimeout = true;
+        ws.close();
+    }
 
     const connectToServer = () => {
         if (!!timeout) clearTimeout(timeout);
@@ -61,6 +65,7 @@ export async function connect(server) {
             if (ws.readyState === 0) {
                 count += 1;
             }
+
             if (count === 5) {
                 clearInterval(interval);
                 ws.close();
@@ -96,13 +101,17 @@ export async function connect(server) {
             ws.close();
             dispatch("close");
 
-            timeout = setTimeout(
-                () => {
-                    console.debug(`[api/ws] try to reconnect to ${url}`);
-                    connectToServer()
-                },
-                reconnectInterval
-            );
+            if (!skipTimeout) {
+                timeout = setTimeout(
+                    () => {
+                        console.debug(`[api/ws] try to reconnect to ${url}`);
+                        connectToServer();
+                    },
+                    reconnectInterval
+                );
+            };
+
+            skipTimeout = false;
         };
     }
 
