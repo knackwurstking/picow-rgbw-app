@@ -173,6 +173,7 @@
             Api.WebSocket.connect($server);
         });
     });
+
     onDestroy(() => cleanUp.forEach(fn => fn()));
 </script>
 
@@ -301,7 +302,6 @@
                             "display: flex;" +
                             "flex-wrap: wrap;" +
                             "flex-direction: row;" +
-                            "justify-content: center;" +
                             "padding: calc(var(--spacing) / 2);" +
                             "height: 100%"
                         }
