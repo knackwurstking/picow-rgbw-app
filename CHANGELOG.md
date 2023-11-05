@@ -12,6 +12,7 @@
 - Wrap ".color-storage" element on overflow
 - Some minor style changes
 - Used [svelte-css](https://github.knackwurstking/svelte-css.git) version v0.4.2
+- Minor style changes
 
 ### Fixed
 
