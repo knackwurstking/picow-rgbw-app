@@ -5,6 +5,7 @@
 - Improve `WebSocket` reconnect handling
 - Add "resume" event handler for reconnecting `WebSocket`
 - ".color-storage" wrap elements on overflow
+- Minor changes
 
 ## v2.0.0
 
