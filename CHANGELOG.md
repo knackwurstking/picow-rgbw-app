@@ -2,11 +2,17 @@
 
 ## v2.0.1
 
-- Improve `WebSocket` reconnect handling
-- Add "resume" event handler for reconnecting `WebSocket`
-- ".color-storage" wrap elements on overflow
-- Minor changes
+### Added
 
-## v2.0.0
+- "resume" event handler for reconnecting to a `WebSocket` server
+- Icon(s) for html, android and wails
 
-- New version using my [svelte-css](https://github.com/knackwurstking/svelte-css.git) repo
+### Changed
+
+- Wrap ".color-storage" element on overflow
+- Some minor style changes
+- Used [svelte-css](https://github.knackwurstking/svelte-css.git) version v0.4.2
+
+### Fixed
+
+- `WebSocket` reconnect handling
