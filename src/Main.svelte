@@ -7,6 +7,13 @@
     import ColorStorage from "./view/ColorStorage.svelte";
     import ColorPicker from "./view/ColorPicker.svelte";
 
+    /***************
+     * Store: color
+     ***************/
+
+    let color = States.color.create();
+    $: $color && subscribeToColor();
+
     /***********************
      * Variable Definitions
      ***********************/
@@ -15,20 +22,13 @@
 
     let brightness = 100;
 
-    let r = 100;
-    let g = 100;
-    let b = 100;
+    let r = $color.r;
+    let g = $color.g;
+    let b = $color.b;
     $: r > -1,g > -1,b > -1 && setColor();
     const setColor = async () => color.set({ r, g, b });
 
     let connected = false;
-
-    /***************
-     * Store: color
-     ***************/
-
-    let color = States.color.create();
-    $: $color && subscribeToColor();
 
     /****************
      * Store: server
