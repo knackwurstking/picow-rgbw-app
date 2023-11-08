@@ -1,5 +1,15 @@
 # Changelog
 
+## [unreleased] v2.1.1
+
+### Added
+
+- fira sans/mono fonts
+
+### changed
+
+- `svelte-css` v0.5.0
+
 ## v2.1.0 2023/11/05
 
 ### Added
