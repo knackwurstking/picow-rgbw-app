@@ -5,6 +5,7 @@
 ### Added
 
 - fira sans/mono fonts
+- brightness slider will preview the current color now
 
 ### changed
 
