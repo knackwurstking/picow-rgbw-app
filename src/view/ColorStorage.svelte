@@ -93,7 +93,7 @@
                             <div
                                 class="background"
                                 style={
-                                    `background-color: rgb(${c.r * 2.5}, ${c.g * 2.5}, ${c.b * 2.5});` +
+                                    `background-color: rgb(${c.r * 2.55}, ${c.g * 2.55}, ${c.b * 2.55});` +
                                     "width: 100%; height: 100%;" +
                                     "border-radius: var(--radius);"
                                 }

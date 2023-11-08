@@ -20,11 +20,16 @@
         <h2>Color Picker</h2>
     </section>
 
-    <section style="user-select: none;">
+    <section
+        style="user-select: none;"
+    >
         <Text.Label
             useLabel
         >
             <Input.Slider
+                style={
+                    `--slider-color: rgb(${r*2.55}, ${g*2.55}, ${b*2.55});`
+                }
                 min={0}
                 max={100}
                 bind:value={brightness}
