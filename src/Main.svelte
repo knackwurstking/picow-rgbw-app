@@ -155,7 +155,7 @@
 </script>
 
 <main
-    class="container"
+    class="ui-container"
     style:height="calc(100% - 3.5em)"
     style:overflow-y="auto"
     style:scroll-behavior="smooth"
