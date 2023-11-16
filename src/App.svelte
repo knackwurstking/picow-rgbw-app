@@ -7,7 +7,7 @@
     import Footer from "./Footer.svelte";
 </script>
 
-<CSS.Root auto />
+<CSS.Root variant="zinc" auto />
 
 <Main />
 <Footer />
