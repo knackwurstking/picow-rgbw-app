@@ -35,36 +35,32 @@
     </section>
 
     <section>
-        <div class="actions has-margin" style="display: flex; justify-content: flex-end;">
-            <div class="group" style="font-size: 1.5em;">
+        <div class="flex justify-end">
+            <div class="ui-group" style="font-size: 1.25em;">
                 <Button.Icon
+                    ghost
                     on:click={async () => colorStorage.add({ r, g, b })}
                 >
-                    <AddIcon width="100%" height="100%" />
+                    <AddIcon />
                 </Button.Icon>
 
                 <Button.Icon
                     color="destructive"
+                    ghost
                     on:click={async () => colorStorage.remove({ r, g, b })}
                 >
-                    <TrashIcon width="100%" height="100%" />
+                    <TrashIcon />
                 </Button.Icon>
             </div>
         </div>
 
         <div
             class="data"
-            style={
-                "border: var(--border-width) solid hsl(var(--border));" +
-                "border-radius: var(--radius);"
-            }
         >
             <figure>
                 <div
+                    class="flex row wrap"
                     style={
-                        "display: flex;" +
-                        "flex-wrap: wrap;" +
-                        "flex-direction: row;" +
                         "padding: calc(var(--spacing) / 2);" +
                         "height: 100%"
                     }
@@ -73,28 +69,26 @@
                         <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <!-- svelte-ignore a11y-no-static-element-interactions -->
                         <div
-                            class="color has-small-margin has-small-padding"
+                            class="color has-border"
                             class:checked={
                                 $color.r === c.r &&
                                 $color.g === c.g &&
                                 $color.b === c.b
                             }
                             style={
-                                "flex-shrink: 0;" +
                                 "height: 4em;" +
                                 "width: 4em;" +
-                                "margin: calc(var(--spacing) / 4);" +
-                                "border: var(--border-width) solid hsl(var(--border));" +
-                                "border-radius: var(--radius);" +
+                                "margin: calc(var(--spacing) / 2);" +
+                                "padding: calc(var(--spacing) / 1.5);" +
                                 "cursor: pointer;"
                             }
                             on:click={() => color.set(Api.newColor(c.r, c.g, c.b))}
                         >
                             <div
-                                class="background"
+                                class="background has-border is-max"
                                 style={
                                     `background-color: rgb(${c.r * 2.55}, ${c.g * 2.55}, ${c.b * 2.55});` +
-                                    "width: 100%; height: 100%;" +
+                                    "filter: blur(2px);" +
                                     "border-radius: var(--radius);"
                                 }
                             />
@@ -109,11 +103,15 @@
 <style>
     .color-storage .data .color,
     .color-storage .data .color .background {
-        transition: border-color .25s linear;
+        transition:
+            border-color .25s linear,
+            box-shadow .25s linear;
     }
 
-    .color-storage .data .color.checked,
-    .color-storage .data .color.checked .background {
-        border-color: hsl(var(--primar)) !important;
+    .color-storage .data .color.checked {
+        border-color: hsl(var(--primary)) !important;
+        box-shadow:
+            inset 0 0 .25em hsl(var(--primary)),
+            0 0 .25em hsl(var(--primary));
     }
 </style>
