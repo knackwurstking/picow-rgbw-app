@@ -15,7 +15,7 @@
     let settingsDialog;
 
     /*****************
-     * Store: server 
+     * Store: server
      *****************/
 
     let server = States.server.create();
@@ -50,20 +50,21 @@
 </script>
 
 <footer
-    class="container"
+    class="ui-container"
     style:height="3.5em"
 >
-    <div class="group"
+    <div
+        class="ui-group"
         style={
             "width: 100%;" +
             "height: 100%;"
         }
     >
         <Button.Root
-            class="col"
+            class="flex"
             style={
-                "display: flex;" +
                 "max-width: 20%;" +
+                "width: 100%;" +
                 "padding: calc(var(--spacing) / 2);"
             }
             color="secondary"
@@ -74,10 +75,7 @@
         </Button.Root>
 
         <Button.Root
-            class="col"
-            style={
-                "max-width: 40%;"
-            }
+            style="width: 100%;"
             color="destructive"
             variant="full"
             on:click={() => clickOff()}
@@ -86,10 +84,7 @@
         </Button.Root>
 
         <Button.Root
-            class="col"
-            style={
-                "max-width: 40%;"
-            }
+            style="width: 100%;"
             color="primary"
             variant="full"
             on:click={() => clickSet()}
