@@ -73,8 +73,8 @@
     <span
         style={
             "position: absolute;" +
-            "top: var(--spacing);" +
-            "left: var(--spacing);" +
+            "top: calc(var(--spacing) / 2);" +
+            "left: calc(var(--spacing) / 2);" +
             "width: .5em;" +
             "height: .5em;" +
             "border-radius: 50%;" +
