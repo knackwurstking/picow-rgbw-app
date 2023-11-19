@@ -67,7 +67,7 @@
 
     <pre
         style:width="fit-content"
-        style:margin-left="calc(var(--spacing) * 2)"
+        style:margin-left="var(--spacing)"
     >[{Api.getColorArray(device).join(", ")}]</pre>
 
     <span
