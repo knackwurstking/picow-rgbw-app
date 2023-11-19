@@ -88,7 +88,6 @@
                                 class="background has-border is-max"
                                 style={
                                     `background-color: rgb(${c.r * 2.55}, ${c.g * 2.55}, ${c.b * 2.55});` +
-                                    "filter: blur(2px);" +
                                     "border-radius: var(--radius);"
                                 }
                             />
@@ -113,5 +112,9 @@
         box-shadow:
             inset 0 0 .25em hsl(var(--primary)),
             0 0 .25em hsl(var(--primary));
+    }
+
+    .color-storage .data .color.checked .background {
+        border-color: hsl(var(--primary));
     }
 </style>
