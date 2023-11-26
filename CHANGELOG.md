@@ -5,7 +5,6 @@
 ### Changed
 
 - `svelte-css` dependency to version 0.6.0
-- styles
 
 ## v2.2.0 2023-11-08
 
