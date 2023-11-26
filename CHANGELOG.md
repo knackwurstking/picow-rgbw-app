@@ -2,9 +2,14 @@
 
 ## [unreleased] v2.3.0
 
+### Fixed
+
+- Code clean up
+
 ### Changed
 
-- `svelte-css` dependency to version 0.6.0
+- Version for `svelte-css`: v0.6.0
+- Style changes (css)
 
 ## v2.2.0 2023-11-08
 
